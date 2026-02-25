@@ -248,8 +248,8 @@ export default function PrinterShell({
             </div>
 
             {/* Navigation row */}
-            <div className="relative mt-2 p-1 bg-black/[0.03] dark:bg-white/[0.02] rounded-xl shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] flex items-center gap-2">
-              <nav className="relative flex items-center gap-2 sm:gap-2.5 overflow-x-auto px-1 flex-1 no-scrollbar py-0.5">
+            <div className="relative mt-2 p-1 bg-black/[0.03] dark:bg-white/[0.02] rounded-xl shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2">
+              <nav className="relative flex items-center gap-2 sm:gap-2.5 overflow-x-auto px-1 flex-1 w-full no-scrollbar py-0.5">
                 {navItems.map((item, index) => {
                   const active = isActive(item.href);
                   return (
@@ -261,8 +261,9 @@ export default function PrinterShell({
                   );
                 })}
               </nav>
-              <div className="flex items-center gap-1 shrink-0 pr-1 py-0.5">
-                <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
+              <div className="sm:hidden mx-1 h-[1px] bg-black/10 dark:bg-white/10" />
+              <div className="flex items-center justify-end gap-1 shrink-0 px-1 pb-0.5 sm:px-0 sm:pr-1 sm:py-0.5">
+                <div className="hidden sm:block w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
                 <button onClick={switchLanguage} className="printer-btn printer-btn-circle" title={lang === "en" ? "切换到中文" : "Switch to English"}>
                   <span className="leading-none font-semibold text-[9px] tracking-normal">{lang === "en" ? "中" : "EN"}</span>
                 </button>
