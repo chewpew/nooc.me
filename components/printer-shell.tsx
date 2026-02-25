@@ -209,17 +209,22 @@ export default function PrinterShell({
       {/* Printer Body */}
       <div className="w-full max-w-3xl">
         {/* Unified Header Housing - Wraps both brand and slit areas to share a single shadow */}
-        <div className="printer-header-border rounded-t-[2.5rem] rounded-b-sm overflow-hidden relative z-10">
+        <div className="printer-header-border dark:border dark:border-white/[0.06] rounded-t-[2.5rem] rounded-b-sm overflow-hidden relative z-10">
           
+          {/* Dark mode ambient glow — soft top light spill */}
+          <div className="hidden dark:block absolute inset-0 pointer-events-none" aria-hidden="true">
+            <div className="absolute -top-[40%] left-1/2 -translate-x-1/2 w-[120%] h-[80%] bg-[radial-gradient(ellipse_at_center,rgba(100,120,255,0.07)_0%,rgba(80,100,220,0.03)_40%,transparent_70%)]" />
+          </div>
+
           {/* Top part - Brand & Nav */}
           <div className="bg-printer-body dark:bg-printer-body-dark px-6 pt-6 pb-5 sm:px-10 sm:pt-10 relative">
             {/* Brand plate */}
             <div className="relative flex items-start justify-between mb-8">
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <div className="absolute -inset-[3px] rounded-full bg-black/5 dark:bg-white/5 shadow-inner" />
+                  <div className="absolute -inset-[3px] rounded-full bg-black/5 dark:bg-white/[0.08] shadow-inner" />
                   <Image
-                    className="h-12 w-12 rounded-full ring-1 ring-black/10 dark:ring-white/10 shadow-sm relative z-10"
+                    className="h-12 w-12 rounded-full ring-1 ring-black/10 dark:ring-white/[0.15] shadow-sm dark:shadow-[0_0_12px_rgba(100,120,255,0.1)] relative z-10"
                     src={avatar}
                     alt="Nooc"
                   />
@@ -248,7 +253,7 @@ export default function PrinterShell({
             </div>
 
             {/* Navigation row */}
-            <div className="relative mt-2 p-1 bg-black/[0.03] dark:bg-white/[0.02] rounded-xl shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2">
+            <div className="relative mt-2 p-1 bg-black/[0.03] dark:bg-white/[0.03] rounded-xl shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.4)] dark:border dark:border-white/[0.04] flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2">
               <nav className="relative flex items-center gap-2 sm:gap-2.5 overflow-x-auto px-1 flex-1 w-full no-scrollbar py-0.5">
                 {navItems.map((item, index) => {
                   const active = isActive(item.href);
@@ -277,17 +282,17 @@ export default function PrinterShell({
           {/* Bottom part - Paper feed slot cross section */}
           <div className="bg-printer-shell dark:bg-printer-shell-dark h-5 flex items-center justify-center relative">
             {/* Inset shadows to give depth to the slit area */}
-            <div className="absolute inset-0 shadow-[inset_0_2px_4px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] pointer-events-none" />
+            <div className="absolute inset-0 shadow-[inset_0_2px_4px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_3px_6px_rgba(0,0,0,0.5)] pointer-events-none" />
             <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-black/[0.05] to-transparent dark:from-black/[0.2]" />
             <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-black/[0.05] to-transparent dark:from-black/[0.2]" />
             {/* Paper exit slit */}
-            <div className="absolute left-2 right-2 sm:left-8 sm:right-8 h-[6px] bg-black/60 dark:bg-black/80 rounded-[1px] shadow-[inset_0_1px_3px_rgba(0,0,0,0.8)]" />
+            <div className="absolute left-2 right-2 sm:left-8 sm:right-8 h-[6px] bg-black/60 dark:bg-black/90 rounded-[1px] shadow-[inset_0_1px_3px_rgba(0,0,0,0.8)] dark:shadow-[inset_0_1px_4px_rgba(0,0,0,0.9)]" />
           </div>
         </div>
         {/* Printed paper output area — clipped so paper slides in from the slit */}
         <div className="relative mx-3 sm:mx-10 -mt-[12px] z-20" style={{ clipPath: 'inset(0 -20px -10px -20px)' }}>
           <div ref={paperRef}>
-            <div className="bg-printer-paper dark:bg-printer-paper-dark thermal-texture min-h-[60vh] shadow-[0_4px_12px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] relative z-0 flex flex-col overflow-hidden">
+            <div className="bg-printer-paper dark:bg-printer-paper-dark dark:border dark:border-white/[0.04] thermal-texture min-h-[60vh] shadow-[0_4px_12px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4),0_1px_3px_rgba(0,0,0,0.3)] relative z-0 flex flex-col overflow-hidden">
               <div className="absolute -top-1 left-0 right-0 h-1 bg-printer-paper dark:bg-printer-paper-dark" />
 
               {/* Perforation marks */}
