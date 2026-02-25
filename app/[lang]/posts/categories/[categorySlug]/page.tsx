@@ -1,11 +1,15 @@
 import { posts, categories } from "@/.velite";
-import { CalendarDaysIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { Language, dictionaryKeys, getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { displayDate } from "@/lib/date";
 import { getAlternateLanguages } from "@/lib/metadata";
+import {
+  PrintedSection,
+  PrintedLabel,
+  PrintedDivider,
+} from "@/components/printed-elements";
 
 export const runtime = "edge";
 
@@ -68,6 +72,7 @@ export default async function CategoryPostsPage({
     categorySlug: string;
   };
 }) {
+  const dictionary = await getDictionary(params.lang);
   const category = categories.find(
     (category) => category.slug === params.categorySlug,
   );
@@ -76,33 +81,65 @@ export default async function CategoryPostsPage({
     notFound();
   }
 
-  const posts = getPublishedPosts(params.lang, category.slug);
+  const categoryPosts = getPublishedPosts(params.lang, category.slug);
 
   return (
-    <main className="mx-auto flex flex-col sm:flex-row w-full max-w-screen-lg gap-4 px-4 py-8">
-      <ul className="basis-3/4 flex flex-col gap-4">
-        {posts.map((post) => (
-          <li
-            key={post.slug}
-            className="rounded-3xl p-4 sm:px-8 border bg-white/50 dark:bg-indigo-100/5 flex flex-col gap-2"
-          >
-            <Link className="underline" href={post.permalink}>
-              <h2 className="text-xl font-serif">{post.title}</h2>
-            </Link>
-            <p className="opacity-70">{post.description}</p>
-            <div className="opacity-50 flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <CalendarDaysIcon className="w-4 h-4" />
-                {displayDate(post.date, params.lang)}
+    <div>
+      {/* Header */}
+      <PrintedSection>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-lg">⚙</span>
+          <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
+            {category.name[params.lang]}
+          </h1>
+        </div>
+        {category.description?.[params.lang] && (
+          <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
+            {category.description[params.lang]}
+          </p>
+        )}
+        <p className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-1">
+          {categoryPosts.length} entries
+        </p>
+      </PrintedSection>
+
+      {/* Back link */}
+      <div className="mb-4">
+        <Link
+          href={dictionary.urls.posts}
+          className="inline-flex items-center gap-1 font-mono text-[11px] tracking-wider text-printer-accent dark:text-printer-accent-dark hover:underline"
+        >
+          ← ALL TECH POSTS
+        </Link>
+      </div>
+
+      <PrintedDivider style="dashed" />
+
+      {/* Post list */}
+      <div className="flex flex-col">
+        {categoryPosts.map((post, index) => (
+          <div key={post.slug}>
+            <Link href={post.permalink} className="group block">
+              <div className="py-3 -mx-2 px-2 rounded-md hover:bg-printer-ink/3 dark:hover:bg-printer-ink-dark/3 transition-colors">
+                <div className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 tabular-nums mb-1">
+                  {displayDate(post.date, params.lang)}
+                </div>
+                <h2 className="font-serif text-base text-printer-ink dark:text-printer-ink-dark group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors leading-snug">
+                  {post.title}
+                </h2>
+                {post.description && (
+                  <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-1 line-clamp-2">
+                    {post.description}
+                  </p>
+                )}
               </div>
-            </div>
-          </li>
+            </Link>
+            {index < categoryPosts.length - 1 && (
+              <div className="border-b border-dotted border-printer-ink/5 dark:border-printer-ink-dark/5" />
+            )}
+          </div>
         ))}
-      </ul>
-      <section className="basis-1/4 sticky top-28 border rounded-3xl p-4 flex-col">
-        <div className="opacity-50 mb-2">{category.name[params.lang]}</div>
-        <div>{category.description?.[params.lang]}</div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

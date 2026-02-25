@@ -69,7 +69,8 @@ A fan of Serverless.
     home: "/en",
     works: "/en/works",
     posts: "/en/posts",
-    tools: "/en/tools",
+    life: "/en/life",
+    about: "/en/about",
 
     shareToX(title: string, postLink: string) {
       return `https://twitter.com/share?text=${encodeURIComponent(
@@ -80,11 +81,14 @@ A fan of Serverless.
   labels: {
     home: "Home",
     works: "Works",
-    posts: "Blog",
-    tools: "Tools",
-    latestPosts: "Latest Posts",
+    posts: "Tech",
+    life: "Life",
+    about: "About",
+    latestPosts: "Latest",
+    latestTech: "Tech",
+    latestLife: "Life",
     noocWorks: "Nooc's Works",
-    noocTools: "Nooc's Tools",
+    recommended: "Recommended",
     doing: "Doing",
     playing: "Playing",
     contactMe: "Contact Me",
@@ -92,6 +96,15 @@ A fan of Serverless.
     categories: "Categories",
     shareTo: "Share to: ",
     subnooc: "Subjective Nooc",
+    brandName: "NOOC",
+    brandTagline: "Nooc the Noob",
+    printedOn: "Printed on",
+    reading: "Reading",
+    films: "Films",
+    music: "Music",
+    suggestions: "Suggestions",
+    aboutTitle: "About",
+    aboutSubtitle: "A noob named Nooc",
     icon(label: string) {
       return `Icon for ${label}`;
     },
@@ -349,6 +362,77 @@ A fan of Serverless.
       link: "https://cassette.one",
     },
   ],
+  archive: {
+    reading: [
+      { title: "Living Elsewhere", summary: "When poetry becomes a danger." },
+      { title: "The Neapolitan Novels", summary: "An epic novel about growth, friendship and love." },
+      { title: "The Brothers Karamazov", summary: "If we end evil by evil means, are we still good?" },
+      { title: "Netochka Nezvanova", summary: "Some people drift further into fantasy, becoming dreamers." },
+      { title: "Strait Is the Gate", summary: "When faith collides with the secular world." },
+      { title: "The Death of Ivan Ilyich", summary: "A Tolstoy novella from his later years." },
+      { title: "Kon-Tiki", summary: "A wild journey to prove oneself." },
+      { title: "The Submarine at Night", summary: "A short story collection in a Borges-like style." },
+      { title: "Make Something Wonderful", summary: "A collection of Steve Jobs\' speeches and letters." },
+    ],
+    films: [
+      { title: "Adventure Time", summary: "The best way to learn English through a show." },
+      { title: "Art of the Cosmos", summary: "A long journey to the West seeking truth." },
+      { title: "Monster", summary: "A work by one of my favorite directors, Hirokazu Kore-eda." },
+      { title: "The Simpsons", summary: "Re-watching this animation that\'s older than me." },
+      { title: "The Long Season", summary: "My favorite Chinese drama in recent years." },
+      { title: "Deep Sea", summary: "Childlike wonder — I love this colorful art style." },
+    ],
+    music: [
+      { title: "Omnipotent Youth Society / Chair Band / No Party for Cao Dong", summary: "Rock and folk." },
+      { title: "Humbert Humbert / KOKIA / Rimi Natsukawa", summary: "Japanese artists with unique styles." },
+      { title: "DEPAPEPE / Joe Hisaishi / Himekami", summary: "Instrumental music from Japan." },
+      { title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani", summary: "English-language artists." },
+      { title: "Karen Mok / Cheer Chen / Joanna Wang", summary: "Chinese-language singers I enjoy." },
+      { title: "Miyuki Nakajima / Teresa Teng / Wu Bai", summary: "Classic oldies are always nice." },
+    ],
+    suggest: [
+      { title: "Nooc the Noob", link: "https://nooc.me", summary: "My personal website.", advertisement: true },
+      { title: "YouminCO", link: "https://youmin.co", summary: "A digital nomad community I built.", advertisement: true },
+      { title: "OneiAI", link: "https://onei.ai", summary: "An AI navigation site I built.", advertisement: true },
+      { title: "CassetteOne", link: "https://cassette.one", summary: "A retro cassette player I built.", advertisement: true },
+      { title: "Spark Memos", link: "https://sparkmemos.com", summary: "A short-note-taking app I built.", advertisement: true },
+      { title: "Echobell", link: "https://echobell.one", summary: "A notification app I built.", advertisement: true },
+      { title: "Dippod", link: "https://dippod.com", summary: "A podcast English-learning app I\'m building.", advertisement: false },
+    ],
+  },
+  aboutContent: `
+This is the corner of Nooc.
+
+A blog maintained by [Nooc](https://nooc.me).
+
+Updated irregularly, sharing random thoughts, reading notes, and daily ramblings — but anything could appear.
+
+### About Me
+
+My online name is Nooc — not a real word, no special meaning. Like myself, not so conventional, and not seeking worldly definitions.
+
+Active on [Twitter](https://twitter.com/noobnooc), often sharing unfiltered thoughts. You can also reach me on [Telegram](https://t.me/noobnooc) or email [nooc@nooc.me](mailto:nooc@nooc.me).
+
+Thanks to quantum mechanics, I was born somewhere between 1996 and 1997. An ordinary guy with nothing but dreams. I dream of becoming a nomad and traveling the world someday.
+
+Since I can't be a physical carpenter, but love the \"design → build → polish → ship\" workflow, I call myself a digital carpenter. Hopefully one day I can make things I enjoy in the virtual world that also bring a smile to others.
+
+My biggest hobby is starting things and never finishing them. I've tried drawing, video editing, photography, and MIDI — none stuck. The things I've consistently done are eating, sleeping, reading novels, and writing code. Hopefully writing will join the list.
+
+I enjoy unique foods like houttuynia with cilantro, cold shredded potatoes, and various inventive concoctions.
+
+I usually sleep between midnight and 8 AM in UTC+8.
+
+Favorite authors include Márquez, Calvino, Wang Xiaobo, Woolf, Murakami, Mo Yan, Liu Liangcheng, and more. Some I've been meaning to read but haven't yet: Dostoevsky, Saramago, Proust, Vonnegut. Someday I'll enter their worlds.
+
+I mainly write JavaScript/TypeScript, React/Next.js, Swift/SwiftUI — with a preference for Serverless.
+
+When listening to music, I prefer random shuffle. I can never tell genres apart. Country, pop, rock, folk, blues? Not sure. Chinese, Japanese, vocal, instrumental, wild, quiet — I listen to everything.
+
+If you like any of Jiang Wen, Wong Kar-wai, Hirokazu Kore-eda, Takeshi Kitano, Edward Yang, or Huang Xingyao — we're friends.
+
+That's about it~
+  `,
 };
 
 export default dictionary;

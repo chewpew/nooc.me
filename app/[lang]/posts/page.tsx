@@ -1,10 +1,15 @@
 import { posts, categories } from "@/.velite";
-import { CalendarDaysIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import Image from "next/image";
 import { displayDate } from "../../../lib/date";
-import { Language, dictionaryKeys, getDictionary } from "@/dictionaries";
+import { Language, getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
+import {
+  PrintedSection,
+  PrintedLabel,
+  PrintedDivider,
+} from "@/components/printed-elements";
 
 export const runtime = "edge";
 
@@ -17,7 +22,7 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(dictionary.meta.baseUrl),
-    title: dictionary.labels.posts,
+    title: `${dictionary.labels.posts} - ${dictionary.meta.websiteName}`,
     description: dictionary.labels.posts,
     keywords: dictionary.meta.fillKeywords([]),
     openGraph: {
@@ -44,8 +49,39 @@ export async function generateMetadata({
 
 function getPublishedPosts(lang: string) {
   return posts
-    .sort((p1, p2) => new Date(p2.date).getTime() - new Date(p1.date).getTime())
+    .sort(
+      (p1, p2) => new Date(p2.date).getTime() - new Date(p1.date).getTime(),
+    )
     .filter((post) => !post.draft && post.lang === lang);
+}
+
+function RatingDots({ rating }: { rating: number }) {
+  const fullDots = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.5;
+  const totalDots = 5;
+
+  return (
+    <div className="flex items-center gap-0.5">
+      {[...Array(fullDots)].map((_, i) => (
+        <div
+          key={`full-${i}`}
+          className="w-1.5 h-1.5 rounded-full bg-printer-accent dark:bg-printer-accent-dark"
+        />
+      ))}
+      {hasHalf && (
+        <div className="w-1.5 h-1.5 rounded-full bg-printer-accent/40 dark:bg-printer-accent-dark/40" />
+      )}
+      {[...Array(totalDots - fullDots - (hasHalf ? 1 : 0))].map((_, i) => (
+        <div
+          key={`empty-${i}`}
+          className="w-1.5 h-1.5 rounded-full bg-printer-ink/10 dark:bg-printer-ink-dark/10"
+        />
+      ))}
+      <span className="font-mono text-[9px] text-printer-ink-light dark:text-printer-ink-dark/40 ml-1 tabular-nums">
+        {rating.toFixed(1)}
+      </span>
+    </div>
+  );
 }
 
 export default async function PostsPage({
@@ -56,44 +92,115 @@ export default async function PostsPage({
   };
 }) {
   const dictionary = await getDictionary(params.lang);
-  const posts = getPublishedPosts(params.lang);
+  const allPosts = getPublishedPosts(params.lang);
 
   return (
-    <main className="mx-auto flex flex-col sm:flex-row sm:items-start w-full max-w-screen-lg gap-4 px-4 py-8">
-      <ul className="basis-3/4 flex flex-col gap-4">
-        {posts.map((post) => (
-          <li
-            key={post.slug}
-            className="rounded-3xl p-4 sm:px-8 border bg-white/50 dark:bg-indigo-100/5 flex flex-col gap-2"
-          >
-            <Link className="underline" href={post.permalink}>
-              <h2 className="text-xl font-serif">{post.title}</h2>
-            </Link>
-            <p className="opacity-70">{post.description}</p>
-            <div className="opacity-50 flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <CalendarDaysIcon className="w-4 h-4" />
-                {displayDate(post.date, params.lang)}
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <section className="basis-1/4 sticky top-28 border rounded-3xl p-4 flex-col">
-        <div className="opacity-50 mb-2">{dictionary.labels.categories}</div>
-        <ol className="underline">
+    <div>
+      {/* Header */}
+      <PrintedSection>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-lg">⚙</span>
+          <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
+            {dictionary.labels.posts}
+          </h1>
+        </div>
+        <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
+          {allPosts.length} entries
+        </p>
+      </PrintedSection>
+
+      {/* Categories sidebar as label strips */}
+      <PrintedSection label={dictionary.labels.categories}>
+        <div className="flex flex-wrap gap-1.5 mb-2">
           {categories.map((category) => (
-            <li key={category.slug}>
-              <Link href={category.permalink[params.lang]}>
+            <Link key={category.slug} href={category.permalink[params.lang]}>
+              <PrintedLabel variant="default">
                 {category.name[params.lang]}{" "}
                 <span className="opacity-50">
                   ({category.count[params.lang]})
                 </span>
-              </Link>
-            </li>
+              </PrintedLabel>
+            </Link>
           ))}
-        </ol>
-      </section>
-    </main>
+        </div>
+      </PrintedSection>
+
+      <PrintedDivider style="dashed" />
+
+      {/* Post list */}
+      <div className="flex flex-col">
+        {allPosts.map((post, index) => (
+          <div key={post.slug}>
+            <Link href={post.permalink} className="group block">
+              <div className="py-3 -mx-2 px-2 rounded-md hover:bg-printer-ink/3 dark:hover:bg-printer-ink-dark/3 transition-colors">
+                <div className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 tabular-nums mb-1">
+                  {displayDate(post.date, params.lang)}
+                </div>
+                <h2 className="font-serif text-base text-printer-ink dark:text-printer-ink-dark group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors leading-snug">
+                  {post.title}
+                </h2>
+                {post.description && (
+                  <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-1 line-clamp-2">
+                    {post.description}
+                  </p>
+                )}
+              </div>
+            </Link>
+            {index < allPosts.length - 1 && (
+              <div className="border-b border-dotted border-printer-ink/5 dark:border-printer-ink-dark/5" />
+            )}
+          </div>
+        ))}
+      </div>
+
+      <PrintedDivider style="dashed" />
+
+      {/* Recommended Tools */}
+      <PrintedSection label={`⚒ ${dictionary.labels.recommended}`}>
+        <div className="flex flex-col gap-1">
+          {dictionary.tools.map((tool, index) => (
+            <div key={tool.name}>
+              <a
+                href={tool.link}
+                target="_blank"
+                rel="noopener"
+                className="group flex items-center gap-3 py-3 -mx-2 px-2 rounded-md hover:bg-printer-ink/3 dark:hover:bg-printer-ink-dark/3 transition-colors"
+              >
+                <Image
+                  src={tool.icon}
+                  alt={`${tool.name} icon`}
+                  className="h-10 w-10 rounded-lg border border-printer-ink/10 dark:border-printer-ink-dark/10 shrink-0"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-sm font-medium text-printer-ink dark:text-printer-ink-dark group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors">
+                      {tool.name}
+                    </span>
+                    <RatingDots rating={tool.rating} />
+                  </div>
+                  <p className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-0.5 line-clamp-1">
+                    {tool.summary}
+                  </p>
+                  <div className="flex items-center gap-2 mt-1">
+                    {tool.platform && (
+                      <PrintedLabel variant="muted">{tool.platform}</PrintedLabel>
+                    )}
+                    {tool.pricing && (
+                      <PrintedLabel variant="default">{tool.pricing}</PrintedLabel>
+                    )}
+                  </div>
+                </div>
+                <span className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/30 group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors shrink-0">
+                  →
+                </span>
+              </a>
+              {index < dictionary.tools.length - 1 && (
+                <div className="border-b border-dotted border-printer-ink/5 dark:border-printer-ink-dark/5" />
+              )}
+            </div>
+          ))}
+        </div>
+      </PrintedSection>
+    </div>
   );
 }

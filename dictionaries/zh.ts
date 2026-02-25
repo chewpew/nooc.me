@@ -68,7 +68,8 @@ Serverless 爱好者。
     home: "/zh",
     works: "/zh/works",
     posts: "/zh/posts",
-    tools: "/zh/tools",
+    life: "/zh/life",
+    about: "/zh/about",
 
     shareToX(title: string, postLink: string) {
       return `https://twitter.com/share?text=${encodeURIComponent(
@@ -79,11 +80,14 @@ Serverless 爱好者。
   labels: {
     home: "主页",
     works: "作品",
-    posts: "博客",
-    tools: "工具",
-    latestPosts: "最新博客",
+    posts: "技术",
+    life: "生活",
+    about: "关于",
+    latestPosts: "最新",
+    latestTech: "技术",
+    latestLife: "生活",
     noocWorks: "Nooc的作品",
-    noocTools: "Nooc的工具",
+    recommended: "推荐",
     doing: "在做什么",
     playing: "在玩什么",
     contactMe: "联系我",
@@ -91,6 +95,15 @@ Serverless 爱好者。
     categories: "分类",
     shareTo: "分享到：",
     subnooc: "主观世界",
+    brandName: "NOOC",
+    brandTagline: "Nooc the Noob",
+    printedOn: "打印于",
+    reading: "阅读",
+    films: "电影",
+    music: "音乐",
+    suggestions: "推荐",
+    aboutTitle: "关于",
+    aboutSubtitle: "走出唯一真理观",
     icon(label: string) {
       return `${label}的图标`;
     },
@@ -340,6 +353,77 @@ Serverless 爱好者。
       link: "https://cassette.one",
     },
   ],
+  archive: {
+    reading: [
+      { title: "生活在别处", summary: "当诗意成为一种危险。" },
+      { title: "那不勒斯四部曲", summary: "一部关于成长、友谊和爱情的史诗般的小说。" },
+      { title: "卡拉马佐夫兄弟", summary: "如果我们用恶的方式去结束了恶，那我们还是善良的吗？" },
+      { title: "涅朵奇卡", summary: "有的人在幻想中越走越远，最终成了幻想家。" },
+      { title: "窄门", summary: "当信仰与世俗发生冲突。" },
+      { title: "伊凡·伊利奇之死", summary: "托尔斯泰后期的一篇中篇小说。" },
+      { title: "孤筏重洋", summary: "一场为了证明自己的狂野旅程。" },
+      { title: "夜晚的潜水艇", summary: "一本有点博尔赫斯风格的短篇小说集。" },
+      { title: "Make Something Wonderful", summary: "这本书集合了很多乔布斯生前的演讲和书信。" },
+    ],
+    films: [
+      { title: "探险活宝", summary: "看剧学英语的不二之选。" },
+      { title: "宇宙探索编辑部", summary: "长路漫漫地奔赴西方取经。" },
+      { title: "怪物", summary: "我最喜欢的导演之一是枝裕和的作品。" },
+      { title: "辛普森一家", summary: "重新开始看这部比我还老的动画。" },
+      { title: "漫长的季节", summary: "近几年看过最喜欢的国产剧。" },
+      { title: "深海", summary: "童心未泯的我，真的是喜欢这种花花绿绿的画风。" },
+    ],
+    music: [
+      { title: "万能青年旅店 / 椅子乐团 / 草东没有派对", summary: "摇滚与民谣。" },
+      { title: "Humbert Humbert / KOKIA / Rimi Natsukawa", summary: "来自日本的选手。" },
+      { title: "DEPAPEPE / 久石让 / 姬神", summary: "都是来自日本的纯乐器音乐选手。" },
+      { title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani", summary: "英文歌手。" },
+      { title: "莫文蔚 / 陈绮贞 / 王若琳", summary: "其实我是不太喜欢情歌的。" },
+      { title: "中岛美雪 / 邓丽君 / 伍佰", summary: "老歌偶尔听听也很是喜欢。" },
+    ],
+    suggest: [
+      { title: "Nooc the Noob", link: "https://nooc.me", summary: "这是我的个人网站。", advertisement: true },
+      { title: "游民CO", link: "https://youmin.co", summary: "我做的一个数字游民社区。", advertisement: true },
+      { title: "OneiAI", link: "https://onei.ai", summary: "我做的一个 AI 导航网站。", advertisement: true },
+      { title: "CassetteOne", link: "https://cassette.one", summary: "我做的一个复古磁带设计的音乐播放器。", advertisement: true },
+      { title: "星火记", link: "https://sparkmemos.com", summary: "我做的一个短笔记 App。", advertisement: true },
+      { title: "Echobell", link: "https://echobell.one", summary: "我做的一个通知类 App。", advertisement: true },
+      { title: "Dippod", link: "https://dippod.com", summary: "我正在做的一个使用播客学英语的 App。", advertisement: false },
+    ],
+  },
+  aboutContent: `
+这里是主观世界。
+
+这是一个由 [Nooc](https://nooc.me) 打理的博客。
+
+不定期更新，主要分享作者的自言自语、读书笔记、日常牢骚，但也可能会出现其他任何内容。
+
+### 关于我
+
+网名是 Nooc，不是一个常规的单词，也没有任何意义。正如本人一样，不是那么的常规，也不强求世俗的意义。
+
+活跃在 [Twitter](https://twitter.com/noobnooc) ，经常在上面分享一些不经思考的内容。你也可以通过 [Telegram](https://t.me/noobnooc) 来联系到我，或者是发邮件到 [nooc@nooc.me](mailto:nooc@nooc.me) 。
+
+因为量子力学影响，可以说我是 96 年生人，也可说我生于 1997 。是一个市面上普通的三无男性，除了梦想一无所有。还拥有一个也许永远无法完成的梦想，希望有一天能成为游民环游世界。
+
+由于没有条件做物理意义上的木匠，但又特别喜欢「设计 -> 动手 -> 打磨 -> 完工」这一套木匠流程，所以一直称自己为数字木匠。希望有一天能在虚拟的数字世界中，做一些自己喜欢，也能博大家一笑的小物什。
+
+最大的爱好是三天打鱼两天晒网。尝试过学画画、学做视频、学摄影、学 MIDI，但都没坚持下去。一直坚持在做的兴趣有吃饭、睡觉、看小说、写代码，希望写字也能成为其中一个。
+
+爱好的美食有折耳根拌香菜、凉拌土豆丝、各种冷吃，以及一些光明的或者黑暗的料理。偶尔也会试毒一些自己做的各类叫不出名字的糊糊。
+
+通常在东八区的午夜 12 点到早上 8 点间入眠。
+
+喜欢的作家有马尔克斯、卡尔维诺、王小波、伍尔夫、村上春树、莫言、刘亮程等。还有一些仰望已久但是迟迟不敢或没来得及翻开看的作家，像是陀思妥耶夫斯基、萨拉马戈、普鲁斯特、冯内古特等。迟早有一天我要进入他们的世界。
+
+代码的话，主要写 JavaScript/TypeScript、React/NextJS、Swift/SwiftUI 相关，偏好于 Serverless 相关技术栈。
+
+听歌的时候喜欢随机。区分音乐类型无能综合症患者，从来分不清喜欢的音乐们都是什么类型。国内的、日本的、有人声的、纯乐器的、狂野的、安静的... 总之就是太多了，基本上是啥都听，啥都喜欢。
+
+如果你喜欢姜文、王家卫、是枝裕和、北野武、杨德昌、黄信尧其中任何一个名字，那么我们就是朋友。
+
+就酱～
+  `,
 };
 
 export default dictionary;

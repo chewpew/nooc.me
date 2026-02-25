@@ -2,10 +2,132 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
 @layer base {
   *,
   ::before,
   ::after {
     @apply dark:border-neutral-700;
+  }
+}
+
+@layer components {
+  /* Printer paper torn edge effect */
+  .paper-edge-top {
+    position: relative;
+  }
+  .paper-edge-top::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(135deg, transparent 33.33%, currentColor 33.33%, currentColor 66.67%, transparent 66.67%),
+                linear-gradient(225deg, transparent 33.33%, currentColor 33.33%, currentColor 66.67%, transparent 66.67%);
+    background-size: 12px 6px;
+    color: theme('colors.printer.paper');
+  }
+  :is(.dark) .paper-edge-top::before {
+    color: theme('colors.printer.paper-dark');
+  }
+
+  .paper-edge-bottom {
+    position: relative;
+  }
+  .paper-edge-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(315deg, transparent 33.33%, currentColor 33.33%, currentColor 66.67%, transparent 66.67%),
+                linear-gradient(45deg, transparent 33.33%, currentColor 33.33%, currentColor 66.67%, transparent 66.67%);
+    background-size: 12px 6px;
+    background-position: 0 0;
+    color: theme('colors.printer.paper');
+  }
+  :is(.dark) .paper-edge-bottom::after {
+    color: theme('colors.printer.paper-dark');
+  }
+
+  /* Dot matrix / thermal print texture */
+  .thermal-texture {
+    background-image: 
+      radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+  :is(.dark) .thermal-texture {
+    background-image: 
+      radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+  }
+
+  /* Printer button style */
+  .printer-btn {
+    @apply relative px-4 py-2 rounded-lg font-mono text-sm tracking-wide uppercase;
+    @apply bg-printer-button dark:bg-printer-button-dark;
+    @apply text-printer-ink dark:text-printer-ink-dark;
+    @apply transition-all duration-100;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.25),
+      inset 0 -2px 0 rgba(0,0,0,0.08),
+      0 1px 3px rgba(0,0,0,0.08),
+      0 1px 1px rgba(0,0,0,0.04);
+  }
+  :is(.dark) .printer-btn {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      inset 0 -2px 0 rgba(0,0,0,0.15),
+      0 1px 3px rgba(0,0,0,0.2),
+      0 1px 1px rgba(0,0,0,0.1);
+  }
+  .printer-btn:hover {
+    @apply brightness-[0.97] dark:brightness-110;
+  }
+  .printer-btn:active {
+    @apply translate-y-[1px];
+    box-shadow:
+      inset 0 2px 4px rgba(0,0,0,0.1),
+      inset 0 0 0 1px rgba(0,0,0,0.02);
+  }
+  .printer-btn.active {
+    @apply bg-printer-accent text-white;
+    box-shadow:
+      inset 0 2px 4px rgba(0,0,0,0.15),
+      inset 0 0 0 1px rgba(0,0,0,0.05),
+      0 0 8px rgba(255,107,53,0.2);
+  }
+
+  /* Label tape style for navigation items */
+  .label-tape {
+    @apply inline-flex items-center gap-1.5 px-3 py-1;
+    @apply font-mono text-xs tracking-widest uppercase;
+    @apply border border-printer-ink/10 dark:border-printer-ink-dark/10;
+    @apply rounded-sm;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(0,0,0,0.01) 1px,
+      rgba(0,0,0,0.01) 2px
+    );
+  }
+
+  /* Printer slot / feed hole decorations */
+  .feed-holes {
+    @apply flex justify-center gap-3 py-2;
+  }
+  .feed-hole {
+    @apply w-2 h-2 rounded-full;
+    @apply bg-printer-ink/5 dark:bg-printer-ink-dark/5;
+    @apply border border-printer-ink/10 dark:border-printer-ink-dark/10;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }

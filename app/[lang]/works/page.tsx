@@ -1,9 +1,12 @@
-import Card from "../../../components/card";
 import Image from "next/image";
-import { twMerge } from "tailwind-merge";
-import { dictionaryKeys, getDictionary } from "../../../dictionaries";
+import { getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
+import {
+  PrintedSection,
+  PrintedLabel,
+  PrintedDivider,
+} from "@/components/printed-elements";
 
 export const runtime = "edge";
 
@@ -48,43 +51,103 @@ export default async function WorksPage({
 }) {
   const dictionary = await getDictionary(params.lang);
 
+  const primaryWorks = dictionary.works.filter((w) => w.primary);
+  const otherWorks = dictionary.works.filter((w) => !w.primary);
+
   return (
-    <main className="mx-auto flex w-full max-w-screen-lg flex-col gap-4 px-4 py-8">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {dictionary.works.map((work) => (
-          <Card
-            key={work.name}
-            className={twMerge(
-              "flex flex-col gap-4 sm:flex-row",
-              `bg-${work.color}-300/10 dark:bg-${work.color}-400/10`,
-            )}
-            link={work.link}
-          >
-            {work.image ? (
-              <Image
-                className="h-14 w-14 rounded-xl border aspect-square"
-                src={work.image}
-                alt={dictionary.labels.icon(work.name)}
-              />
-            ) : (
-              <div
-                className={twMerge(
-                  "flex h-14 w-14 items-center justify-center rounded-lg font-mono text-4xl font-bold text-white ",
-                  `bg-${work.color}-500`,
-                )}
-              >
-                {work.name[0]}
+    <div>
+      {/* Header */}
+      <PrintedSection>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-lg">◈</span>
+          <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
+            {dictionary.labels.works}
+          </h1>
+        </div>
+        <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
+          {dictionary.labels.noocWorks}
+        </p>
+      </PrintedSection>
+
+      {/* Primary works */}
+      <PrintedSection label="▸ FEATURED">
+        <div className="flex flex-col gap-1">
+          {primaryWorks.map((work) => (
+            <a
+              key={work.name}
+              href={work.link}
+              target="_blank"
+              rel="noopener"
+              className="group flex items-center gap-3 py-3 -mx-2 px-2 rounded-md hover:bg-printer-ink/3 dark:hover:bg-printer-ink-dark/3 transition-colors"
+            >
+              {work.image ? (
+                <Image
+                  className="h-10 w-10 rounded-lg border border-printer-ink/10 dark:border-printer-ink-dark/10 shrink-0"
+                  src={work.image}
+                  alt={dictionary.labels.icon(work.name)}
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-lg bg-printer-accent/10 dark:bg-printer-accent-dark/10 flex items-center justify-center font-mono text-lg font-bold text-printer-accent dark:text-printer-accent-dark shrink-0">
+                  {work.name[0]}
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="font-mono text-sm font-medium text-printer-ink dark:text-printer-ink-dark group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors">
+                  {work.name}
+                </div>
+                <div className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-0.5 line-clamp-1">
+                  {work.summary}
+                </div>
               </div>
-            )}
-            <div>
-              <h2 className={`text-${work.color}-500 text-bold sm:text-lg`}>
-                {work.name}
-              </h2>
-              <p className="opacity-60">{work.summary}</p>
-            </div>
-          </Card>
-        ))}
-      </div>
-    </main>
+              <span className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/30 group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors shrink-0">
+                →
+              </span>
+            </a>
+          ))}
+        </div>
+      </PrintedSection>
+
+      <PrintedDivider style="dashed" />
+
+      {/* Other works */}
+      {otherWorks.length > 0 && (
+        <PrintedSection label="▸ ARCHIVE">
+          <div className="flex flex-col gap-1">
+            {otherWorks.map((work) => (
+              <a
+                key={work.name}
+                href={work.link}
+                target="_blank"
+                rel="noopener"
+                className="group flex items-center gap-3 py-2.5 -mx-2 px-2 rounded-md hover:bg-printer-ink/3 dark:hover:bg-printer-ink-dark/3 transition-colors"
+              >
+                {work.image ? (
+                  <Image
+                    className="h-8 w-8 rounded-lg border border-printer-ink/10 dark:border-printer-ink-dark/10 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity"
+                    src={work.image}
+                    alt={dictionary.labels.icon(work.name)}
+                  />
+                ) : (
+                  <div className="h-8 w-8 rounded-lg bg-printer-ink/5 dark:bg-printer-ink-dark/5 flex items-center justify-center font-mono text-sm font-bold text-printer-ink-light dark:text-printer-ink-dark/40 shrink-0">
+                    {work.name[0]}
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="font-mono text-xs text-printer-ink/70 dark:text-printer-ink-dark/70 group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors">
+                    {work.name}
+                  </div>
+                  <div className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/30 mt-0.5 line-clamp-1">
+                    {work.summary}
+                  </div>
+                </div>
+                <span className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/30 group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors shrink-0">
+                  →
+                </span>
+              </a>
+            ))}
+          </div>
+        </PrintedSection>
+      )}
+    </div>
   );
 }

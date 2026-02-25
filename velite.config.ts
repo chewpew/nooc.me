@@ -91,6 +91,51 @@ const posts = defineCollection({
     })),
 });
 
+const lifeCategories = defineCollection({
+  name: "LifeCategory",
+  pattern: "life-categories.yml",
+  schema: s
+    .object({
+      slug: s.slug("life-posts", ["admin", "login"]),
+      name,
+      description,
+      count,
+    })
+    .transform((data) => ({
+      ...data,
+      permalink: {
+        en: `/en/life/categories/${data.slug}`,
+        zh: `/zh/life/categories/${data.slug}`,
+      },
+    })),
+});
+
+const lifePosts = defineCollection({
+  name: "LifePost",
+  pattern: "life-posts/**/*.md",
+  schema: s
+    .object({
+      title: s.string().max(99),
+      slug: s.string(),
+      lang,
+      description: s.string(),
+      categories: s.array(s.string()),
+      date: s.isodate(),
+      updated: s.isodate().optional(),
+      keywords: s.array(s.string()).optional(),
+      cover: s.image().optional(),
+      video: s.file().optional(),
+      wechatLink: s.string().optional(),
+      metadata: s.metadata(),
+      excerpt: s.excerpt(),
+      content: s.markdown(),
+    })
+    .transform((data) => ({
+      ...data,
+      permalink: `/${data.lang}/life/${data.slug}`,
+    })),
+});
+
 export default defineConfig({
   root: "content",
   output: {
@@ -100,9 +145,9 @@ export default defineConfig({
     name: "[name]-[hash:6].[ext]",
     clean: true,
   },
-  collections: { categories, tags, posts },
+  collections: { categories, tags, posts, lifeCategories, lifePosts },
   markdown: { rehypePlugins: [rehypePrettyCode] },
-  prepare: ({ categories, tags, posts }) => {
+  prepare: ({ categories, tags, posts, lifeCategories, lifePosts }) => {
     const docs = posts.filter(
       (i) => process.env.NODE_ENV !== "production" || !i.draft,
     );
@@ -145,6 +190,20 @@ export default defineConfig({
         ).length,
         zh: posts.filter(
           (post) => post.tags.includes(tag.slug) && post.lang === "zh",
+        ).length,
+      };
+    });
+
+    // Count life posts per category and language
+    lifeCategories.forEach((category) => {
+      category.count = {
+        en: lifePosts.filter(
+          (post) =>
+            post.categories.includes(category.slug) && post.lang === "en",
+        ).length,
+        zh: lifePosts.filter(
+          (post) =>
+            post.categories.includes(category.slug) && post.lang === "zh",
         ).length,
       };
     });
