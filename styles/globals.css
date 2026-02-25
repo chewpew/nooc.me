@@ -164,6 +164,10 @@
     @apply flex items-center justify-center w-4 h-4;
   }
 
+  .printer-btn-circle {
+    @apply w-7 p-0 rounded-full;
+  }
+
   .printer-header-border {
     box-shadow: 
       inset 0 1px 0 rgba(255,255,255,0.4),

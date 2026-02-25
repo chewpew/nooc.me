@@ -269,10 +269,10 @@ export default function PrinterShell({
               </nav>
               <div className="flex items-center gap-1 shrink-0 pr-1 py-0.5">
                 <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
-                <button onClick={switchLanguage} className="printer-btn !px-2" title={lang === "en" ? "切换到中文" : "Switch to English"}>
-                  <span className="leading-none font-semibold text-[9px]">{lang === "en" ? "中" : "EN"}</span>
+                <button onClick={switchLanguage} className="printer-btn printer-btn-circle" title={lang === "en" ? "切换到中文" : "Switch to English"}>
+                  <span className="leading-none font-semibold text-[9px] tracking-normal">{lang === "en" ? "中" : "EN"}</span>
                 </button>
-                <button onClick={cycle} className="printer-btn !px-2" title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
+                <button onClick={cycle} className="printer-btn printer-btn-circle" title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
                   <ColorModeIcon mode={mode} />
                 </button>
               </div>
