@@ -19,7 +19,7 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(dictionary.meta.baseUrl),
-    title: dictionary.labels.works,
+    title: `${dictionary.labels.works} - ${dictionary.meta.websiteName}`,
     description: dictionary.labels.noocWorks,
     keywords: dictionary.meta.fillKeywords([]),
     openGraph: {
