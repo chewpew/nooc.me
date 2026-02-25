@@ -126,7 +126,8 @@
   /* Printer button style */
   .printer-btn {
     @apply relative px-3 h-7 rounded-md font-mono text-[10px] sm:text-[11px] tracking-widest uppercase;
-    @apply bg-printer-button dark:bg-printer-button-dark;
+    @apply bg-white/70 dark:bg-white/10;
+    @apply border border-printer-ink/10 dark:border-white/10;
     @apply text-printer-ink dark:text-printer-ink-dark;
     @apply transition-all duration-75 select-none;
     @apply flex items-center justify-center;
