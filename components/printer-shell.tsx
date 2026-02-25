@@ -290,7 +290,7 @@ export default function PrinterShell({
           </div>
         </div>
         {/* Printed paper output area — clipped so paper slides in from the slit */}
-        <div className="relative mx-3 sm:mx-10 -mt-[12px] z-20 overflow-hidden">
+        <div className="relative mx-3 sm:mx-10 -mt-[12px] z-20" style={{ clipPath: 'inset(0 -20px -10px -20px)' }}>
           <div ref={paperRef}>
             <div className="bg-printer-paper dark:bg-printer-paper-dark thermal-texture min-h-[60vh] shadow-[0_4px_12px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] relative z-0 flex flex-col overflow-hidden">
               <div className="absolute -top-1 left-0 right-0 h-1 bg-printer-paper dark:bg-printer-paper-dark" />
