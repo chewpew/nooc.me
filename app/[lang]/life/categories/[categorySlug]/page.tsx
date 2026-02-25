@@ -1,4 +1,4 @@
-import { lifePosts, lifeCategories } from "@/.velite";
+import { lifePosts, lifeCategories } from "@/lib/velite";
 import Link from "next/link";
 import { displayDate } from "@/lib/date";
 import { getDictionary, Language } from "@/dictionaries";

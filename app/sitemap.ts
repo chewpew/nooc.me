@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { dictionaryKeys, getDictionary } from "../dictionaries";
-import { posts, lifePosts } from "@/.velite";
+import { posts, lifePosts } from "@/lib/velite";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dictionaries = await Promise.all(dictionaryKeys.map(getDictionary));

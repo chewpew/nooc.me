@@ -1,4 +1,4 @@
-import { posts } from "@/.velite";
+import { posts } from "@/lib/velite";
 import { displayDate } from "@/lib/date";
 import { notFound } from "next/navigation";
 import Link from "next/link";

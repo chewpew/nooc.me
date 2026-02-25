@@ -1,4 +1,4 @@
-import { posts, categories } from "@/.velite";
+import { posts, categories } from "@/lib/velite";
 import Link from "next/link";
 import Image from "next/image";
 import { displayDate } from "../../../lib/date";

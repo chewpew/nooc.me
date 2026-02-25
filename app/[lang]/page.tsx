@@ -1,5 +1,5 @@
 import { getDictionary } from "@/dictionaries";
-import { posts, lifePosts } from "@/.velite";
+import { posts, lifePosts } from "@/lib/velite";
 import Link from "next/link";
 import Image from "next/image";
 import { displayDate } from "@/lib/date";
