@@ -126,7 +126,7 @@
   /* Printer button style */
   .printer-btn {
     @apply relative px-3 h-7 rounded-md font-mono text-[10px] sm:text-[11px] tracking-widest uppercase;
-    @apply bg-white/70 dark:bg-white/10;
+    @apply bg-printer-shell dark:bg-printer-shell-dark;
     @apply border border-printer-ink/10 dark:border-white/10;
     @apply text-printer-ink dark:text-printer-ink-dark;
     @apply transition-all duration-75 select-none;
@@ -151,9 +151,13 @@
       inset 0 1px 2px rgba(0, 0, 0, 0.15);
   }
   .printer-btn.active {
-    @apply bg-printer-accent text-white;
+    @apply translate-y-[0.5px];
     box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.2);
+      inset 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+  :is(.dark) .printer-btn.active {
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.45);
   }
 
   .printer-btn-icon {
