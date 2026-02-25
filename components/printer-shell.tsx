@@ -5,13 +5,80 @@ import Image from "next/image";
 import avatar from "../public/static/avatar.webp";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { 
   SunIcon,
   MoonIcon,
   ComputerDesktopIcon
 } from "@heroicons/react/24/outline";
 
+/**
+ * Generate random keyframes that simulate a subtle printer paper-jam stutter.
+ * Only the top portion of the paper slides in (small fixed px offset),
+ * with minor speed variations to hint at the mechanical feel.
+ */
+const FEED_PX = 60; // how many pixels the paper slides down
+
+function generatePaperFeedKeyframes(): { offset: number; transform: string; easing: string }[] {
+  const keyframes: { offset: number; transform: string; easing: string }[] = [];
+
+  // Start: paper shifted up by FEED_PX
+  keyframes.push({ offset: 0, transform: `translateY(-${FEED_PX}px)`, easing: "ease-out" });
+
+  // 2-3 subtle stutter points
+  const stutterCount = 2 + Math.floor(Math.random() * 2);
+  const offsets: number[] = [];
+  for (let i = 0; i < stutterCount; i++) {
+    offsets.push(0.15 + Math.random() * 0.6);
+  }
+  offsets.sort((a, b) => a - b);
+
+  for (const offset of offsets) {
+    const linearPx = FEED_PX * (1 - offset); // remaining distance
+    const jitter = (Math.random() - 0.4) * 8; // small random deviation
+    const y = -Math.max(0, Math.min(FEED_PX, linearPx + jitter));
+    const easings = ["ease-in", "ease-out", "ease-in-out", "linear"];
+    const easing = easings[Math.floor(Math.random() * easings.length)];
+    keyframes.push({ offset, transform: `translateY(${y}px)`, easing });
+  }
+
+  // End: paper at rest
+  keyframes.push({ offset: 1, transform: "translateY(0px)", easing: "ease-out" });
+
+  return keyframes;
+}
+
+/** Hook: animate the paper element on every pathname change. */
+function usePaperFeedAnimation() {
+  const pathname = usePathname();
+  const paperRef = useRef<HTMLDivElement>(null);
+  const prevPathRef = useRef(pathname);
+
+  useEffect(() => {
+    const el = paperRef.current;
+    if (!el) return;
+
+    // Skip animation on initial mount (first paint)
+    if (prevPathRef.current === pathname) return;
+    prevPathRef.current = pathname;
+
+    const kf = generatePaperFeedKeyframes();
+    const duration = 350 + Math.random() * 200; // 350-550ms, snappy
+
+    const animation = el.animate(
+      kf.map(({ offset, transform }) => ({ offset, transform })),
+      {
+        duration,
+        easing: "linear",
+        fill: "backwards",
+      },
+    );
+
+    return () => animation.cancel();
+  }, [pathname]);
+
+  return paperRef;
+}
 type ColorMode = "system" | "light" | "dark";
 
 function useColorMode() {
@@ -114,6 +181,7 @@ export default function PrinterShell({
   const pathname = usePathname();
   const router = useRouter();
   const { mode, cycle } = useColorMode();
+  const paperRef = usePaperFeedAnimation();
 
   const navItems = [
     { label: dictionary.labels.home, href: dictionary.urls.home },
@@ -221,38 +289,39 @@ export default function PrinterShell({
             <div className="absolute left-2 right-2 sm:left-8 sm:right-8 h-[6px] bg-black/60 dark:bg-black/80 rounded-[1px] shadow-[inset_0_1px_3px_rgba(0,0,0,0.8)]" />
           </div>
         </div>
+        {/* Printed paper output area — clipped so paper slides in from the slit */}
+        <div className="relative mx-3 sm:mx-10 -mt-[12px] z-20 overflow-hidden">
+          <div ref={paperRef}>
+            <div className="bg-printer-paper dark:bg-printer-paper-dark thermal-texture min-h-[60vh] shadow-[0_4px_12px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] relative z-0 flex flex-col overflow-hidden">
+              <div className="absolute -top-1 left-0 right-0 h-1 bg-printer-paper dark:bg-printer-paper-dark" />
 
-        {/* Printed paper output area */}
-        <div className="relative mx-3 sm:mx-10 -mt-[12px] z-20 transition-all duration-300">
-          <div className="bg-printer-paper dark:bg-printer-paper-dark thermal-texture min-h-[60vh] shadow-[0_4px_12px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] relative z-0 flex flex-col overflow-hidden">
-            <div className="absolute -top-1 left-0 right-0 h-1 bg-printer-paper dark:bg-printer-paper-dark" />
-            
-            {/* Perforation marks */}
-            <div className="absolute left-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20 pointer-events-none">
-              {Array.from({ length: 60 }).map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30 shrink-0" />
-              ))}
-            </div>
-            <div className="absolute right-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20 pointer-events-none">
-              {Array.from({ length: 60 }).map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30 shrink-0" />
-              ))}
-            </div>
+              {/* Perforation marks */}
+              <div className="absolute left-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20 pointer-events-none">
+                {Array.from({ length: 60 }).map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30 shrink-0" />
+                ))}
+              </div>
+              <div className="absolute right-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20 pointer-events-none">
+                {Array.from({ length: 60 }).map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30 shrink-0" />
+                ))}
+              </div>
 
-            <div className="flex-1 px-6 sm:px-10 py-8 relative z-10">{children}</div>
+              <div className="flex-1 px-6 sm:px-10 py-8 relative z-10">{children}</div>
 
-            <div className="px-6 sm:px-10 py-6 mt-4 border-t border-dashed border-printer-ink/10 dark:border-printer-ink-dark/10 relative z-10">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-printer-ink-light dark:text-printer-ink-dark/40">
-                <div className="font-mono text-[10px] tracking-widest uppercase order-2 sm:order-1">© {new Date().getFullYear()} Nooc</div>
-                <div className="font-mono text-[10px] tracking-widest uppercase flex items-center gap-4 order-1 sm:order-2">
-                  <a href="https://github.com/noobnooc" target="_blank" rel="noopener" className="hover:text-printer-accent transition-colors">GitHub</a>
-                  <a href="https://x.com/noobnooc" target="_blank" rel="noopener" className="hover:text-printer-accent transition-colors">X</a>
-                  <a href="mailto:nooc@nooc.me" className="hover:text-printer-accent transition-colors">Email</a>
+              <div className="px-6 sm:px-10 py-6 mt-4 border-t border-dashed border-printer-ink/10 dark:border-printer-ink-dark/10 relative z-10">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-printer-ink-light dark:text-printer-ink-dark/40">
+                  <div className="font-mono text-[10px] tracking-widest uppercase order-2 sm:order-1">© {new Date().getFullYear()} Nooc</div>
+                  <div className="font-mono text-[10px] tracking-widest uppercase flex items-center gap-4 order-1 sm:order-2">
+                    <a href="https://github.com/noobnooc" target="_blank" rel="noopener" className="hover:text-printer-accent transition-colors">GitHub</a>
+                    <a href="https://x.com/noobnooc" target="_blank" rel="noopener" className="hover:text-printer-accent transition-colors">X</a>
+                    <a href="mailto:nooc@nooc.me" className="hover:text-printer-accent transition-colors">Email</a>
+                  </div>
                 </div>
               </div>
             </div>
+            <div className="paper-edge-bottom h-0" />
           </div>
-          <div className="paper-edge-bottom h-0" />
         </div>
       </div>
     </div>
