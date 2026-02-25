@@ -14,23 +14,25 @@ export async function generateMetadata({
   params: { lang: Language };
 }): Promise<Metadata> {
   const dictionary = await getDictionary(params.lang);
+  const subtitle = dictionary.labels.aboutSubtitle.trim();
+  const description = subtitle || dictionary.labels.aboutTitle;
 
   return {
     metadataBase: new URL(dictionary.meta.baseUrl),
     title: `${dictionary.labels.aboutTitle} - ${dictionary.meta.websiteName}`,
-    description: dictionary.labels.aboutSubtitle,
+    description,
     keywords: dictionary.meta.fillKeywords([]),
     openGraph: {
       type: "website",
       url: new URL(dictionary.urls.about, dictionary.meta.baseUrl).href,
       siteName: dictionary.meta.websiteName,
       title: dictionary.labels.aboutTitle,
-      description: dictionary.labels.aboutSubtitle,
+      description,
       images: "/static/banner.png",
     },
     twitter: {
       title: dictionary.labels.aboutTitle,
-      description: dictionary.labels.aboutSubtitle,
+      description,
       site: "@noobnooc",
       card: "summary_large_image",
     },
@@ -45,6 +47,7 @@ export default async function AboutPage({
   };
 }) {
   const dictionary = await getDictionary(params.lang);
+  const subtitle = dictionary.labels.aboutSubtitle.trim();
 
   // Convert markdown-like content to simple HTML
   const aboutHtml = dictionary.aboutContent
@@ -72,9 +75,11 @@ export default async function AboutPage({
             {dictionary.labels.aboutTitle}
           </h1>
         </div>
-        <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
-          {dictionary.labels.aboutSubtitle}
-        </p>
+        {subtitle && (
+          <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
+            {subtitle}
+          </p>
+        )}
       </PrintedSection>
 
       <PrintedDivider style="solid" />

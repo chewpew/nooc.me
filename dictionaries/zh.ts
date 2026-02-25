@@ -111,7 +111,7 @@ Serverless 爱好者。
     music: "音乐",
     suggestions: "推荐",
     aboutTitle: "关于",
-    aboutSubtitle: "走出唯一真理观",
+    aboutSubtitle: "",
     icon(label: string) {
       return `${label}的图标`;
     },
