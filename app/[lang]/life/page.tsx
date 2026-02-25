@@ -3,6 +3,7 @@ import Link from "next/link";
 import { displayDate } from "@/lib/date";
 import { getDictionary, Language } from "@/dictionaries";
 import { Metadata } from "next";
+import { getAlternateLanguages } from "@/lib/metadata";
 import {
   PrintedSection,
   PrintedLabel,
@@ -29,13 +30,18 @@ export async function generateMetadata({
       siteName: dictionary.meta.websiteName,
       title: dictionary.labels.life,
       description: dictionary.labels.life,
-      images: "/static/banner.png",
     },
     twitter: {
       title: dictionary.labels.life,
       description: dictionary.labels.life,
       site: "@noobnooc",
       card: "summary_large_image",
+    },
+    alternates: {
+      canonical: new URL(dictionary.urls.life, dictionary.meta.baseUrl).href,
+      languages: await getAlternateLanguages(
+        (dictionary) => dictionary.urls.life,
+      ),
     },
   };
 }

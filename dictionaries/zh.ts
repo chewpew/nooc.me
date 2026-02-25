@@ -28,6 +28,7 @@ import httpie from "../public/images/tools/httpie.webp";
 import shots from "../public/images/tools/shots.webp";
 import astro from "../public/images/tools/astro.webp";
 import wise from "../public/images/tools/wise.webp";
+import { title } from "process";
 
 const dictionary = {
   meta: {
@@ -398,28 +399,28 @@ Serverless 爱好者。
     ],
     music: [
       {
-        title: "万能青年旅店 / 椅子乐团 / 草东没有派对",
-        summary: "摇滚与民谣。",
+        title: "落日飞车",
+        summary: "Vibe 感十足的微醺乐队，vibe coding 最佳伴侣。",
       },
       {
-        title: "Humbert Humbert / KOKIA / Rimi Natsukawa",
-        summary: "来自日本的选手。",
+        title: "陈婧霏",
+        summary: "复古的曲调和嗓音搭配并不单调的编曲。",
       },
       {
-        title: "DEPAPEPE / 久石让 / 姬神",
-        summary: "都是来自日本的纯乐器音乐选手。",
+        title: "Low Roar",
+        summary: "来自冰岛的空灵孤寂的声音。",
       },
       {
-        title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani",
-        summary: "英文歌手。",
+        title: "刺猬乐队",
+        summary: "莫名其妙地能打动我。",
       },
       {
-        title: "莫文蔚 / 陈绮贞 / 王若琳",
-        summary: "其实我是不太喜欢情歌的。",
+        title: "Sufjan Stevens",
+        summary: "温柔且充满故事。",
       },
       {
-        title: "中岛美雪 / 邓丽君 / 伍佰",
-        summary: "老歌偶尔听听也很是喜欢。",
+        title: "椅子乐团",
+        summary: "柔情似水的嗓音和歌词。",
       },
     ],
     suggest: [

@@ -12,6 +12,7 @@ import {
   PrintedDivider,
 } from "@/components/printed-elements";
 import { QRCodeSVG } from "qrcode.react";
+import { generateBlogPostingJsonLd, generateBreadcrumbJsonLd } from "@/lib/json-ld";
 
 export const runtime = "edge";
 
@@ -31,25 +32,38 @@ export async function generateMetadata({
     notFound();
   }
 
+  const allLanguages = lifePosts.filter((p) => p.slug === slug);
+
   return {
     metadataBase: new URL(dictionary.meta.baseUrl),
     title: post.title,
     description: post.description,
     keywords: dictionary.meta.fillKeywords(post.keywords),
+    authors: [{ name: "Nooc", url: dictionary.meta.baseUrl }],
     openGraph: {
       type: "article",
       url: new URL(post.permalink, dictionary.meta.baseUrl).href,
       siteName: dictionary.meta.websiteName,
       title: post.title,
       description: post.description,
-      images: post.cover?.src ?? "/static/banner.png",
+      locale: params.lang === "zh" ? "zh_CN" : "en_US",
+      publishedTime: post.date,
+      modifiedTime: post.updated ?? post.date,
+      authors: ["Nooc"],
+      tags: post.categories,
     },
     twitter: {
       title: post.title,
       description: post.description,
       site: "@noobnooc",
+      creator: "@noobnooc",
       card: "summary_large_image",
-      images: post.cover?.src ?? "/static/banner.png",
+    },
+    alternates: {
+      canonical: new URL(post.permalink, dictionary.meta.baseUrl).href,
+      languages: Object.fromEntries(
+        allLanguages.map((p) => [p.lang, p.permalink]),
+      ),
     },
   };
 }
@@ -78,8 +92,39 @@ export default async function LifePostPage({
     notFound();
   }
 
+  const baseUrl = dictionary.meta.baseUrl;
+  const postUrl = new URL(post.permalink, baseUrl).href;
+
+  const jsonLd = [
+    generateBlogPostingJsonLd({
+      title: post.title,
+      description: post.description,
+      url: postUrl,
+      datePublished: post.date,
+      dateModified: post.updated,
+      image: post.cover?.src ? new URL(post.cover.src, baseUrl).href : undefined,
+      categories: post.categories,
+      lang: params.lang,
+    }),
+    generateBreadcrumbJsonLd({
+      items: [
+        { name: dictionary.labels.home, url: new URL(dictionary.urls.home, baseUrl).href },
+        { name: dictionary.labels.life, url: new URL(dictionary.urls.life, baseUrl).href },
+        { name: post.title, url: postUrl },
+      ],
+    }),
+  ];
+
   return (
-    <div>
+    <>
+      {jsonLd.map((ld, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
+        />
+      ))}
+      <div>
       {/* Post header */}
       <PrintedSection>
         <div className="flex flex-wrap gap-1.5 mb-3">
@@ -199,6 +244,7 @@ export default async function LifePostPage({
           ← BACK TO LIFE
         </Link>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -29,7 +29,6 @@ export async function generateMetadata({
       siteName: dictionary.meta.websiteName,
       title: dictionary.labels.music,
       description: dictionary.labels.music,
-      images: "/static/banner.png",
     },
     twitter: {
       title: dictionary.labels.music,

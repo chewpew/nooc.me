@@ -431,28 +431,29 @@ A fan of Serverless.
     ],
     music: [
       {
-        title: "Omnipotent Youth Society / Chair Band / No Party for Cao Dong",
-        summary: "Rock and folk.",
+        title: "Sunset Rollercoaster",
+        summary: "A band with a strong vibe, perfect for vibe coding.",
       },
       {
-        title: "Humbert Humbert / KOKIA / Rimi Natsukawa",
-        summary: "Japanese artists with unique styles.",
+        title: "Chen Jingfei",
+        summary:
+          "Retro tunes and vocals paired with not monotonous arrangements.",
       },
       {
-        title: "DEPAPEPE / Joe Hisaishi / Himekami",
-        summary: "Instrumental music from Japan.",
+        title: "Low Roar",
+        summary: "Ethereal and lonely sounds from Iceland.",
       },
       {
-        title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani",
-        summary: "English-language artists.",
+        title: "Hedgehog",
+        summary: "Somehow manages to move me.",
       },
       {
-        title: "Karen Mok / Cheer Chen / Joanna Wang",
-        summary: "Chinese-language singers I enjoy.",
+        title: "Sufjan Stevens",
+        summary: "Gentle and full of stories.",
       },
       {
-        title: "Miyuki Nakajima / Teresa Teng / Wu Bai",
-        summary: "Classic oldies are always nice.",
+        title: "The Chairs",
+        summary: "Soft and flowing vocals and lyrics.",
       },
     ],
     suggest: [

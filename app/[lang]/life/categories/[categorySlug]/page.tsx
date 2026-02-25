@@ -37,7 +37,6 @@ export async function generateMetadata({
       siteName: dictionary.meta.websiteName,
       title: category.name[params.lang],
       description: category.description?.[params.lang],
-      images: "/static/banner.png",
     },
     twitter: {
       title: category.name[params.lang],

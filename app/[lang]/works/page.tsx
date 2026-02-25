@@ -28,7 +28,6 @@ export async function generateMetadata({
       siteName: dictionary.meta.websiteName,
       title: dictionary.labels.works,
       description: dictionary.labels.noocWorks,
-      images: "/static/banner.png",
     },
     twitter: {
       title: dictionary.labels.works,
@@ -37,6 +36,7 @@ export async function generateMetadata({
       card: "summary_large_image",
     },
     alternates: {
+      canonical: new URL(dictionary.urls.works, dictionary.meta.baseUrl).href,
       languages: await getAlternateLanguages(
         (dictionary) => dictionary.urls.works,
       ),

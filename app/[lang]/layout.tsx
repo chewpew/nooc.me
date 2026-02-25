@@ -3,6 +3,7 @@ import "../../styles/globals.css";
 import { Metadata } from "next";
 import { getDictionary } from "../../dictionaries";
 import { getAlternateLanguages } from "@/lib/metadata";
+import { generateWebSiteJsonLd } from "@/lib/json-ld";
 import Script from "next/script";
 import PrinterShell from "../../components/printer-shell";
 
@@ -15,27 +16,39 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const dictionary = await getDictionary(params.lang);
 
+  const feedBase = params.lang === "zh" ? "/feed/zh" : "/feed";
+
   return {
     metadataBase: new URL(dictionary.meta.baseUrl),
     title: dictionary.meta.websiteName,
     description: dictionary.meta.motto,
     keywords: dictionary.meta.fillKeywords([]),
+    authors: [{ name: "Nooc", url: dictionary.meta.baseUrl }],
+    creator: "Nooc",
     openGraph: {
       type: "website",
       url: new URL(dictionary.urls.home, dictionary.meta.baseUrl).href,
       title: dictionary.meta.websiteName,
       description: dictionary.meta.motto,
       siteName: dictionary.meta.websiteName,
-      images: "/static/banner.png",
+      locale: params.lang === "zh" ? "zh_CN" : "en_US",
     },
     twitter: {
       title: dictionary.meta.websiteName,
       description: dictionary.meta.motto,
       site: "@noobnooc",
+      creator: "@noobnooc",
       card: "summary_large_image",
-      images: "/static/banner.png",
     },
     alternates: {
+      canonical: new URL(dictionary.urls.home, dictionary.meta.baseUrl).href,
+      types: {
+        "application/rss+xml": [
+          { url: `${feedBase}`, title: `${dictionary.meta.websiteName} - All` },
+          { url: `${feedBase}/tech`, title: `${dictionary.meta.websiteName} - Tech` },
+          { url: `${feedBase}/life`, title: `${dictionary.meta.websiteName} - Life` },
+        ],
+      },
       languages: await getAlternateLanguages(
         (dictionary) => dictionary.urls.home,
       ),
@@ -87,6 +100,17 @@ export default async function RootLayout({
                 } catch(e) {}
               })();
             `,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateWebSiteJsonLd({
+              name: dictionary.meta.websiteName,
+              alternateName: "Nooc the Noob",
+              url: new URL(dictionary.urls.home, dictionary.meta.baseUrl).href,
+              description: dictionary.meta.motto,
+            })),
           }}
         />
       </head>

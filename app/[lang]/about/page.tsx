@@ -1,5 +1,6 @@
 import { getDictionary, Language } from "@/dictionaries";
 import { Metadata } from "next";
+import { getAlternateLanguages } from "@/lib/metadata";
 import classNames from "classnames";
 import {
   PrintedSection,
@@ -28,13 +29,18 @@ export async function generateMetadata({
       siteName: dictionary.meta.websiteName,
       title: dictionary.labels.aboutTitle,
       description,
-      images: "/static/banner.png",
     },
     twitter: {
       title: dictionary.labels.aboutTitle,
       description,
       site: "@noobnooc",
       card: "summary_large_image",
+    },
+    alternates: {
+      canonical: new URL(dictionary.urls.about, dictionary.meta.baseUrl).href,
+      languages: await getAlternateLanguages(
+        (dictionary) => dictionary.urls.about,
+      ),
     },
   };
 }
