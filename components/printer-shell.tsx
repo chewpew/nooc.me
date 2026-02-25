@@ -244,12 +244,6 @@ export default function PrinterShell({
                     ON
                   </span>
                 </div>
-                <div className="hidden sm:flex flex-col gap-3">
-                  <div className="w-4 h-4 rounded-full bg-stone-400 dark:bg-stone-600 border border-black/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(0,0,0,0.3)] flex items-center justify-center">
-                    <div className="w-2.5 h-[1px] bg-black/30 rotate-45" />
-                    <div className="w-2.5 h-[1px] bg-black/30 -rotate-45 absolute" />
-                  </div>
-                </div>
               </div>
             </div>
 
