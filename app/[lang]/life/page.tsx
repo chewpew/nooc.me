@@ -79,6 +79,29 @@ export default async function LifePage({
         </p>
       </PrintedSection>
 
+      {/* Archive sections - links to subpages */}
+      <PrintedSection label={`✦ ${dictionary.labels.activity}`}>
+        <div className="flex flex-wrap gap-2">
+          <Link href={`${dictionary.urls.life}/reading`}>
+            <PrintedLabel variant="default">
+              📖 {dictionary.labels.reading}
+            </PrintedLabel>
+          </Link>
+          <Link href={`${dictionary.urls.life}/films`}>
+            <PrintedLabel variant="default">
+              🎬 {dictionary.labels.films}
+            </PrintedLabel>
+          </Link>
+          <Link href={`${dictionary.urls.life}/music`}>
+            <PrintedLabel variant="default">
+              🎵 {dictionary.labels.music}
+            </PrintedLabel>
+          </Link>
+        </div>
+      </PrintedSection>
+
+      <PrintedDivider style="dashed" />
+
       {/* Categories as label strips */}
       <PrintedSection label={dictionary.labels.categories}>
         <div className="flex flex-wrap gap-1.5 mb-2">
@@ -122,27 +145,6 @@ export default async function LifePage({
       </div>
 
       <PrintedDivider style="dashed" />
-
-      {/* Archive sections - links to subpages */}
-      <PrintedSection label={`✦ ${dictionary.labels.recommended}`}>
-        <div className="flex flex-wrap gap-2">
-          <Link href={`${dictionary.urls.life}/reading`}>
-            <PrintedLabel variant="default">
-              📖 {dictionary.labels.reading}
-            </PrintedLabel>
-          </Link>
-          <Link href={`${dictionary.urls.life}/films`}>
-            <PrintedLabel variant="default">
-              🎬 {dictionary.labels.films}
-            </PrintedLabel>
-          </Link>
-          <Link href={`${dictionary.urls.life}/music`}>
-            <PrintedLabel variant="default">
-              🎵 {dictionary.labels.music}
-            </PrintedLabel>
-          </Link>
-        </div>
-      </PrintedSection>
     </div>
   );
 }

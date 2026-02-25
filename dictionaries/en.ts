@@ -97,6 +97,7 @@ A fan of Serverless.
     latestLife: "Life",
     noocWorks: "Nooc's Works",
     recommended: "Recommended",
+    activity: "Activity",
     doing: "Doing",
     playing: "Playing",
     contactMe: "Contact Me",
@@ -107,9 +108,9 @@ A fan of Serverless.
     brandName: "NOOC",
     brandTagline: "Nooc the Noob",
     printedOn: "Printed on",
-    reading: "Reading",
-    films: "Films",
-    music: "Music",
+    reading: "Recent Reading",
+    films: "Recent Films",
+    music: "Recent Listening",
     suggestions: "Suggestions",
     aboutTitle: "About",
     aboutSubtitle: "A noob named Nooc",
@@ -372,7 +373,15 @@ A fan of Serverless.
   ],
   archive: {
     reading: [
-      { title: "Living Elsewhere", summary: "When poetry becomes a danger." },
+      {
+        title: "The Unbearable Lightness of Being",
+        summary: "When existence is light, how should we face it?",
+      },
+      {
+        title: "The Master and Margarita",
+        summary: "What is good, and what is evil?",
+      },
+      { title: "Life is Elsewhere", summary: "When poetry becomes a danger." },
       {
         title: "The Neapolitan Novels",
         summary: "An epic novel about growth, friendship and love.",
@@ -404,6 +413,10 @@ A fan of Serverless.
       },
     ],
     films: [
+      {
+        title: "When Life Gives You Tangerines",
+        summary: "A very good Korean drama.",
+      },
       {
         title: "Adventure Time",
         summary: "The best way to learn English through a show.",

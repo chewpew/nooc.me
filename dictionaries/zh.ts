@@ -97,6 +97,7 @@ Serverless 爱好者。
     latestLife: "生活",
     noocWorks: "Nooc的作品",
     recommended: "推荐",
+    activity: "活动",
     doing: "在做什么",
     playing: "在玩什么",
     contactMe: "联系我",
@@ -107,9 +108,9 @@ Serverless 爱好者。
     brandName: "NOOC",
     brandTagline: "Nooc the Noob",
     printedOn: "打印于",
-    reading: "阅读",
-    films: "电影",
-    music: "音乐",
+    reading: "最近阅读",
+    films: "最近观影",
+    music: "最近聆听",
     suggestions: "推荐",
     aboutTitle: "关于",
     aboutSubtitle: "",
@@ -364,10 +365,18 @@ Serverless 爱好者。
   ],
   archive: {
     reading: [
+      {
+        title: "不能承受的生命之轻",
+        summary: "当存在是轻的，我们该如何面对？",
+      },
+      {
+        title: "大师和玛格丽特",
+        summary: "什么是善，什么又是恶？",
+      },
       { title: "生活在别处", summary: "当诗意成为一种危险。" },
       {
         title: "那不勒斯四部曲",
-        summary: "一部关于成长、友谊和爱情的史诗般的小说。",
+        summary: "细腻、真实地描绘了两个女性朋友从小孩到老年的爱恨纠葛。",
       },
       {
         title: "卡拉马佐夫兄弟",
@@ -387,6 +396,10 @@ Serverless 爱好者。
       },
     ],
     films: [
+      {
+        title: "苦尽柑来遇见你",
+        summary: "很不错的一部韩剧。",
+      },
       { title: "探险活宝", summary: "看剧学英语的不二之选。" },
       { title: "宇宙探索编辑部", summary: "长路漫漫地奔赴西方取经。" },
       { title: "怪物", summary: "我最喜欢的导演之一是枝裕和的作品。" },
