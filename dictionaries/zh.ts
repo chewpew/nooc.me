@@ -243,7 +243,7 @@ Serverless 爱好者。
   works: [
     {
       name: "回声铃",
-      summary: "Webhook/Email 转通知/电话",
+      summary: "将 Webhook/邮件转为即时通知与电话警报",
       image: echobellLogo,
       link: "https://echobell.one",
       color: "orange",
@@ -251,7 +251,7 @@ Serverless 爱好者。
     },
     {
       name: "星火记",
-      summary: "一个简洁的短笔记应用",
+      summary: "快速捕捉灵感的备忘录应用，支持多类型内容与 iCloud 同步",
       image: SparkMemosLogo,
       link: "https://sparkmemos.com",
       color: "orange",

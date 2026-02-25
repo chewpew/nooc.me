@@ -252,7 +252,7 @@ A fan of Serverless.
   works: [
     {
       name: "Echobell",
-      summary: "Instant alerts.",
+      summary: "Turn webhooks and emails into instant alerts and phone calls.",
       image: echobellLogo,
       link: "https://echobell.one",
       color: "orange",
@@ -260,7 +260,7 @@ A fan of Serverless.
     },
     {
       name: "Spark Memos",
-      summary: "A simple short-note-taking app.",
+      summary: "Capture ideas fast with rich notes and iCloud sync.",
       image: SparkMemosLogo,
       link: "https://sparkmemos.com",
       color: "orange",
