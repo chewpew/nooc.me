@@ -1,4 +1,8 @@
-import { CameraIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
+import {
+  CameraIcon,
+  EnvelopeIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/solid";
 import {
   SiBlender,
   SiGithub,
@@ -30,6 +34,10 @@ const dictionary = {
     baseUrl: "https://nooc.me",
     websiteName: "Nooc 的主页",
     motto: "游离于存在与虚无间的理想主义者",
+    mottos: [
+      "玫瑰是没有理由的开放",
+      "我们一日日度过的所谓日常，也许是接连不断发生的奇迹",
+    ],
     bio: `
 一个人。
 
@@ -322,6 +330,12 @@ Serverless 爱好者。
       name: "nooc@nooc.me",
       link: "mailto:nooc@nooc.me",
       icon: EnvelopeIcon,
+    },
+    {
+      label: "Telegram",
+      name: "@noobnooc",
+      link: "https://t.me/noobnooc",
+      icon: PaperAirplaneIcon,
     },
   ],
   postAdvertisements: [

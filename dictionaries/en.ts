@@ -1,4 +1,8 @@
-import { CameraIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
+import {
+  CameraIcon,
+  EnvelopeIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/solid";
 import {
   SiBlender,
   SiGithub,
@@ -30,6 +34,10 @@ const dictionary = {
     baseUrl: "https://nooc.me",
     websiteName: "Nooc the Noob",
     motto: "A noob named Nooc.",
+    mottos: [
+      "The rose is without why, it blooms because it blooms.",
+      "What we call ordinary life, day after day, may in fact be a chain of miracles.",
+    ],
     bio: `
 A person.
 
@@ -331,6 +339,12 @@ A fan of Serverless.
       name: "nooc@nooc.me",
       link: "mailto:nooc@nooc.me",
       icon: EnvelopeIcon,
+    },
+    {
+      label: "Telegram",
+      name: "@noobnooc",
+      link: "https://t.me/noobnooc",
+      icon: PaperAirplaneIcon,
     },
   ],
   postAdvertisements: [

@@ -29,6 +29,13 @@ function getLatestLifePosts(lang: string, count = 3) {
     .slice(0, count);
 }
 
+function getRandomMotto(dictionary: Awaited<ReturnType<typeof getDictionary>>) {
+  const mottos = dictionary.meta.mottos?.length
+    ? dictionary.meta.mottos
+    : [dictionary.meta.motto];
+  return mottos[Math.floor(Math.random() * mottos.length)] ?? "";
+}
+
 export default async function Home({
   params,
 }: {
@@ -39,6 +46,7 @@ export default async function Home({
   const dictionary = await getDictionary(params.lang);
   const latestPosts = getLatestPosts(params.lang);
   const latestLife = getLatestLifePosts(params.lang);
+  const motto = getRandomMotto(dictionary);
 
   return (
     <div>
@@ -50,7 +58,7 @@ export default async function Home({
               Nooc
             </h1>
             <p className="font-mono text-sm text-printer-ink-light dark:text-printer-ink-dark/60 mt-1 leading-relaxed">
-              {dictionary.meta.motto}
+              {motto}
             </p>
           </div>
         </div>
@@ -59,7 +67,7 @@ export default async function Home({
         <div className="flex flex-wrap gap-2 mt-4">
           {dictionary.contacts.map((contact) => (
             <a
-              key={contact.name}
+              key={`${contact.label}-${contact.name}`}
               href={contact.link}
               target="_blank"
               rel="noopener"
