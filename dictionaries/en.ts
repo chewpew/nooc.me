@@ -315,15 +315,9 @@ A fan of Serverless.
   ],
   contacts: [
     {
-      label: "X (中文)",
+      label: "X (Twitter)",
       name: "@noobnooc",
       link: "https://x.com/noobnooc",
-      icon: SiX,
-    },
-    {
-      label: "X (English)",
-      name: "@WeeloneHQ",
-      link: "https://x.com/WeeLoneHQ",
       icon: SiX,
     },
     {
@@ -365,45 +359,135 @@ A fan of Serverless.
   archive: {
     reading: [
       { title: "Living Elsewhere", summary: "When poetry becomes a danger." },
-      { title: "The Neapolitan Novels", summary: "An epic novel about growth, friendship and love." },
-      { title: "The Brothers Karamazov", summary: "If we end evil by evil means, are we still good?" },
-      { title: "Netochka Nezvanova", summary: "Some people drift further into fantasy, becoming dreamers." },
-      { title: "Strait Is the Gate", summary: "When faith collides with the secular world." },
-      { title: "The Death of Ivan Ilyich", summary: "A Tolstoy novella from his later years." },
+      {
+        title: "The Neapolitan Novels",
+        summary: "An epic novel about growth, friendship and love.",
+      },
+      {
+        title: "The Brothers Karamazov",
+        summary: "If we end evil by evil means, are we still good?",
+      },
+      {
+        title: "Netochka Nezvanova",
+        summary: "Some people drift further into fantasy, becoming dreamers.",
+      },
+      {
+        title: "Strait Is the Gate",
+        summary: "When faith collides with the secular world.",
+      },
+      {
+        title: "The Death of Ivan Ilyich",
+        summary: "A Tolstoy novella from his later years.",
+      },
       { title: "Kon-Tiki", summary: "A wild journey to prove oneself." },
-      { title: "The Submarine at Night", summary: "A short story collection in a Borges-like style." },
-      { title: "Make Something Wonderful", summary: "A collection of Steve Jobs\' speeches and letters." },
+      {
+        title: "The Submarine at Night",
+        summary: "A short story collection in a Borges-like style.",
+      },
+      {
+        title: "Make Something Wonderful",
+        summary: "A collection of Steve Jobs\' speeches and letters.",
+      },
     ],
     films: [
-      { title: "Adventure Time", summary: "The best way to learn English through a show." },
-      { title: "Art of the Cosmos", summary: "A long journey to the West seeking truth." },
-      { title: "Monster", summary: "A work by one of my favorite directors, Hirokazu Kore-eda." },
-      { title: "The Simpsons", summary: "Re-watching this animation that\'s older than me." },
-      { title: "The Long Season", summary: "My favorite Chinese drama in recent years." },
-      { title: "Deep Sea", summary: "Childlike wonder — I love this colorful art style." },
+      {
+        title: "Adventure Time",
+        summary: "The best way to learn English through a show.",
+      },
+      {
+        title: "Art of the Cosmos",
+        summary: "A long journey to the West seeking truth.",
+      },
+      {
+        title: "Monster",
+        summary: "A work by one of my favorite directors, Hirokazu Kore-eda.",
+      },
+      {
+        title: "The Simpsons",
+        summary: "Re-watching this animation that\'s older than me.",
+      },
+      {
+        title: "The Long Season",
+        summary: "My favorite Chinese drama in recent years.",
+      },
+      {
+        title: "Deep Sea",
+        summary: "Childlike wonder — I love this colorful art style.",
+      },
     ],
     music: [
-      { title: "Omnipotent Youth Society / Chair Band / No Party for Cao Dong", summary: "Rock and folk." },
-      { title: "Humbert Humbert / KOKIA / Rimi Natsukawa", summary: "Japanese artists with unique styles." },
-      { title: "DEPAPEPE / Joe Hisaishi / Himekami", summary: "Instrumental music from Japan." },
-      { title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani", summary: "English-language artists." },
-      { title: "Karen Mok / Cheer Chen / Joanna Wang", summary: "Chinese-language singers I enjoy." },
-      { title: "Miyuki Nakajima / Teresa Teng / Wu Bai", summary: "Classic oldies are always nice." },
+      {
+        title: "Omnipotent Youth Society / Chair Band / No Party for Cao Dong",
+        summary: "Rock and folk.",
+      },
+      {
+        title: "Humbert Humbert / KOKIA / Rimi Natsukawa",
+        summary: "Japanese artists with unique styles.",
+      },
+      {
+        title: "DEPAPEPE / Joe Hisaishi / Himekami",
+        summary: "Instrumental music from Japan.",
+      },
+      {
+        title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani",
+        summary: "English-language artists.",
+      },
+      {
+        title: "Karen Mok / Cheer Chen / Joanna Wang",
+        summary: "Chinese-language singers I enjoy.",
+      },
+      {
+        title: "Miyuki Nakajima / Teresa Teng / Wu Bai",
+        summary: "Classic oldies are always nice.",
+      },
     ],
     suggest: [
-      { title: "Nooc the Noob", link: "https://nooc.me", summary: "My personal website.", advertisement: true },
-      { title: "YouminCO", link: "https://youmin.co", summary: "A digital nomad community I built.", advertisement: true },
-      { title: "OneiAI", link: "https://onei.ai", summary: "An AI navigation site I built.", advertisement: true },
-      { title: "CassetteOne", link: "https://cassette.one", summary: "A retro cassette player I built.", advertisement: true },
-      { title: "Spark Memos", link: "https://sparkmemos.com", summary: "A short-note-taking app I built.", advertisement: true },
-      { title: "Echobell", link: "https://echobell.one", summary: "A notification app I built.", advertisement: true },
-      { title: "Dippod", link: "https://dippod.com", summary: "A podcast English-learning app I\'m building.", advertisement: false },
+      {
+        title: "Nooc the Noob",
+        link: "https://nooc.me",
+        summary: "My personal website.",
+        advertisement: true,
+      },
+      {
+        title: "YouminCO",
+        link: "https://youmin.co",
+        summary: "A digital nomad community I built.",
+        advertisement: true,
+      },
+      {
+        title: "OneiAI",
+        link: "https://onei.ai",
+        summary: "An AI navigation site I built.",
+        advertisement: true,
+      },
+      {
+        title: "CassetteOne",
+        link: "https://cassette.one",
+        summary: "A retro cassette player I built.",
+        advertisement: true,
+      },
+      {
+        title: "Spark Memos",
+        link: "https://sparkmemos.com",
+        summary: "A short-note-taking app I built.",
+        advertisement: true,
+      },
+      {
+        title: "Echobell",
+        link: "https://echobell.one",
+        summary: "A notification app I built.",
+        advertisement: true,
+      },
+      {
+        title: "Dippod",
+        link: "https://dippod.com",
+        summary: "A podcast English-learning app I\'m building.",
+        advertisement: false,
+      },
     ],
   },
   aboutContent: `
-This is the corner of Nooc.
-
-A blog maintained by [Nooc](https://nooc.me).
+This is the corner of [Nooc](https://nooc.me).
 
 Updated irregularly, sharing random thoughts, reading notes, and daily ramblings — but anything could appear.
 

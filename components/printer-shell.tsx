@@ -6,6 +6,11 @@ import avatar from "../public/static/avatar.webp";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
+import { 
+  SunIcon,
+  MoonIcon,
+  ComputerDesktopIcon
+} from "@heroicons/react/24/outline";
 
 type ColorMode = "system" | "light" | "dark";
 
@@ -70,10 +75,12 @@ function useColorMode() {
   return { mode, cycle };
 }
 
-const colorModeIcons: Record<ColorMode, string> = {
-  system: "◐",
-  light: "☀",
-  dark: "☽",
+const ColorModeIcon = ({ mode }: { mode: ColorMode }) => {
+  switch (mode) {
+    case "light": return <SunIcon className="w-3.5 h-3.5" />;
+    case "dark": return <MoonIcon className="w-3.5 h-3.5" />;
+    default: return <ComputerDesktopIcon className="w-3.5 h-3.5" />;
+  }
 };
 
 interface PrinterShellProps {
@@ -109,11 +116,11 @@ export default function PrinterShell({
   const { mode, cycle } = useColorMode();
 
   const navItems = [
-    { label: dictionary.labels.home, href: dictionary.urls.home, icon: "⌂" },
-    { label: dictionary.labels.life, href: dictionary.urls.life, icon: "✦" },
-    { label: dictionary.labels.posts, href: dictionary.urls.posts, icon: "⚙" },
-    { label: dictionary.labels.works, href: dictionary.urls.works, icon: "◈" },
-    { label: dictionary.labels.about, href: dictionary.urls.about, icon: "○" },
+    { label: dictionary.labels.home, href: dictionary.urls.home },
+    { label: dictionary.labels.life, href: dictionary.urls.life },
+    { label: dictionary.labels.posts, href: dictionary.urls.posts },
+    { label: dictionary.labels.works, href: dictionary.urls.works },
+    { label: dictionary.labels.about, href: dictionary.urls.about },
   ];
 
   function isActive(href: string) {
@@ -130,177 +137,123 @@ export default function PrinterShell({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-200 to-stone-300 dark:from-neutral-900 dark:to-neutral-950 flex flex-col items-center px-3 py-6 sm:py-10">
+    <div className="min-h-screen page-grid flex flex-col items-center px-3 py-6 sm:py-10">
       {/* Printer Body */}
       <div className="w-full max-w-3xl">
-        {/* Top housing - brand area */}
-        <div className="bg-printer-body dark:bg-printer-body-dark rounded-t-[2rem] shadow-printer dark:shadow-printer-dark px-6 pt-6 pb-4 sm:px-8 sm:pt-8 relative overflow-hidden">
-
-          {/* Brushed metal texture overlay */}
-          <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.07) 1px, transparent 2px)', backgroundSize: '100% 3px' }} />
-
-          {/* Brand plate - recessed area */}
-          <div className="relative flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Image
-                  className="h-9 w-9 rounded-full ring-2 ring-printer-ink/10 dark:ring-printer-ink-dark/10 shadow-sm"
-                  src={avatar}
-                  alt="Nooc"
-                />
-                {/* Recessed bezel around avatar */}
-                <div className="absolute -inset-[3px] rounded-full border border-black/5 dark:border-white/5 shadow-inner" />
-              </div>
-              <div>
-                <div className="font-mono text-sm font-semibold tracking-[0.2em] text-printer-ink dark:text-printer-ink-dark uppercase">
-                  {dictionary.labels.brandName}
-                </div>
-                <div className="font-mono text-[10px] tracking-wider text-printer-ink-light dark:text-printer-ink-dark/50 uppercase">
-                  {dictionary.labels.brandTagline}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              {/* Status LED with glow */}
-              <div className="flex items-center gap-2">
+        {/* Unified Header Housing - Wraps both brand and slit areas to share a single shadow */}
+        <div className="printer-header-border rounded-t-[2.5rem] rounded-b-sm overflow-hidden relative z-10">
+          
+          {/* Top part - Brand & Nav */}
+          <div className="bg-printer-body dark:bg-printer-body-dark px-6 pt-6 pb-5 sm:px-10 sm:pt-10 relative">
+            {/* Brand plate */}
+            <div className="relative flex items-start justify-between mb-8">
+              <div className="flex items-center gap-4">
                 <div className="relative">
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.5),inset_0_-1px_2px_rgba(0,0,0,0.2)] animate-pulse" />
-                  {/* LED housing recess */}
-                  <div className="absolute -inset-0.5 rounded-full border border-black/10 dark:border-white/5" />
+                  <div className="absolute -inset-[3px] rounded-full bg-black/5 dark:bg-white/5 shadow-inner" />
+                  <Image
+                    className="h-12 w-12 rounded-full ring-1 ring-black/10 dark:ring-white/10 shadow-sm relative z-10"
+                    src={avatar}
+                    alt="Nooc"
+                  />
                 </div>
-                <span className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/50 uppercase tracking-wider hidden sm:inline">
-                  Online
-                </span>
+                <div>
+                  <div className="font-mono text-sm font-bold tracking-[0.25em] text-printer-ink dark:text-printer-ink-dark uppercase">
+                    {dictionary.labels.brandName}
+                  </div>
+                  <div className="font-mono text-[9px] tracking-[0.1em] text-printer-ink-light dark:text-printer-ink-dark/40 uppercase mt-0.5">
+                    {dictionary.labels.brandTagline}
+                  </div>
+                </div>
               </div>
-              {/* Decorative Phillips screw */}
-              <div className="hidden sm:flex w-5 h-5 rounded-full bg-gradient-to-br from-printer-button via-printer-shell to-printer-button dark:from-printer-button-dark dark:via-printer-shell-dark dark:to-printer-button-dark border border-black/10 dark:border-white/10 items-center justify-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.15),0_1px_0_rgba(255,255,255,0.1)] relative">
-                <div className="w-2.5 h-[1px] bg-black/25 dark:bg-white/20 absolute" />
-                <div className="w-[1px] h-2.5 bg-black/25 dark:bg-white/20 absolute" />
+
+              <div className="flex items-start gap-6">
+                <div className="flex flex-col items-center gap-1.5">
+                  <div className="relative w-3.5 h-3.5 rounded-full bg-black/10 dark:bg-black/40 flex items-center justify-center">
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/90 shadow-[0_0_8px_rgba(34,197,94,0.6),inset_0_-1px_2px_rgba(0,0,0,0.3)] animate-[pulse_2s_infinite]" />
+                    <div className="absolute inset-0 rounded-full border border-black/10 dark:border-white/5 shadow-inner pointer-events-none" />
+                  </div>
+                  <span className="font-mono text-[8px] text-printer-ink-light dark:text-printer-ink-dark/40 uppercase tracking-widest leading-none">
+                    ON
+                  </span>
+                </div>
+                <div className="hidden sm:flex flex-col gap-3">
+                  <div className="w-4 h-4 rounded-full bg-stone-400 dark:bg-stone-600 border border-black/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_1px_2px_rgba(0,0,0,0.3)] flex items-center justify-center">
+                    <div className="w-2.5 h-[1px] bg-black/30 rotate-45" />
+                    <div className="w-2.5 h-[1px] bg-black/30 -rotate-45 absolute" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation row */}
+            <div className="relative mt-2 p-1 bg-black/[0.03] dark:bg-white/[0.02] rounded-xl shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] flex items-center gap-2">
+              <nav className="relative flex items-center gap-2 sm:gap-2.5 overflow-x-auto px-1 flex-1 no-scrollbar py-0.5">
+                {navItems.map((item, index) => {
+                  const active = isActive(item.href);
+                  return (
+                    <Link key={index} href={item.href}>
+                      <button className={classNames("printer-btn whitespace-nowrap", { "active": active })}>
+                        <span className="leading-none">{item.label}</span>
+                      </button>
+                    </Link>
+                  );
+                })}
+              </nav>
+              <div className="flex items-center gap-1 shrink-0 pr-1 py-0.5">
+                <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
+                <button onClick={switchLanguage} className="printer-btn !px-2" title={lang === "en" ? "切换到中文" : "Switch to English"}>
+                  <span className="leading-none font-semibold text-[9px]">{lang === "en" ? "中" : "EN"}</span>
+                </button>
+                <button onClick={cycle} className="printer-btn !px-2" title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
+                  <ColorModeIcon mode={mode} />
+                </button>
               </div>
             </div>
           </div>
 
-          {/* Navigation row */}
-          <div className="relative flex items-center gap-2">
-            <nav className="relative flex items-center gap-2 sm:gap-3 overflow-x-auto pb-1 -mx-1 px-1 flex-1">
-              {navItems.map((item) => {
-                const active = isActive(item.href);
-                return (
-                  <Link key={item.href} href={item.href}>
-                    <button
-                      className={classNames(
-                        "printer-btn whitespace-nowrap flex items-center justify-center gap-1.5 text-[11px] sm:text-xs",
-                        {
-                          active: active,
-                        },
-                      )}
-                    >
-                      <span className="text-sm leading-none flex items-center">{item.icon}</span>
-                      <span className="leading-none">{item.label}</span>
-                    </button>
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Language & Color Mode toggles */}
-            <div className="flex items-center gap-1.5 pb-1 shrink-0">
-              <button
-                onClick={switchLanguage}
-                className="printer-btn flex items-center justify-center text-[11px] sm:text-xs !px-2.5 !py-2"
-                title={lang === "en" ? "切换到中文" : "Switch to English"}
-              >
-                <span className="leading-none font-semibold">{lang === "en" ? "中" : "EN"}</span>
-              </button>
-              <button
-                onClick={cycle}
-                className="printer-btn flex items-center justify-center text-[11px] sm:text-xs !px-2.5 !py-2"
-                title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}
-              >
-                <span className="text-sm leading-none">{colorModeIcons[mode]}</span>
-              </button>
-            </div>
+          {/* Bottom part - Paper feed slot cross section */}
+          <div className="bg-printer-shell dark:bg-printer-shell-dark h-5 flex items-center justify-center relative">
+            {/* Inset shadows to give depth to the slit area */}
+            <div className="absolute inset-0 shadow-[inset_0_2px_4px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] pointer-events-none" />
+            <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-black/[0.05] to-transparent dark:from-black/[0.2]" />
+            <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-black/[0.05] to-transparent dark:from-black/[0.2]" />
+            {/* Paper exit slit */}
+            <div className="absolute left-2 right-2 sm:left-8 sm:right-8 h-[6px] bg-black/60 dark:bg-black/80 rounded-[1px] shadow-[inset_0_1px_3px_rgba(0,0,0,0.8)]" />
           </div>
-
-          {/* Bottom groove - parting line between header and feed slot */}
-          <div className="absolute bottom-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-black/8 dark:via-white/5 to-transparent" />
-          <div className="absolute bottom-[1px] left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-white/15 dark:via-white/[0.02] to-transparent" />
         </div>
 
-        {/* Paper feed slot - cross section (横切面) */}
-        <div className="bg-printer-shell dark:bg-printer-shell-dark h-4 shadow-inner flex items-center justify-center relative">
-          {/* Subtle inner shadow edges */}
-          <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-black/[0.03] to-transparent dark:from-white/[0.02]" />
-          <div className="absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-black/[0.03] to-transparent dark:from-white/[0.02]" />
-          {/* Paper exit slit - dark slot slightly wider than content */}
-          <div className="absolute left-2 right-2 sm:left-6 sm:right-6 h-[4px] bg-black/70 dark:bg-black/80 rounded-[1px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]" />
-        </div>
-
-        {/* Printed paper output area - starts at the vertical midpoint of the slit */}
-        <div className="relative mx-4 sm:mx-8 -mt-[10px] z-10">
-
-          {/* Paper */}
-          <div className="bg-printer-paper dark:bg-printer-paper-dark thermal-texture min-h-[60vh] shadow-paper">
-            {/* Perforation marks on sides */}
-            <div className="absolute left-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20">
-              {Array.from({ length: 30 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30"
-                />
+        {/* Printed paper output area */}
+        <div className="relative mx-3 sm:mx-10 -mt-[12px] z-20 transition-all duration-300">
+          <div className="bg-printer-paper dark:bg-printer-paper-dark thermal-texture min-h-[60vh] shadow-[0_4px_12px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] relative z-0 flex flex-col overflow-hidden">
+            <div className="absolute -top-1 left-0 right-0 h-1 bg-printer-paper dark:bg-printer-paper-dark" />
+            
+            {/* Perforation marks */}
+            <div className="absolute left-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20 pointer-events-none">
+              {Array.from({ length: 60 }).map((_, i) => (
+                <div key={i} className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30 shrink-0" />
               ))}
             </div>
-            <div className="absolute right-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20">
-              {Array.from({ length: 30 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30"
-                />
+            <div className="absolute right-0 top-0 bottom-0 w-4 flex flex-col items-center justify-start gap-6 pt-4 opacity-20 pointer-events-none">
+              {Array.from({ length: 60 }).map((_, i) => (
+                <div key={i} className="w-1.5 h-1.5 rounded-full border border-printer-ink/30 dark:border-printer-ink-dark/30 shrink-0" />
               ))}
             </div>
 
-            {/* Content area */}
-            <div className="px-6 sm:px-10 py-8">{children}</div>
-          </div>
+            <div className="flex-1 px-6 sm:px-10 py-8 relative z-10">{children}</div>
 
-          {/* Footer - part of the paper */}
-          <div className="bg-printer-paper dark:bg-printer-paper-dark px-6 sm:px-10 py-4 border-t border-printer-ink/5 dark:border-printer-ink-dark/10">
-            <div className="flex items-center justify-between text-printer-ink-light dark:text-printer-ink-dark/40">
-              <div className="font-mono text-[10px] tracking-wider uppercase">
-                © {new Date().getFullYear()} Nooc
-              </div>
-              <div className="font-mono text-[10px] tracking-wider uppercase flex items-center gap-3">
-                <a
-                  href="https://github.com/noobnooc"
-                  target="_blank"
-                  rel="noopener"
-                  className="hover:text-printer-ink dark:hover:text-printer-ink-dark transition-colors"
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://x.com/noobnooc"
-                  target="_blank"
-                  rel="noopener"
-                  className="hover:text-printer-ink dark:hover:text-printer-ink-dark transition-colors"
-                >
-                  X
-                </a>
-                <a
-                  href="mailto:nooc@nooc.me"
-                  className="hover:text-printer-ink dark:hover:text-printer-ink-dark transition-colors"
-                >
-                  Email
-                </a>
+            <div className="px-6 sm:px-10 py-6 mt-4 border-t border-dashed border-printer-ink/10 dark:border-printer-ink-dark/10 relative z-10">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-printer-ink-light dark:text-printer-ink-dark/40">
+                <div className="font-mono text-[10px] tracking-widest uppercase order-2 sm:order-1">© {new Date().getFullYear()} Nooc</div>
+                <div className="font-mono text-[10px] tracking-widest uppercase flex items-center gap-4 order-1 sm:order-2">
+                  <a href="https://github.com/noobnooc" target="_blank" rel="noopener" className="hover:text-printer-accent transition-colors">GitHub</a>
+                  <a href="https://x.com/noobnooc" target="_blank" rel="noopener" className="hover:text-printer-accent transition-colors">X</a>
+                  <a href="mailto:nooc@nooc.me" className="hover:text-printer-accent transition-colors">Email</a>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Paper torn bottom edge */}
           <div className="paper-edge-bottom h-0" />
         </div>
-
       </div>
     </div>
   );

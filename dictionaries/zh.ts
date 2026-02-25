@@ -306,15 +306,9 @@ Serverless 爱好者。
   ],
   contacts: [
     {
-      label: "X (中文)",
+      label: "X (Twitter)",
       name: "@noobnooc",
       link: "https://x.com/noobnooc",
-      icon: SiX,
-    },
-    {
-      label: "X (English)",
-      name: "@WeeloneHQ",
-      link: "https://x.com/WeeLoneHQ",
       icon: SiX,
     },
     {
@@ -356,14 +350,26 @@ Serverless 爱好者。
   archive: {
     reading: [
       { title: "生活在别处", summary: "当诗意成为一种危险。" },
-      { title: "那不勒斯四部曲", summary: "一部关于成长、友谊和爱情的史诗般的小说。" },
-      { title: "卡拉马佐夫兄弟", summary: "如果我们用恶的方式去结束了恶，那我们还是善良的吗？" },
-      { title: "涅朵奇卡", summary: "有的人在幻想中越走越远，最终成了幻想家。" },
+      {
+        title: "那不勒斯四部曲",
+        summary: "一部关于成长、友谊和爱情的史诗般的小说。",
+      },
+      {
+        title: "卡拉马佐夫兄弟",
+        summary: "如果我们用恶的方式去结束了恶，那我们还是善良的吗？",
+      },
+      {
+        title: "涅朵奇卡",
+        summary: "有的人在幻想中越走越远，最终成了幻想家。",
+      },
       { title: "窄门", summary: "当信仰与世俗发生冲突。" },
       { title: "伊凡·伊利奇之死", summary: "托尔斯泰后期的一篇中篇小说。" },
       { title: "孤筏重洋", summary: "一场为了证明自己的狂野旅程。" },
       { title: "夜晚的潜水艇", summary: "一本有点博尔赫斯风格的短篇小说集。" },
-      { title: "Make Something Wonderful", summary: "这本书集合了很多乔布斯生前的演讲和书信。" },
+      {
+        title: "Make Something Wonderful",
+        summary: "这本书集合了很多乔布斯生前的演讲和书信。",
+      },
     ],
     films: [
       { title: "探险活宝", summary: "看剧学英语的不二之选。" },
@@ -371,32 +377,86 @@ Serverless 爱好者。
       { title: "怪物", summary: "我最喜欢的导演之一是枝裕和的作品。" },
       { title: "辛普森一家", summary: "重新开始看这部比我还老的动画。" },
       { title: "漫长的季节", summary: "近几年看过最喜欢的国产剧。" },
-      { title: "深海", summary: "童心未泯的我，真的是喜欢这种花花绿绿的画风。" },
+      {
+        title: "深海",
+        summary: "童心未泯的我，真的是喜欢这种花花绿绿的画风。",
+      },
     ],
     music: [
-      { title: "万能青年旅店 / 椅子乐团 / 草东没有派对", summary: "摇滚与民谣。" },
-      { title: "Humbert Humbert / KOKIA / Rimi Natsukawa", summary: "来自日本的选手。" },
-      { title: "DEPAPEPE / 久石让 / 姬神", summary: "都是来自日本的纯乐器音乐选手。" },
-      { title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani", summary: "英文歌手。" },
-      { title: "莫文蔚 / 陈绮贞 / 王若琳", summary: "其实我是不太喜欢情歌的。" },
-      { title: "中岛美雪 / 邓丽君 / 伍佰", summary: "老歌偶尔听听也很是喜欢。" },
+      {
+        title: "万能青年旅店 / 椅子乐团 / 草东没有派对",
+        summary: "摇滚与民谣。",
+      },
+      {
+        title: "Humbert Humbert / KOKIA / Rimi Natsukawa",
+        summary: "来自日本的选手。",
+      },
+      {
+        title: "DEPAPEPE / 久石让 / 姬神",
+        summary: "都是来自日本的纯乐器音乐选手。",
+      },
+      {
+        title: "Sufjan Stevens / Fleurie / Billie Eilish / Sophie Zelmani",
+        summary: "英文歌手。",
+      },
+      {
+        title: "莫文蔚 / 陈绮贞 / 王若琳",
+        summary: "其实我是不太喜欢情歌的。",
+      },
+      {
+        title: "中岛美雪 / 邓丽君 / 伍佰",
+        summary: "老歌偶尔听听也很是喜欢。",
+      },
     ],
     suggest: [
-      { title: "Nooc the Noob", link: "https://nooc.me", summary: "这是我的个人网站。", advertisement: true },
-      { title: "游民CO", link: "https://youmin.co", summary: "我做的一个数字游民社区。", advertisement: true },
-      { title: "OneiAI", link: "https://onei.ai", summary: "我做的一个 AI 导航网站。", advertisement: true },
-      { title: "CassetteOne", link: "https://cassette.one", summary: "我做的一个复古磁带设计的音乐播放器。", advertisement: true },
-      { title: "星火记", link: "https://sparkmemos.com", summary: "我做的一个短笔记 App。", advertisement: true },
-      { title: "Echobell", link: "https://echobell.one", summary: "我做的一个通知类 App。", advertisement: true },
-      { title: "Dippod", link: "https://dippod.com", summary: "我正在做的一个使用播客学英语的 App。", advertisement: false },
+      {
+        title: "Nooc the Noob",
+        link: "https://nooc.me",
+        summary: "这是我的个人网站。",
+        advertisement: true,
+      },
+      {
+        title: "游民CO",
+        link: "https://youmin.co",
+        summary: "我做的一个数字游民社区。",
+        advertisement: true,
+      },
+      {
+        title: "OneiAI",
+        link: "https://onei.ai",
+        summary: "我做的一个 AI 导航网站。",
+        advertisement: true,
+      },
+      {
+        title: "CassetteOne",
+        link: "https://cassette.one",
+        summary: "我做的一个复古磁带设计的音乐播放器。",
+        advertisement: true,
+      },
+      {
+        title: "星火记",
+        link: "https://sparkmemos.com",
+        summary: "我做的一个短笔记 App。",
+        advertisement: true,
+      },
+      {
+        title: "Echobell",
+        link: "https://echobell.one",
+        summary: "我做的一个通知类 App。",
+        advertisement: true,
+      },
+      {
+        title: "Dippod",
+        link: "https://dippod.com",
+        summary: "我正在做的一个使用播客学英语的 App。",
+        advertisement: false,
+      },
     ],
   },
   aboutContent: `
-这里是主观世界。
+这里使 [Nooc](https://nooc.me) 的个人空间。
 
-这是一个由 [Nooc](https://nooc.me) 打理的博客。
-
-不定期更新，主要分享作者的自言自语、读书笔记、日常牢骚，但也可能会出现其他任何内容。
+不定期更新，生活里分享作者的自言自语、读书笔记、日常牢骚，但也可能会出现其他任何内容；技术里分享作者在编程、产品相关领域的一些想法和见闻。
 
 ### 关于我
 

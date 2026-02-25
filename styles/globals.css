@@ -5,6 +5,16 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
 @layer base {
+  html, body {
+    @apply min-h-screen;
+    /* Slightly lightened warm stone-gray */
+    background-color: #e0e0d8;
+  }
+  
+  :is(.dark) html, :is(.dark) body {
+    background-color: #080808;
+  }
+
   *,
   ::before,
   ::after {
@@ -13,6 +23,24 @@
 }
 
 @layer components {
+  /* Page grid background - Industrial workbench style */
+  .page-grid {
+    background-image: 
+      radial-gradient(at 50% 0%, rgba(255,255,255,0.4) 0%, transparent 80%),
+      linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+    /* Offset grid to prevent it from looking too rigid */
+    background-position: 0 0, 13px 13px, 13px 13px;
+    /* Removed background-attachment: fixed to let it scroll */
+  }
+  :is(.dark) .page-grid {
+    background-image: 
+      radial-gradient(at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 80%),
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  }
+
   /* Printer paper torn edge effect */
   .paper-edge-top {
     position: relative;
@@ -53,51 +81,95 @@
     color: theme('colors.printer.paper-dark');
   }
 
+  /* Utility for hiding scrollbars */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   /* Dot matrix / thermal print texture */
   .thermal-texture {
     background-image: 
-      radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px);
-    background-size: 4px 4px;
+      radial-gradient(circle, rgba(0,0,0,0.04) 0.6px, transparent 0.6px);
+    background-size: 5px 5px;
   }
   :is(.dark) .thermal-texture {
     background-image: 
-      radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+      radial-gradient(circle, rgba(255,255,255,0.03) 0.6px, transparent 0.6px);
+  }
+
+  .brushed-metal {
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.02) 0px,
+        rgba(0, 0, 0, 0.02) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+    background-size: 100% 2px;
+  }
+  :is(.dark) .brushed-metal {
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.01) 0px,
+        rgba(255, 255, 255, 0.01) 1px,
+        transparent 1px,
+        transparent 2px
+      );
   }
 
   /* Printer button style */
   .printer-btn {
-    @apply relative px-4 py-2 rounded-lg font-mono text-sm tracking-wide uppercase;
+    @apply relative px-3 h-7 rounded-md font-mono text-[10px] sm:text-[11px] tracking-widest uppercase;
     @apply bg-printer-button dark:bg-printer-button-dark;
     @apply text-printer-ink dark:text-printer-ink-dark;
-    @apply transition-all duration-100;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.25),
-      inset 0 -2px 0 rgba(0,0,0,0.08),
-      0 1px 3px rgba(0,0,0,0.08),
-      0 1px 1px rgba(0,0,0,0.04);
+    @apply transition-all duration-75 select-none;
+    @apply flex items-center justify-center;
+    box-shadow: 
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0.5px rgba(0, 0, 0, 0.1),
+      0 1px 2px rgba(0, 0, 0, 0.1);
   }
   :is(.dark) .printer-btn {
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.06),
-      inset 0 -2px 0 rgba(0,0,0,0.15),
-      0 1px 3px rgba(0,0,0,0.2),
-      0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 
+      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.05),
+      inset 0 -1px 0.5px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.3);
   }
   .printer-btn:hover {
-    @apply brightness-[0.97] dark:brightness-110;
+    @apply brightness-[0.98] dark:brightness-110;
   }
   .printer-btn:active {
-    @apply translate-y-[1px];
-    box-shadow:
-      inset 0 2px 4px rgba(0,0,0,0.1),
-      inset 0 0 0 1px rgba(0,0,0,0.02);
+    @apply translate-y-[0.5px];
+    box-shadow: 
+      inset 0 1px 2px rgba(0, 0, 0, 0.15);
   }
   .printer-btn.active {
     @apply bg-printer-accent text-white;
-    box-shadow:
-      inset 0 2px 4px rgba(0,0,0,0.15),
-      inset 0 0 0 1px rgba(0,0,0,0.05),
-      0 0 8px rgba(255,107,53,0.2);
+    box-shadow: 
+      inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .printer-btn-icon {
+    @apply flex items-center justify-center w-4 h-4;
+  }
+
+  .printer-header-border {
+    box-shadow: 
+      inset 0 1px 0 rgba(255,255,255,0.4),
+      0 4px 12px rgba(0,0,0,0.15), 
+      0 1px 2px rgba(0,0,0,0.1);
+  }
+  :is(.dark) .printer-header-border {
+    box-shadow: 
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 4px 12px rgba(0,0,0,0.4), 
+      0 1px 2px rgba(0,0,0,0.2);
   }
 
   /* Label tape style for navigation items */
