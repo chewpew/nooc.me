@@ -96,7 +96,7 @@ export default async function AboutPage(
       {/* About content */}
       <div
         className={classNames(
-          "prose dark:prose-invert max-w-none",
+          "prose dark:prose-invert max-w-none font-serif",
           "prose-headings:font-serif prose-headings:text-printer-ink dark:prose-headings:text-printer-ink-dark prose-headings:mt-8",
           "prose-h1:text-2xl",
           "prose-h2:text-xl",
