@@ -81,6 +81,69 @@
     color: theme('colors.printer.paper-dark');
   }
 
+  /* 404 tray mode — when paper area contains [data-not-found], swap paper for tray */
+  .printer-paper-area:has([data-not-found]) {
+    background-color: theme('colors.printer.body') !important;
+    background-image:
+      /* Subtle brushed-metal horizontal lines */
+      repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.015) 0px,
+        rgba(0,0,0,0.015) 1px,
+        transparent 1px,
+        transparent 3px
+      ) !important;
+    background-size: 100% 3px !important;
+    box-shadow:
+      /* Deep inset for recessed tray feel */
+      inset 0 6px 18px rgba(0,0,0,0.10),
+      inset 0 2px 4px rgba(0,0,0,0.06),
+      /* Bottom highlight — light catching the tray lip */
+      inset 0 -2px 6px rgba(255,255,255,0.3),
+      /* Outer subtle drop */
+      0 1px 3px rgba(0,0,0,0.06) !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    border-radius: 4px 4px 6px 6px !important;
+  }
+  :is(.dark) .printer-paper-area:has([data-not-found]) {
+    background-color: theme('colors.printer.body-dark') !important;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.01) 0px,
+        rgba(255,255,255,0.01) 1px,
+        transparent 1px,
+        transparent 3px
+      ) !important;
+    background-size: 100% 3px !important;
+    box-shadow:
+      inset 0 6px 20px rgba(0,0,0,0.35),
+      inset 0 2px 5px rgba(0,0,0,0.25),
+      inset 0 -2px 6px rgba(255,255,255,0.02),
+      0 1px 3px rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+    border-radius: 4px 4px 6px 6px !important;
+  }
+
+  /* Hide paper-specific elements in tray mode */
+  /* Top paper-color strip */
+  .printer-paper-area:has([data-not-found]) > .absolute.-top-1 {
+    display: none;
+  }
+  /* Perforation marks (left and right) */
+  .printer-paper-area:has([data-not-found]) > .absolute.left-0.top-0.bottom-0,
+  .printer-paper-area:has([data-not-found]) > .absolute.right-0.top-0.bottom-0 {
+    display: none;
+  }
+  /* Footer section */
+  .printer-paper-area:has([data-not-found]) > div:last-child {
+    display: none;
+  }
+  /* Torn paper edge */
+  .printer-paper-area:has([data-not-found]) + .paper-edge-bottom {
+    display: none;
+  }
+
   /* Utility for hiding scrollbars */
   .no-scrollbar::-webkit-scrollbar {
     display: none;

@@ -1,12 +1,12 @@
 import "../../styles/globals.css";
 
 import { Metadata } from "next";
-import { getDictionary } from "../../dictionaries";
+import { getDictionary, dictionaryKeys } from "../../dictionaries";
 import { getAlternateLanguages } from "@/lib/metadata";
 import { generateWebSiteJsonLd } from "@/lib/json-ld";
 import Script from "next/script";
 import PrinterShell from "../../components/printer-shell";
-
+import { notFound } from "next/navigation";
 export const runtime = "edge";
 
 export async function generateMetadata({
@@ -14,6 +14,7 @@ export async function generateMetadata({
 }: {
   params: { lang: string };
 }): Promise<Metadata> {
+  if (!dictionaryKeys.includes(params.lang as any)) return {};
   const dictionary = await getDictionary(params.lang);
 
   const feedBase = params.lang === "zh" ? "/feed/zh" : "/feed";
@@ -65,6 +66,7 @@ export default async function RootLayout({
     lang: string;
   };
 }) {
+  if (!dictionaryKeys.includes(params.lang as any)) notFound();
   const dictionary = await getDictionary(params.lang);
 
   const printerShellProps = {
