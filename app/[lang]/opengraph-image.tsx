@@ -7,7 +7,7 @@ import {
 
 export const runtime = "edge";
 
-export const alt = "Nooc the Noob";
+export const alt = "Nooc";
 export const size = OG_IMAGE_SIZE;
 export const contentType = OG_IMAGE_CONTENT_TYPE;
 
@@ -18,10 +18,11 @@ export default async function Image({
 }) {
   const dictionary = await getDictionary(params.lang);
   return generateOgImage({
-    title: dictionary.meta.websiteName,
+    title: "Nooc",
     description: dictionary.meta.motto,
     type: "page",
     brandName: dictionary.labels.brandName,
     brandTagline: dictionary.labels.brandTagline,
+    showTitleAvatar: true,
   });
 }

@@ -17,16 +17,19 @@ export interface OgImageOptions {
   subtitle?: string;
   brandName?: string;
   brandTagline?: string;
+  showTitleAvatar?: boolean;
 }
 
-const AVATAR_SRC =
-  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzExXzcpIj48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0iIzJDMkMzMiIvPjxnIGZpbHRlcj0idXJsKCNmaWx0ZXIwX2ZfMTFfNykiPjxwYXRoIGQ9Ik0xMjggNjhDMTYxLjEzNyA2OCAxODggOTQuODYyOSAxODggMTI4QzE4OCAxNDQuNjc4IDE4MS4xOTQgMTU5Ljc2NiAxNzAuMjA5IDE3MC42NDFMMTI3LjU2OCAxMjhMODUuMzU4NCAxNzAuMjA5Qzc0LjYyNzQgMTU5LjM2OSA2OCAxNDQuNDU5IDY4IDEyOEM2OCA5NC44NjI5IDk0Ljg2MjkgNjggMTI4IDY4WiIgZmlsbD0iI0ZCOTIzQyIgZmlsbC1vcGFjaXR5PSIwLjYiLz48L2c+PGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjFfZF8xMV83KSI+PHBhdGggZD0iTTEyOCA2OEMxNjEuMTM3IDY4IDE4OCA5NC44NjI5IDE4OCAxMjhDMTg4IDE0NC42NzggMTgxLjE5NCAxNTkuNzY2IDE3MC4yMDkgMTcwLjY0MUwxMjcuNTY4IDEyOEw4NS4zNTg0IDE3MC4yMDlDNzQuNjI3NCAxNTkuMzY5IDY4IDE0NC40NTkgNjggMTI4QzY4IDk0Ljg2MjkgOTQuODYyOSA2OCAxMjggNjhaIiBmaWxsPSIjRkI5MjNDIi8+PC9nPjxyZWN0IHg9IjEyNy41NjkiIHk9IjEyOCIgd2lkdGg9IjE4Mi4wMzIiIGhlaWdodD0iMTgxLjQyMSIgdHJhbnNmb3JtPSJyb3RhdGUoNDUgMTI3LjU2OSAxMjgpIiBmaWxsPSIjMkMyQzMyIi8+PC9nPjxkZWZzPjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZl8xMV83IiB4PSIxOCIgeT0iMTgiIHdpZHRoPSIyMjAiIGhlaWdodD0iMjAyLjY0MSIgZmlsdGVyVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9InNSR0IiPjxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAiIHJlc3VsdD0iQmFja2dyb3VuZEltYWdlRml4Ii8+PGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJCYWNrZ3JvdW5kSW1hZ2VGaXgiIHJlc3VsdD0ic2hhcGUiLz48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIyNSIgcmVzdWx0PSJlZmZlY3QxX2ZvcmVncm91bmRCbHVyXzExXzciLz48L2ZpbHRlcj48ZmlsdGVyIGlkPSJmaWx0ZXIxX2RfMTFfNyIgeD0iNDgiIHk9IjQ4IiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE0Mi42NDEiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj48ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPjxmZUNvbG9yTWF0cml4IGluPSJTb3VyY2VBbHBoYSIgdHlwZT0ibWF0cml4IiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDEyNyAwIiByZXN1bHQ9ImhhcmRBbHBoYSIvPjxmZU9mZnNldC8+PGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiLz48ZmVDb21wb3NpdGUgaW4yPSJoYXJkQWxwaGEiIG9wZXJhdG9yPSJvdXQiLz48ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwLjk4NDMxNCAwIDAgMCAwIDAuNTcyNTQ5IDAgMCAwIDAgMC4yMzUyOTQgMCAwIDAgMC42IDAiLz48ZmVCbGVuZCBtb2RlPSJub3JtYWwiIGluMj0iQmFja2dyb3VuZEltYWdlRml4IiByZXN1bHQ9ImVmZmVjdDFfZHJvcFNoYWRvd18xMV83Ii8+PGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3dfMTFfNyIgcmVzdWx0PSJzaGFwZSIvPjwvZmlsdGVyPjxjbGlwUGF0aCBpZD0iY2xpcDBfMTFfNyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9IndoaXRlIi8+PC9jbGlwUGF0aD48L2RlZnM+PC9zdmc+";
-
-const ACCENT = "#FF6B35";
-const PAPER = "#FFFEF9";
-const INK = "#2C2824";
-const INK_LIGHT = "#8A8078";
-const INK_BORDER = "#2C282426";
+const COLORS = {
+  body: "#F5F0E8",
+  paper: "#FFFEF9",
+  ink: "#2C2824",
+  inkLight: "#8A8078",
+  accent: "#FF6B35",
+  border: "rgba(44, 40, 36, 0.1)",
+  shadow: "rgba(0, 0, 0, 0.06)",
+  tape: "#F0EDE6",
+};
 
 async function loadFont(): Promise<ArrayBuffer | undefined> {
   try {
@@ -49,6 +52,38 @@ async function loadFont(): Promise<ArrayBuffer | undefined> {
   return undefined;
 }
 
+function AvatarSVG({ size, circle }: { size: number; circle?: boolean }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 256 256"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{
+        borderRadius: circle ? "50%" : "12px",
+        border: `1px solid ${COLORS.border}`,
+        boxShadow: `0 4px 12px ${COLORS.shadow}`,
+        overflow: "hidden",
+      }}
+    >
+      <rect width="256" height="256" fill="#2C2C32" />
+      <path
+        d="M128 68C161.137 68 188 94.8629 188 128C188 144.678 181.194 159.766 170.209 170.641L127.568 128L85.3584 170.209C74.6274 159.369 68 144.459 68 128C68 94.8629 94.8629 68 128 68Z"
+        fill="#FB923C"
+      />
+      <rect
+        x="127.569"
+        y="128"
+        width="182.032"
+        height="181.421"
+        transform="rotate(45 127.569 128)"
+        fill="#2C2C32"
+      />
+    </svg>
+  );
+}
+
 function BrandingFooter({
   large,
   brandName,
@@ -58,9 +93,9 @@ function BrandingFooter({
   brandName?: string;
   brandTagline?: string;
 }) {
-  const avatarSize = large ? 48 : 44;
-  const nameSize = large ? 18 : 16;
-  const taglineSize = large ? 14 : 13;
+  const avatarSize = large ? 56 : 48;
+  const nameSize = large ? 20 : 18;
+  const taglineSize = large ? 16 : 14;
 
   return (
     <div
@@ -68,28 +103,20 @@ function BrandingFooter({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        borderTop: `1px dashed ${INK_BORDER}`,
-        paddingTop: "20px",
+        borderTop: `1px dashed ${COLORS.border}`,
+        paddingTop: "24px",
         width: "100%",
+        marginTop: "auto",
       }}
     >
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "14px",
+          gap: "16px",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={AVATAR_SRC}
-          alt={brandName || "Nooc"}
-          width={avatarSize}
-          height={avatarSize}
-          style={{
-            borderRadius: "50%",
-          }}
-        />
+        <AvatarSVG size={avatarSize} />
         <div
           style={{
             display: "flex",
@@ -100,7 +127,7 @@ function BrandingFooter({
             style={{
               fontSize: `${nameSize}px`,
               fontWeight: 700,
-              color: INK,
+              color: COLORS.ink,
               letterSpacing: "0.05em",
               display: "flex",
             }}
@@ -110,7 +137,7 @@ function BrandingFooter({
           <div
             style={{
               fontSize: `${taglineSize}px`,
-              color: INK_LIGHT,
+              color: COLORS.inkLight,
               display: "flex",
             }}
           >
@@ -122,9 +149,10 @@ function BrandingFooter({
       <div
         style={{
           fontSize: `${taglineSize}px`,
-          color: INK_LIGHT,
+          color: COLORS.inkLight,
           letterSpacing: "0.05em",
           display: "flex",
+          opacity: 0.8,
         }}
       >
         {brandTagline || "Nooc the Noob"}
@@ -142,66 +170,35 @@ function DotPattern() {
         left: 0,
         right: 0,
         bottom: 0,
+        opacity: 0.04,
         display: "flex",
-        flexWrap: "wrap",
-        opacity: 0.06,
+        backgroundImage: `radial-gradient(circle at center, ${COLORS.ink} 1px, transparent 1px)`,
+        backgroundSize: "30px 30px",
       }}
-    >
-      {Array.from({ length: 30 }).map((_, row) =>
-        Array.from({ length: 30 }).map((_, col) => (
-          <div
-            key={`${row}-${col}`}
-            style={{
-              width: "40px",
-              height: "21px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "2px",
-                height: "2px",
-                borderRadius: "50%",
-                backgroundColor: INK,
-                display: "flex",
-              }}
-            />
-          </div>
-        )),
-      )}
-    </div>
+    />
   );
 }
 
-function ArticleLayout({
-  title,
-  description,
-  category,
-  date,
-  type,
-  brandName,
-  brandTagline,
-}: OgImageOptions) {
+function ArticleLayout(options: OgImageOptions) {
+  const { title, description, category, date, type, brandName, brandTagline } = options;
   const typeLabel = type === "life" ? "LIFE" : type === "post" ? "TECH" : "";
 
   return (
     <div
       style={{
-        flex: 1,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
-        padding: "48px 64px 40px",
+        flex: 1,
+        padding: "50px 60px",
       }}
     >
-      {/* Top section: category + type badge */}
+      {/* Meta tags row */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
           gap: "12px",
+          marginBottom: "32px",
         }}
       >
         {typeLabel && (
@@ -209,13 +206,14 @@ function ArticleLayout({
             style={{
               display: "flex",
               alignItems: "center",
-              padding: "4px 12px",
-              backgroundColor: ACCENT,
-              color: PAPER,
-              fontSize: "14px",
+              padding: "6px 14px",
+              backgroundColor: COLORS.accent,
+              color: COLORS.paper,
+              fontSize: "16px",
               fontWeight: 700,
               letterSpacing: "0.1em",
-              borderRadius: "2px",
+              borderRadius: "4px",
+              boxShadow: `0 4px 10px rgba(255, 107, 53, 0.2)`,
             }}
           >
             {typeLabel}
@@ -226,13 +224,14 @@ function ArticleLayout({
             style={{
               display: "flex",
               alignItems: "center",
-              padding: "4px 12px",
-              border: `1px solid ${INK_BORDER}`,
-              color: INK_LIGHT,
-              fontSize: "14px",
+              padding: "6px 14px",
+              border: `1px solid ${COLORS.border}`,
+              color: COLORS.inkLight,
+              fontSize: "16px",
               fontWeight: 400,
               letterSpacing: "0.05em",
-              borderRadius: "2px",
+              borderRadius: "4px",
+              backgroundColor: "rgba(0,0,0,0.02)",
             }}
           >
             {category}
@@ -242,10 +241,10 @@ function ArticleLayout({
           <div
             style={{
               display: "flex",
-              color: INK_LIGHT,
-              fontSize: "14px",
+              color: COLORS.inkLight,
+              fontSize: "16px",
               fontWeight: 400,
-              letterSpacing: "0.02em",
+              marginLeft: "8px",
             }}
           >
             {date}
@@ -253,24 +252,22 @@ function ArticleLayout({
         )}
       </div>
 
-      {/* Middle: Title + Description */}
+      {/* Main Content */}
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "16px",
-          flex: 1,
-          justifyContent: "center",
-          maxWidth: "1000px",
+          gap: "24px",
+          maxWidth: "900px",
         }}
       >
         <div
           style={{
-            fontSize: title.length > 40 ? "42px" : "52px",
+            fontSize: title.length > 30 ? "64px" : "72px",
             fontWeight: 700,
-            color: INK,
-            lineHeight: 1.2,
-            letterSpacing: "-0.01em",
+            color: COLORS.ink,
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
             display: "flex",
           }}
         >
@@ -279,128 +276,126 @@ function ArticleLayout({
         {description && (
           <div
             style={{
-              fontSize: "20px",
-              color: INK_LIGHT,
-              lineHeight: 1.5,
+              fontSize: "26px",
+              color: COLORS.inkLight,
+              lineHeight: 1.4,
               display: "flex",
+              marginTop: "8px",
             }}
           >
-            {description.length > 120
-              ? description.slice(0, 120) + "..."
+            {description.length > 140
+              ? description.slice(0, 140) + "..."
               : description}
           </div>
         )}
       </div>
 
-      {/* Bottom: branding */}
       <BrandingFooter brandName={brandName} brandTagline={brandTagline} />
     </div>
   );
 }
 
-function PageLayout({
-  title,
-  description,
-  emoji,
-  subtitle,
-  brandName,
-  brandTagline,
-}: OgImageOptions) {
+function PageLayout(options: OgImageOptions) {
+  const {
+    title,
+    description,
+    emoji,
+    subtitle,
+    brandName,
+    brandTagline,
+    showTitleAvatar,
+  } = options;
   return (
     <div
       style={{
-        flex: 1,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "48px 64px 40px",
-        gap: "0",
+        flex: 1,
+        padding: "50px 60px",
       }}
     >
-      {/* Top spacer for centering content */}
-      <div style={{ display: "flex", flex: 1 }} />
-
-      {/* Center: Avatar + Emoji + Title + Subtitle */}
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "20px",
+          gap: "32px",
+          flex: 1,
+          justifyContent: "center",
         }}
       >
-        {/* Avatar */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={AVATAR_SRC}
-          alt="Nooc"
-          width={88}
-          height={88}
-          style={{
-            borderRadius: "50%",
-            border: `3px solid ${ACCENT}`,
-          }}
-        />
+        {showTitleAvatar && (
+          <div
+            style={{
+              display: "flex",
+              filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.1))",
+            }}
+          >
+            <AvatarSVG size={120} circle />
+          </div>
+        )}
 
-        {/* Emoji */}
         {emoji && (
           <div
             style={{
-              fontSize: "56px",
+              fontSize: "100px",
               display: "flex",
               lineHeight: 1,
+              filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.1))",
             }}
           >
             {emoji}
           </div>
         )}
 
-        {/* Title */}
         <div
           style={{
-            fontSize: title.length > 30 ? "44px" : "56px",
-            fontWeight: 700,
-            color: INK,
-            lineHeight: 1.2,
-            letterSpacing: "-0.01em",
             display: "flex",
-            textAlign: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "16px",
           }}
         >
-          {title}
-        </div>
-
-        {/* Subtitle or description */}
-        {(subtitle || description) && (
           <div
             style={{
-              fontSize: "22px",
-              color: INK_LIGHT,
-              lineHeight: 1.5,
+              fontSize: showTitleAvatar
+                ? title.length > 20
+                  ? "52px"
+                  : "64px"
+                : title.length > 20
+                  ? "64px"
+                  : "80px",
+              fontWeight: 700,
+              color: COLORS.ink,
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
               display: "flex",
               textAlign: "center",
-              maxWidth: "800px",
             }}
           >
-            {subtitle || description}
+            {title}
           </div>
-        )}
-      </div>
 
-      {/* Bottom spacer + branding */}
-      <div
-        style={{
-          display: "flex",
-          flex: 1,
-          width: "100%",
-          alignItems: "flex-end",
-        }}
-      >
-        <div style={{ display: "flex", width: "100%" }}>
-          <BrandingFooter large brandName={brandName} brandTagline={brandTagline} />
+          {(subtitle || description) && (
+            <div
+              style={{
+                fontSize: "28px",
+                color: COLORS.inkLight,
+                lineHeight: 1.4,
+                display: "flex",
+                textAlign: "center",
+                maxWidth: "800px",
+              }}
+            >
+              {subtitle || description}
+            </div>
+          )}
         </div>
       </div>
+
+      <BrandingFooter large brandName={brandName} brandTagline={brandTagline} />
     </div>
   );
 }
@@ -418,32 +413,47 @@ export async function generateOgImage(
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          backgroundColor: PAPER,
-          fontFamily: '"JetBrains Mono", monospace',
+          backgroundColor: COLORS.body,
+          padding: "40px",
           position: "relative",
-          overflow: "hidden",
+          fontFamily: '"JetBrains Mono", monospace',
         }}
       >
-        {/* Subtle dot pattern */}
-        <DotPattern />
-
-        {/* Top accent bar */}
+        {/* The Paper Card */}
         <div
           style={{
             width: "100%",
-            height: "6px",
-            backgroundColor: ACCENT,
+            height: "100%",
             display: "flex",
+            flexDirection: "column",
+            backgroundColor: COLORS.paper,
+            borderRadius: "32px",
+            boxShadow: `0 20px 50px ${COLORS.shadow}, 0 4px 12px rgba(0,0,0,0.04)`,
+            border: `1px solid ${COLORS.border}`,
+            position: "relative",
+            overflow: "hidden",
           }}
-        />
+        >
+          {/* Subtle dot pattern inside the paper */}
+          <DotPattern />
 
-        {/* Content */}
-        {type === "page" ? (
-          <PageLayout {...options} />
-        ) : (
-          <ArticleLayout {...options} />
-        )}
+          {/* Top accent bar */}
+          <div
+            style={{
+              width: "100%",
+              height: "8px",
+              backgroundColor: COLORS.accent,
+              display: "flex",
+            }}
+          />
+
+          {/* Content */}
+          {type === "page" ? (
+            <PageLayout {...options} />
+          ) : (
+            <ArticleLayout {...options} />
+          )}
+        </div>
       </div>
     ),
     {
@@ -455,6 +465,12 @@ export async function generateOgImage(
                 name: "JetBrains Mono",
                 data: fontBuffer,
                 weight: 400,
+                style: "normal" as const,
+              },
+              {
+                name: "JetBrains Mono",
+                data: fontBuffer,
+                weight: 700,
                 style: "normal" as const,
               },
             ],

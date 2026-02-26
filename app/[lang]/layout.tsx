@@ -34,6 +34,14 @@ export async function generateMetadata(
       description: dictionary.meta.motto,
       siteName: dictionary.meta.websiteName,
       locale: params.lang === "zh" ? "zh_CN" : "en_US",
+      images: [
+        {
+          url: "/opengraph-image",
+          width: 1200,
+          height: 630,
+          alt: dictionary.meta.websiteName,
+        },
+      ],
     },
     twitter: {
       title: dictionary.meta.websiteName,
@@ -41,6 +49,7 @@ export async function generateMetadata(
       site: "@noobnooc",
       creator: "@noobnooc",
       card: "summary_large_image",
+      images: ["/twitter-image"],
     },
     alternates: {
       canonical: new URL(dictionary.urls.home, dictionary.meta.baseUrl).href,
