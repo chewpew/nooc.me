@@ -60,7 +60,7 @@ export default async function MusicPage(
           {dictionary.labels.music}
         </PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
-          {dictionary.archive.music.length} entries
+          {dictionary.labels.entries(dictionary.archive.music.length)}
         </p>
       </PrintedSection>
 

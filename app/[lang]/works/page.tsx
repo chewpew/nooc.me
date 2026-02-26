@@ -78,7 +78,7 @@ export default async function WorksPage(
         label={
           <span className="inline-flex items-center gap-1.5">
             <StarIcon className="w-2.5 h-2.5" />
-            <span className="label-text">FEATURED</span>
+            <span className="label-text">{dictionary.labels.featured}</span>
           </span>
         }
       >
@@ -126,7 +126,7 @@ export default async function WorksPage(
           label={
             <span className="inline-flex items-center gap-1.5">
               <ArchiveBoxIcon className="w-2.5 h-2.5" />
-              <span className="label-text">ARCHIVE</span>
+              <span className="label-text">{dictionary.labels.archive}</span>
             </span>
           }
         >

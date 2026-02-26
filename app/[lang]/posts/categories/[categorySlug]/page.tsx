@@ -99,7 +99,7 @@ export default async function CategoryPostsPage(
           </p>
         )}
         <p className="font-serif text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-1">
-          {categoryPosts.length} entries
+          {dictionary.labels.entries(categoryPosts.length)}
         </p>
       </PrintedSection>
 

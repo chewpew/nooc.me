@@ -58,7 +58,7 @@ export default async function FilmsPage(
       <PrintedSection>
         <PrintedPageTitle icon={FilmIcon}>{dictionary.labels.films}</PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
-          {dictionary.archive.films.length} entries
+          {dictionary.labels.entries(dictionary.archive.films.length)}
         </p>
       </PrintedSection>
 

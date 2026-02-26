@@ -103,6 +103,8 @@ Serverless 爱好者。
     contactMe: "联系我",
     toc: "目录",
     categories: "分类",
+    featured: "精选",
+    archive: "归档",
     shareTo: "分享到：",
     subnooc: "主观世界",
     brandName: "NOOC",
@@ -120,6 +122,9 @@ Serverless 爱好者。
     suggestions: "推荐",
     aboutTitle: "关于",
     aboutSubtitle: "",
+    entries(count: number) {
+      return `${count} 条`;
+    },
     icon(label: string) {
       return `${label}的图标`;
     },

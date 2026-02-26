@@ -81,7 +81,7 @@ export default async function LifePage(
       <PrintedSection>
         <PrintedPageTitle icon={LifeIcon}>{dictionary.labels.life}</PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
-          {allPosts.length} entries
+          {dictionary.labels.entries(allPosts.length)}
         </p>
       </PrintedSection>
 

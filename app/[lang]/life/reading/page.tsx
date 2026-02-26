@@ -60,7 +60,7 @@ export default async function ReadingPage(
           {dictionary.labels.reading}
         </PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
-          {dictionary.archive.reading.length} entries
+          {dictionary.labels.entries(dictionary.archive.reading.length)}
         </p>
       </PrintedSection>
 

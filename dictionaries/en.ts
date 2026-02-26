@@ -103,6 +103,8 @@ A fan of Serverless.
     contactMe: "Contact Me",
     toc: "Table of Contents",
     categories: "Categories",
+    featured: "Featured",
+    archive: "Archive",
     shareTo: "Share to: ",
     subnooc: "Subjective Nooc",
     brandName: "NOOC",
@@ -119,6 +121,9 @@ A fan of Serverless.
     suggestions: "Suggestions",
     aboutTitle: "About",
     aboutSubtitle: "A noob named Nooc",
+    entries(count: number) {
+      return `${count} ${count === 1 ? "entry" : "entries"}`;
+    },
     icon(label: string) {
       return `Icon for ${label}`;
     },

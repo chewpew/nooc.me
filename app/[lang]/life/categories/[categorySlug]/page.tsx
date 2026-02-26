@@ -91,7 +91,7 @@ export default async function LifeCategoryPage(
           {category.description?.[params.lang]}
         </p>
         <p className="font-serif text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-1">
-          {posts.length} entries
+          {dictionary.labels.entries(posts.length)}
         </p>
       </PrintedSection>
 
