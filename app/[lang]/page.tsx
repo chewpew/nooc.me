@@ -126,6 +126,12 @@ export default async function Home(
               </a>
             ))}
         </div>
+        <Link
+          href={dictionary.urls.works}
+          className="inline-flex items-center gap-1 font-mono text-[11px] tracking-wider text-printer-accent dark:text-printer-accent-dark mt-3 hover:underline"
+        >
+          ◦ VIEW ALL →
+        </Link>
       </PrintedSection>
 
       <PrintedDivider style="dashed" />
