@@ -5,6 +5,7 @@ import { RiUser4Line as IdentificationIcon } from "@remixicon/react";
 import {
   PrintedSection,
   PrintedDivider,
+  PrintedPageTitle,
 } from "@/components/printed-elements";
 import { PostContent } from "@/components/post-content";
 
@@ -80,12 +81,9 @@ export default async function AboutPage(
     <div>
       {/* Header */}
       <PrintedSection>
-        <div className="flex items-center gap-2 mb-1">
-          <IdentificationIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
-          <h1 className="font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
-            {dictionary.labels.aboutTitle}
-          </h1>
-        </div>
+        <PrintedPageTitle icon={IdentificationIcon}>
+          {dictionary.labels.aboutTitle}
+        </PrintedPageTitle>
         {subtitle && (
           <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
             {subtitle}

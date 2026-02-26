@@ -10,6 +10,7 @@ import {
   PrintedSection,
   PrintedLabel,
   PrintedDivider,
+  PrintedPageTitle,
 } from "@/components/printed-elements";
 
 export const runtime = "edge";
@@ -89,12 +90,9 @@ export default async function CategoryPostsPage(
     <div>
       {/* Header */}
       <PrintedSection>
-        <div className="flex items-center gap-2 mb-1">
-          <TagIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
-          <h1 className="font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
-            {category.name[params.lang]}
-          </h1>
-        </div>
+        <PrintedPageTitle icon={TagIcon}>
+          {category.name[params.lang]}
+        </PrintedPageTitle>
         {category.description?.[params.lang] && (
           <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
             {category.description[params.lang]}

@@ -10,6 +10,7 @@ import {
 import {
   PrintedSection,
   PrintedDivider,
+  PrintedPageTitle,
 } from "@/components/printed-elements";
 
 export const runtime = "edge";
@@ -64,12 +65,9 @@ export default async function WorksPage(
     <div>
       {/* Header */}
       <PrintedSection>
-        <div className="flex items-center gap-2 mb-1">
-          <BriefcaseIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
-          <h1 className="font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
-            {dictionary.labels.works}
-          </h1>
-        </div>
+        <PrintedPageTitle icon={BriefcaseIcon}>
+          {dictionary.labels.works}
+        </PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
           {dictionary.labels.noocWorks}
         </p>

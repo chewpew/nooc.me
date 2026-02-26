@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ElementType, ReactNode } from "react";
 import classNames from "classnames";
 
 interface PrintedSectionProps {
@@ -89,5 +89,40 @@ export function PrintedDivider({
         className,
       )}
     />
+  );
+}
+
+interface PrintedPageTitleProps {
+  icon: ElementType<{ className?: string }>;
+  children: ReactNode;
+  className?: string;
+  titleClassName?: string;
+  iconClassName?: string;
+}
+
+export function PrintedPageTitle({
+  icon: Icon,
+  children,
+  className,
+  titleClassName,
+  iconClassName,
+}: PrintedPageTitleProps) {
+  return (
+    <div className={classNames("relative mb-1", className)}>
+      <Icon
+        className={classNames(
+          "pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-x-6 -translate-y-1/2 text-printer-ink-light dark:text-printer-ink-dark/50",
+          iconClassName,
+        )}
+      />
+      <h1
+        className={classNames(
+          "font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase",
+          titleClassName,
+        )}
+      >
+        {children}
+      </h1>
+    </div>
   );
 }

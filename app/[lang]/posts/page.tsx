@@ -14,6 +14,7 @@ import {
   PrintedSection,
   PrintedLabel,
   PrintedDivider,
+  PrintedPageTitle,
 } from "@/components/printed-elements";
 
 export const runtime = "edge";
@@ -105,12 +106,9 @@ export default async function PostsPage(
     <div>
       {/* Header */}
       <PrintedSection>
-        <div className="flex items-center gap-2 mb-1">
-          <CpuChipIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
-          <h1 className="font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
-            {dictionary.labels.posts}
-          </h1>
-        </div>
+        <PrintedPageTitle icon={CpuChipIcon}>
+          {dictionary.labels.posts}
+        </PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
           {allPosts.length} entries
         </p>

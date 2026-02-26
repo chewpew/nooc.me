@@ -5,6 +5,7 @@ import { RiFilmLine as FilmIcon } from "@remixicon/react";
 import {
   PrintedSection,
   PrintedDivider,
+  PrintedPageTitle,
 } from "@/components/printed-elements";
 
 export const runtime = "edge";
@@ -55,12 +56,7 @@ export default async function FilmsPage(
     <div>
       {/* Header */}
       <PrintedSection>
-        <div className="flex items-center gap-2 mb-1">
-          <FilmIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
-          <h1 className="font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
-            {dictionary.labels.films}
-          </h1>
-        </div>
+        <PrintedPageTitle icon={FilmIcon}>{dictionary.labels.films}</PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
           {dictionary.archive.films.length} entries
         </p>

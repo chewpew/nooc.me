@@ -16,6 +16,7 @@ import {
   PrintedSection,
   PrintedLabel,
   PrintedDivider,
+  PrintedPageTitle,
 } from "@/components/printed-elements";
 
 export const runtime = "edge";
@@ -78,12 +79,7 @@ export default async function LifePage(
     <div>
       {/* Header */}
       <PrintedSection>
-        <div className="flex items-center gap-2 mb-1">
-          <LifeIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
-          <h1 className="font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
-            {dictionary.labels.life}
-          </h1>
-        </div>
+        <PrintedPageTitle icon={LifeIcon}>{dictionary.labels.life}</PrintedPageTitle>
         <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
           {allPosts.length} entries
         </p>
