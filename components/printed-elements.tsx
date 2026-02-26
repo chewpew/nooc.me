@@ -111,7 +111,7 @@ export function PrintedPageTitle({
     <div className={classNames("relative mb-1", className)}>
       <Icon
         className={classNames(
-          "pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-x-6 -translate-y-1/2 text-printer-ink-light dark:text-printer-ink-dark/50",
+          "pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-x-5 -translate-y-1/2 text-printer-ink-light dark:text-printer-ink-dark/50 sm:-translate-x-6",
           iconClassName,
         )}
       />
