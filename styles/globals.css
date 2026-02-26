@@ -242,40 +242,40 @@
 
   /* Printer button style */
   .printer-btn {
-    @apply relative px-3 h-7 rounded-md font-mono text-[10px] sm:text-[11px] tracking-widest uppercase;
+    @apply relative px-4 h-9 rounded-md font-mono text-[10px] sm:text-[11px] tracking-widest uppercase;
     @apply bg-printer-shell dark:bg-printer-shell-dark;
     @apply border border-printer-ink/10 dark:border-white/[0.08];
     @apply text-printer-ink dark:text-printer-ink-dark;
-    @apply transition-all duration-75 select-none cursor-pointer;
+    @apply transition-[transform,box-shadow,background-color,border-color] duration-100 select-none cursor-pointer;
     @apply flex items-center justify-center;
     box-shadow: 
-      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.5),
-      inset 0 -1px 0.5px rgba(0, 0, 0, 0.1),
-      0 1px 2px rgba(0, 0, 0, 0.1);
+      inset 0 1px 0.5px rgba(255, 255, 255, 0.5),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.08),
+      inset 0 -4px 6px rgba(0, 0, 0, 0.04),
+      0 1px 1px rgba(0, 0, 0, 0.08);
   }
   :is(.dark) .printer-btn {
     box-shadow: 
-      inset 0 0.5px 0.5px rgba(255, 255, 255, 0.04),
-      inset 0 -1px 0.5px rgba(0, 0, 0, 0.4),
-      0 1px 3px rgba(0, 0, 0, 0.4);
+      inset 0 1px 0.5px rgba(255, 255, 255, 0.05),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.38),
+      inset 0 -4px 8px rgba(0, 0, 0, 0.24),
+      0 1px 1px rgba(0, 0, 0, 0.4);
   }
-  .printer-btn:hover {
-    @apply brightness-[0.98] dark:brightness-110;
-  }
-  .printer-btn:active {
-    @apply translate-y-[0.5px];
-    box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.15);
-  }
+  .printer-btn:active,
   .printer-btn.active {
-    @apply translate-y-[0.5px];
+    @apply translate-y-[1.5px];
     box-shadow: 
-      inset 0 1px 2px rgba(0, 0, 0, 0.15);
+      inset 0 1px 2px rgba(0, 0, 0, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+      0 0 0 rgba(0, 0, 0, 0);
   }
+  :is(.dark) .printer-btn:active,
   :is(.dark) .printer-btn.active {
     background: rgba(255,255,255,0.04);
     box-shadow:
-      inset 0 1px 3px rgba(0, 0, 0, 0.5);
+      inset 0 1px 3px rgba(0, 0, 0, 0.55),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+      0 0 0 rgba(0, 0, 0, 0);
   }
 
   .printer-btn-icon {
@@ -283,7 +283,13 @@
   }
 
   .printer-btn-circle {
-    @apply w-7 p-0 rounded-full;
+    @apply w-9 h-9 p-0 rounded-full;
+  }
+
+  @media (max-width: 639px) {
+    .printer-btn:not(.printer-btn-circle) {
+      @apply h-[30px] px-2.5;
+    }
   }
 
   .printer-header-border {
@@ -325,22 +331,6 @@
     @apply border border-printer-ink/10 dark:border-printer-ink-dark/10;
   }
 
-  /* Button mount animation — staggered 3D flip on language switch / remount */
-  @keyframes btn-enter {
-    0% {
-      transform: rotateX(90deg);
-      opacity: 0;
-    }
-    100% {
-      transform: rotateX(0deg);
-      opacity: 1;
-    }
-  }
-  .btn-enter {
-    animation: btn-enter 0.35s ease-out both;
-    transform-style: preserve-3d;
-    perspective: 200px;
-  }
 }
 
 @layer utilities {

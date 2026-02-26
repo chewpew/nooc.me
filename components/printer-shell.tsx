@@ -219,6 +219,8 @@ export default function PrinterShell({
   const { mode, cycle } = useColorMode();
   const paperRef = usePaperFeedAnimation();
   const indicatorDelay = useSyncedAnimationDelay(2000);
+  const [pendingNavHref, setPendingNavHref] = useState<string | null>(null);
+  const [pendingFromPath, setPendingFromPath] = useState<string | null>(null);
 
   const navItems = [
     { label: dictionary.labels.home, href: dictionary.urls.home },
@@ -235,10 +237,30 @@ export default function PrinterShell({
     return pathname.startsWith(href);
   }
 
+  useEffect(() => {
+    if (!pendingNavHref || !pendingFromPath) return;
+    if (pathname !== pendingFromPath) {
+      setPendingNavHref(null);
+      setPendingFromPath(null);
+    }
+  }, [pathname, pendingNavHref, pendingFromPath]);
+
+  function onNavPress(href: string) {
+    if (isActive(href)) {
+      setPendingNavHref(null);
+      setPendingFromPath(null);
+      return;
+    }
+    setPendingNavHref(href);
+    setPendingFromPath(pathname);
+  }
+
   function switchLanguage() {
     const otherLang = lang === "en" ? "zh" : "en";
     const newPath = pathname.replace(`/${lang}`, `/${otherLang}`);
     try { sessionStorage.setItem(LANG_SWITCH_KEY, '1'); } catch {}
+    setPendingNavHref(null);
+    setPendingFromPath(null);
     router.push(newPath);
   }
 
@@ -292,15 +314,15 @@ export default function PrinterShell({
             </div>
 
             {/* Navigation row */}
-            <div className="relative mt-2 p-1 bg-black/[0.03] dark:bg-white/[0.03] rounded-xl shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.4)] dark:border dark:border-white/[0.04] flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2">
-              <nav className="relative flex items-center gap-2 sm:gap-2.5 overflow-x-auto px-1 flex-1 w-full no-scrollbar py-0.5">
+            <div className="relative mt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 sm:gap-2">
+              <nav className="relative flex items-center gap-2 sm:gap-2.5 flex-1 w-full py-1.5">
                 {navItems.map((item, index) => {
-                  const active = isActive(item.href);
+                  const active = pendingNavHref ? pendingNavHref === item.href : isActive(item.href);
                   return (
                     <Link key={index} href={item.href}>
                       <button
-                        className={classNames("printer-btn whitespace-nowrap btn-enter", { "active": active })}
-                        style={{ animationDelay: `${index * 40}ms` }}
+                        onClick={() => onNavPress(item.href)}
+                        className={classNames("printer-btn whitespace-nowrap", { "active": active })}
                       >
                         <span className="leading-none">{item.label}</span>
                       </button>
@@ -308,13 +330,12 @@ export default function PrinterShell({
                   );
                 })}
               </nav>
-              <div className="sm:hidden mx-1 h-[1px] bg-black/10 dark:bg-white/10" />
-              <div className="flex items-center justify-end gap-1 shrink-0 px-1 pb-0.5 sm:px-0 sm:pr-1 sm:py-0.5">
-                <div className="hidden sm:block w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
-                <button onClick={switchLanguage} className="printer-btn printer-btn-circle btn-enter" style={{ animationDelay: `${(navItems.length + 1) * 40}ms` }} title={lang === "en" ? "切换到中文" : "Switch to English"}>
+              <div className="sm:hidden h-[1px] bg-black/10 dark:bg-white/10" />
+              <div className="flex items-center justify-end gap-1 shrink-0 py-1">
+                <button onClick={switchLanguage} className="printer-btn printer-btn-circle" title={lang === "en" ? "切换到中文" : "Switch to English"}>
                   <span className="leading-none font-semibold text-[9px] tracking-normal">{lang === "en" ? "中" : "EN"}</span>
                 </button>
-                <button onClick={cycle} className="printer-btn printer-btn-circle btn-enter" style={{ animationDelay: `${(navItems.length + 2) * 40}ms` }} title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
+                <button onClick={cycle} className="printer-btn printer-btn-circle" title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
                   <ColorModeIcon mode={mode} />
                 </button>
               </div>
