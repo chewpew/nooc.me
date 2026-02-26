@@ -2,6 +2,7 @@ import { getDictionary, Language } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 import classNames from "classnames";
+import { User as IdentificationIcon } from "lucide-react";
 import {
   PrintedSection,
   PrintedDivider,
@@ -76,7 +77,7 @@ export default async function AboutPage({
       {/* Header */}
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">◉</span>
+          <IdentificationIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
           <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {dictionary.labels.aboutTitle}
           </h1>

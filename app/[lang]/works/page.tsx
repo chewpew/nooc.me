@@ -3,8 +3,12 @@ import { getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 import {
+  Archive as ArchiveBoxIcon,
+  Briefcase as BriefcaseIcon,
+  Star as StarIcon,
+} from "lucide-react";
+import {
   PrintedSection,
-  PrintedLabel,
   PrintedDivider,
 } from "@/components/printed-elements";
 
@@ -59,7 +63,7 @@ export default async function WorksPage({
       {/* Header */}
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">◈</span>
+          <BriefcaseIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
           <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {dictionary.labels.works}
           </h1>
@@ -70,7 +74,14 @@ export default async function WorksPage({
       </PrintedSection>
 
       {/* Primary works */}
-      <PrintedSection label="▸ FEATURED">
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <StarIcon className="w-2.5 h-2.5" />
+            <span className="label-text">FEATURED</span>
+          </span>
+        }
+      >
         <div className="flex flex-col gap-1">
           {primaryWorks.map((work) => (
             <a
@@ -111,7 +122,14 @@ export default async function WorksPage({
 
       {/* Other works */}
       {otherWorks.length > 0 && (
-        <PrintedSection label="▸ ARCHIVE">
+        <PrintedSection
+          label={
+            <span className="inline-flex items-center gap-1.5">
+              <ArchiveBoxIcon className="w-2.5 h-2.5" />
+              <span className="label-text">ARCHIVE</span>
+            </span>
+          }
+        >
           <div className="flex flex-col gap-1">
             {otherWorks.map((work) => (
               <a

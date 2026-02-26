@@ -2,7 +2,7 @@
 
 import Card from "./card";
 import Image from "next/image";
-import { ArrowPathRoundedSquareIcon } from "@heroicons/react/24/solid";
+import { RefreshCcw as ArrowPathRoundedSquareIcon } from "lucide-react";
 import avatar from "../public/static/avatar.webp";
 import FlippableCard from "./flippable-card";
 import { useCallback, useState } from "react";

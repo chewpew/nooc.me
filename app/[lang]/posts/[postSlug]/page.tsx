@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getDictionary, Language, languageLabels } from "@/dictionaries";
 import { SiX } from "@icons-pack/react-simple-icons";
+import { List as ListBulletIcon } from "lucide-react";
 import { Metadata } from "next";
 import classNames from "classnames";
 import { PostAdvertising } from "./Advertising";
@@ -172,7 +173,14 @@ export default async function PostPage({
       {/* Table of contents */}
       {post.toc.length > 0 && (
         <>
-          <PrintedSection label={dictionary.labels.toc}>
+          <PrintedSection
+            label={
+              <span className="inline-flex items-center gap-1.5">
+                <ListBulletIcon className="w-2.5 h-2.5" />
+                <span className="label-text">{dictionary.labels.toc}</span>
+              </span>
+            }
+          >
             <ul className="flex flex-col gap-1.5">
               {post.toc.map((entry) => (
                 <li key={entry.title}>

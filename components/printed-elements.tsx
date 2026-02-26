@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 interface PrintedSectionProps {
   title?: string;
-  label?: string;
+  label?: ReactNode;
   className?: string;
   children: ReactNode;
 }
@@ -18,7 +18,7 @@ export function PrintedSection({
     <section className={classNames("mb-8", className)}>
       {label && (
         <div className="flex items-center gap-2 mb-3">
-          <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-printer-ink-light dark:text-printer-ink-dark/50 bg-printer-ink/5 dark:bg-printer-ink-dark/5 px-2 py-0.5 rounded-sm">
+          <div className="inline-flex items-center gap-1.5 leading-none align-middle font-mono text-[10px] tracking-[0.3em] uppercase text-printer-ink-light dark:text-printer-ink-dark/50 bg-printer-ink/5 dark:bg-printer-ink-dark/5 px-2 py-[3px] rounded-sm [&_svg]:shrink-0 [&_svg]:align-middle [&_.label-text]:inline-flex [&_.label-text]:items-center [&_.label-text]:leading-none [&_.label-text]:translate-y-[0.5px]">
             {label}
           </div>
           <div className="flex-1 h-px bg-printer-ink/5 dark:bg-printer-ink-dark/5" />
@@ -48,7 +48,7 @@ export function PrintedLabel({
   return (
     <span
       className={classNames(
-        "inline-flex items-center font-mono text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-sm border",
+        "inline-flex items-center leading-none font-mono text-[10px] tracking-widest uppercase px-2 py-[3px] rounded-sm border [&_svg]:shrink-0 [&_svg]:align-middle [&_.label-text]:inline-flex [&_.label-text]:items-center [&_.label-text]:leading-none [&_.label-text]:translate-y-[0.5px]",
         {
           "border-printer-ink/10 dark:border-printer-ink-dark/10 text-printer-ink/70 dark:text-printer-ink-dark/70":
             variant === "default",

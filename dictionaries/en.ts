@@ -1,8 +1,8 @@
 import {
-  CameraIcon,
-  EnvelopeIcon,
-  PaperAirplaneIcon,
-} from "@heroicons/react/24/solid";
+  Camera as CameraIcon,
+  Mail as EnvelopeIcon,
+  Send as PaperAirplaneIcon,
+} from "lucide-react";
 import {
   SiBlender,
   SiGithub,

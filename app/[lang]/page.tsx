@@ -4,6 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { displayDate } from "@/lib/date";
 import {
+  BookOpen as BookOpenIcon,
+  Briefcase as BriefcaseIcon,
+  Cpu as CpuChipIcon,
+} from "lucide-react";
+import {
   PrintedSection,
   PrintedLabel,
   PrintedDivider,
@@ -83,7 +88,14 @@ export default async function Home({
       <PrintedDivider style="dotted" />
 
       {/* Works section - compact */}
-      <PrintedSection label={`◈ ${dictionary.labels.works}`}>
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <BriefcaseIcon className="w-2.5 h-2.5" />
+            <span className="label-text">{dictionary.labels.works}</span>
+          </span>
+        }
+      >
         <div className="grid grid-cols-2 gap-2">
           {dictionary.works
             .filter((work) => work.primary)
@@ -118,7 +130,14 @@ export default async function Home({
       <PrintedDivider style="dashed" />
 
       {/* Latest Life Posts */}
-      <PrintedSection label={`✦ ${dictionary.labels.latestLife}`}>
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <BookOpenIcon className="w-2.5 h-2.5" />
+            <span className="label-text">{dictionary.labels.latestLife}</span>
+          </span>
+        }
+      >
         <div className="flex flex-col gap-3">
           {latestLife.map((post) => (
             <Link
@@ -153,7 +172,14 @@ export default async function Home({
       <PrintedDivider style="dashed" />
 
       {/* Latest Tech Posts */}
-      <PrintedSection label={`▸ ${dictionary.labels.latestTech}`}>
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <CpuChipIcon className="w-2.5 h-2.5" />
+            <span className="label-text">{dictionary.labels.latestTech}</span>
+          </span>
+        }
+      >
         <div className="flex flex-col gap-3">
           {latestPosts.map((post) => (
             <Link

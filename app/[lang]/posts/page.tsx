@@ -6,6 +6,11 @@ import { Language, getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 import {
+  Cpu as CpuChipIcon,
+  Tag as TagIcon,
+  Wrench as WrenchScrewdriverIcon,
+} from "lucide-react";
+import {
   PrintedSection,
   PrintedLabel,
   PrintedDivider,
@@ -99,7 +104,7 @@ export default async function PostsPage({
       {/* Header */}
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">⚙</span>
+          <CpuChipIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
           <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {dictionary.labels.posts}
           </h1>
@@ -110,7 +115,14 @@ export default async function PostsPage({
       </PrintedSection>
 
       {/* Categories sidebar as label strips */}
-      <PrintedSection label={dictionary.labels.categories}>
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <TagIcon className="w-2.5 h-2.5" />
+            <span className="label-text">{dictionary.labels.categories}</span>
+          </span>
+        }
+      >
         <div className="flex flex-wrap gap-1.5 mb-2">
           {categories.map((category) => (
             <Link key={category.slug} href={category.permalink[params.lang]}>
@@ -156,7 +168,14 @@ export default async function PostsPage({
       <PrintedDivider style="dashed" />
 
       {/* Recommended Tools */}
-      <PrintedSection label={`⚒ ${dictionary.labels.recommended}`}>
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <WrenchScrewdriverIcon className="w-2.5 h-2.5" />
+            <span className="label-text">{dictionary.labels.recommended}</span>
+          </span>
+        }
+      >
         <div className="flex flex-col gap-1">
           {dictionary.tools.map((tool, index) => (
             <div key={tool.name}>

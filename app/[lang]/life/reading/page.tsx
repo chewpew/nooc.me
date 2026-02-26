@@ -1,6 +1,7 @@
 import { getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import Link from "next/link";
+import { BookOpen as BookOpenIcon } from "lucide-react";
 import {
   PrintedSection,
   PrintedDivider,
@@ -53,7 +54,7 @@ export default async function ReadingPage({
       {/* Header */}
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">📖</span>
+          <BookOpenIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
           <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {dictionary.labels.reading}
           </h1>

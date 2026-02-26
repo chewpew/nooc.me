@@ -11,7 +11,6 @@
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.5",
     "@formatjs/intl-localematcher": "^0.5.4",
-    "@heroicons/react": "^2.1.5",
     "@icons-pack/react-simple-icons": "^10.0.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/negotiator": "^0.6.3",
@@ -29,6 +28,7 @@
     "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "lucide-react": "^0.542.0",
     "rehype-pretty-code": "^0.14.0",
     "tailwind-merge": "^2.5.3",
     "tailwindcss": "^3.4.13",

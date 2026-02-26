@@ -7,10 +7,10 @@ import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { 
-  SunIcon,
-  MoonIcon,
-  ComputerDesktopIcon
-} from "@heroicons/react/24/outline";
+  Monitor as ComputerDesktopIcon,
+  Moon as MoonIcon,
+  Sun as SunIcon,
+} from "lucide-react";
 
 /**
  * Generate random keyframes that simulate a subtle printer paper-jam stutter.

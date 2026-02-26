@@ -5,6 +5,13 @@ import { getDictionary, Language } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 import {
+  Activity as ActivityIcon,
+  BookOpen as BookOpenIcon,
+  Film as FilmIcon,
+  Music as MusicalNoteIcon,
+  Tag as TagIcon,
+} from "lucide-react";
+import {
   PrintedSection,
   PrintedLabel,
   PrintedDivider,
@@ -69,7 +76,7 @@ export default async function LifePage({
       {/* Header */}
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">✦</span>
+          <BookOpenIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
           <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {dictionary.labels.life}
           </h1>
@@ -80,21 +87,31 @@ export default async function LifePage({
       </PrintedSection>
 
       {/* Archive sections - links to subpages */}
-      <PrintedSection label={`✦ ${dictionary.labels.activity}`}>
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <ActivityIcon className="w-2.5 h-2.5" />
+            <span className="label-text">{dictionary.labels.activity}</span>
+          </span>
+        }
+      >
         <div className="flex flex-wrap gap-2">
           <Link href={`${dictionary.urls.life}/reading`}>
             <PrintedLabel variant="default">
-              📖 {dictionary.labels.reading}
+              <BookOpenIcon className="w-2.5 h-2.5 mr-1" />
+              <span className="label-text">{dictionary.labels.reading}</span>
             </PrintedLabel>
           </Link>
           <Link href={`${dictionary.urls.life}/films`}>
             <PrintedLabel variant="default">
-              🎬 {dictionary.labels.films}
+              <FilmIcon className="w-2.5 h-2.5 mr-1" />
+              <span className="label-text">{dictionary.labels.films}</span>
             </PrintedLabel>
           </Link>
           <Link href={`${dictionary.urls.life}/music`}>
             <PrintedLabel variant="default">
-              🎵 {dictionary.labels.music}
+              <MusicalNoteIcon className="w-2.5 h-2.5 mr-1" />
+              <span className="label-text">{dictionary.labels.music}</span>
             </PrintedLabel>
           </Link>
         </div>
@@ -103,7 +120,14 @@ export default async function LifePage({
       <PrintedDivider style="dashed" />
 
       {/* Categories as label strips */}
-      <PrintedSection label={dictionary.labels.categories}>
+      <PrintedSection
+        label={
+          <span className="inline-flex items-center gap-1.5">
+            <TagIcon className="w-2.5 h-2.5" />
+            <span className="label-text">{dictionary.labels.categories}</span>
+          </span>
+        }
+      >
         <div className="flex flex-wrap gap-1.5 mb-2">
           {lifeCategories.map((category) => (
             <Link key={category.slug} href={category.permalink[params.lang]}>

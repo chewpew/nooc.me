@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { displayDate } from "@/lib/date";
 import { getAlternateLanguages } from "@/lib/metadata";
+import { Tag as TagIcon } from "lucide-react";
 import {
   PrintedSection,
   PrintedLabel,
@@ -87,7 +88,7 @@ export default async function CategoryPostsPage({
       {/* Header */}
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">⚙</span>
+          <TagIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
           <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {category.name[params.lang]}
           </h1>
