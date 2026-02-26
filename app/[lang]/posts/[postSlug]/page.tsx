@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getDictionary, Language, languageLabels } from "@/dictionaries";
 import { SiX } from "@icons-pack/react-simple-icons";
-import { List as ListBulletIcon } from "lucide-react";
 import { Metadata } from "next";
 import { PostAdvertising } from "./Advertising";
 import { getAlternateLanguages } from "@/lib/metadata";
@@ -171,42 +170,6 @@ export default async function PostPage(
           </p>
         )}
       </PrintedSection>
-
-      {/* Table of contents */}
-      {post.toc.length > 0 && (
-        <>
-          <PrintedSection
-            label={
-              <span className="inline-flex items-center gap-1.5">
-                <ListBulletIcon className="w-2.5 h-2.5" />
-                <span className="label-text">{dictionary.labels.toc}</span>
-              </span>
-            }
-          >
-            <ul className="flex flex-col gap-1.5">
-              {post.toc.map((entry) => (
-                <li key={entry.title}>
-                  <span className="font-mono text-xs text-printer-ink/70 dark:text-printer-ink-dark/70">
-                    {entry.title}
-                  </span>
-                  {entry.items.length > 0 && (
-                    <ul className="ml-4 mt-1 flex flex-col gap-1">
-                      {entry.items.map((subEntry) => (
-                        <li key={subEntry.url}>
-                          <span className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40">
-                            {subEntry.title}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </PrintedSection>
-          <PrintedDivider style="dotted" />
-        </>
-      )}
 
       <PrintedDivider style="solid" />
 

@@ -13,6 +13,7 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import { generateBlogPostingJsonLd, generateBreadcrumbJsonLd } from "@/lib/json-ld";
 import { PostContent } from "@/components/post-content";
+import { PostAdvertising } from "../../posts/[postSlug]/Advertising";
 
 export const runtime = "edge";
 
@@ -230,6 +231,13 @@ export default async function LifePostPage(
           ← BACK TO LIFE
         </Link>
       </div>
+
+      <PrintedDivider style="dotted" />
+
+      {/* Advertising */}
+      <PrintedSection>
+        <PostAdvertising advertisements={dictionary.postAdvertisements} />
+      </PrintedSection>
       </div>
     </>
   );
