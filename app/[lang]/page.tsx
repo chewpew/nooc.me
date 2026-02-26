@@ -41,13 +41,14 @@ function getRandomMotto(dictionary: Awaited<ReturnType<typeof getDictionary>>) {
   return mottos[Math.floor(Math.random() * mottos.length)] ?? "";
 }
 
-export default async function Home({
-  params,
-}: {
-  params: {
-    lang: string;
-  };
-}) {
+export default async function Home(
+  props: {
+    params: Promise<{
+      lang: string;
+    }>;
+  }
+) {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
   const latestPosts = getLatestPosts(params.lang);
   const latestLife = getLatestLifePosts(params.lang);

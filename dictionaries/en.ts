@@ -1,12 +1,12 @@
 import {
   Camera as CameraIcon,
+  Gamepad2 as GamepadIcon,
   Mail as EnvelopeIcon,
   Send as PaperAirplaneIcon,
 } from "lucide-react";
 import {
   SiBlender,
   SiGithub,
-  SiNintendoswitch,
   SiSketch,
   SiSwift,
   SiTypescript,
@@ -242,7 +242,7 @@ A fan of Serverless.
     },
     {
       name: "Switch",
-      icon: SiNintendoswitch,
+      icon: GamepadIcon,
       summary:
         "I have a Switch, but it has a lot of dust on it, and I also have a PS4 with even more dust.",
       color: "rose",

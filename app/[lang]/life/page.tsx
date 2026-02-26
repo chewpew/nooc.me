@@ -19,11 +19,12 @@ import {
 
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Language };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: Language }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
 
   return {
@@ -61,13 +62,14 @@ function getPublishedLifePosts(lang: Language) {
     );
 }
 
-export default async function LifePage({
-  params,
-}: {
-  params: {
-    lang: Language;
-  };
-}) {
+export default async function LifePage(
+  props: {
+    params: Promise<{
+      lang: Language;
+    }>;
+  }
+) {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
   const allPosts = getPublishedLifePosts(params.lang);
 

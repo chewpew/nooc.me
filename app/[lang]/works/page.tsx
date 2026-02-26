@@ -14,11 +14,12 @@ import {
 
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
 
   return {
@@ -48,11 +49,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function WorksPage({
-  params,
-}: {
-  params: { lang: string };
-}) {
+export default async function WorksPage(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
 
   const primaryWorks = dictionary.works.filter((w) => w.primary);

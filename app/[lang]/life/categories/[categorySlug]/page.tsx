@@ -13,11 +13,12 @@ import {
 
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Language; categorySlug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: Language; categorySlug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
   const category = lifeCategories.find(
     (category) => category.slug === params.categorySlug,
@@ -58,14 +59,15 @@ function getPostsByCategory(categorySlug: string, lang: Language) {
     );
 }
 
-export default async function LifeCategoryPage({
-  params,
-}: {
-  params: {
-    lang: Language;
-    categorySlug: string;
-  };
-}) {
+export default async function LifeCategoryPage(
+  props: {
+    params: Promise<{
+      lang: Language;
+      categorySlug: string;
+    }>;
+  }
+) {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
   const category = lifeCategories.find(
     (category) => category.slug === params.categorySlug,

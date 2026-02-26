@@ -18,11 +18,12 @@ import {
 
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Language; postSlug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: Language; postSlug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const { lang, postSlug } = params;
   const dictionary = await getDictionary(lang);
 
@@ -70,14 +71,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function PostPage({
-  params,
-}: {
-  params: {
-    lang: Language;
-    postSlug: string;
-  };
-}) {
+export default async function PostPage(
+  props: {
+    params: Promise<{
+      lang: Language;
+      postSlug: string;
+    }>;
+  }
+) {
+  const params = await props.params;
   const { lang, postSlug } = params;
 
   const dictionary = await getDictionary(lang);

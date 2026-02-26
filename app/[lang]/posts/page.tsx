@@ -18,11 +18,12 @@ import {
 
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
 
   return {
@@ -89,13 +90,14 @@ function RatingDots({ rating }: { rating: number }) {
   );
 }
 
-export default async function PostsPage({
-  params,
-}: {
-  params: {
-    lang: Language;
-  };
-}) {
+export default async function PostsPage(
+  props: {
+    params: Promise<{
+      lang: Language;
+    }>;
+  }
+) {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
   const allPosts = getPublishedPosts(params.lang);
 

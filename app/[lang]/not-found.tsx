@@ -4,7 +4,7 @@ import { getDictionary, dictionaryKeys, defaultLanguage } from "../../dictionari
 import type { Language } from "../../dictionaries";
 
 export default async function NotFound() {
-  const headersList = headers();
+  const headersList = await headers();
   const locale = headersList.get("x-locale") || "";
   const lang =
     locale && dictionaryKeys.includes(locale as Language)

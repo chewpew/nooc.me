@@ -10,11 +10,12 @@ import {
 
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Language };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: Language }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
   const subtitle = dictionary.labels.aboutSubtitle.trim();
   const description = subtitle || dictionary.labels.aboutTitle;
@@ -46,13 +47,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function AboutPage({
-  params,
-}: {
-  params: {
-    lang: Language;
-  };
-}) {
+export default async function AboutPage(
+  props: {
+    params: Promise<{
+      lang: Language;
+    }>;
+  }
+) {
+  const params = await props.params;
   const dictionary = await getDictionary(params.lang);
   const subtitle = dictionary.labels.aboutSubtitle.trim();
 

@@ -7,8 +7,6 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 }
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  swcMinify: true,
-};
+const nextConfig = {};
 
 export default nextConfig;

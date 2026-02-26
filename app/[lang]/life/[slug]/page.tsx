@@ -16,11 +16,12 @@ import { PostContent } from "@/components/post-content";
 
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Language; slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: Language; slug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const { slug } = params;
   const dictionary = await getDictionary(params.lang);
 
@@ -68,14 +69,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function LifePostPage({
-  params,
-}: {
-  params: {
-    lang: Language;
-    slug: string;
-  };
-}) {
+export default async function LifePostPage(
+  props: {
+    params: Promise<{
+      lang: Language;
+      slug: string;
+    }>;
+  }
+) {
+  const params = await props.params;
   const { slug } = params;
 
   const dictionary = await getDictionary(params.lang);

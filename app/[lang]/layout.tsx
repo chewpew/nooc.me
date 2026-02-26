@@ -9,11 +9,12 @@ import PrinterShell from "../../components/printer-shell";
 import { notFound } from "next/navigation";
 export const runtime = "edge";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   if (!dictionaryKeys.includes(params.lang as any)) return {};
   const dictionary = await getDictionary(params.lang);
 
@@ -57,15 +58,20 @@ export async function generateMetadata({
   };
 }
 
-export default async function RootLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: {
-    lang: string;
-  };
-}) {
+export default async function RootLayout(
+  props: {
+    children: React.ReactNode;
+    params: Promise<{
+      lang: string;
+    }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   if (!dictionaryKeys.includes(params.lang as any)) notFound();
   const dictionary = await getDictionary(params.lang);
 

@@ -1,12 +1,12 @@
 import {
   Camera as CameraIcon,
+  Gamepad2 as GamepadIcon,
   Mail as EnvelopeIcon,
   Send as PaperAirplaneIcon,
 } from "lucide-react";
 import {
   SiBlender,
   SiGithub,
-  SiNintendoswitch,
   SiSketch,
   SiSwift,
   SiTypescript,
@@ -237,7 +237,7 @@ Serverless 爱好者。
     },
     {
       name: "Switch",
-      icon: SiNintendoswitch,
+      icon: GamepadIcon,
       summary: "有一台 Switch, 但上面很多灰, 还有一台灰更多的 PS4 。",
       color: "rose",
     },
