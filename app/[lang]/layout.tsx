@@ -11,9 +11,14 @@ import { cookies } from "next/headers";
 export const runtime = "edge";
 
 type ColorMode = "system" | "light" | "dark";
+type ResolvedColorMode = "light" | "dark";
 
 function parseColorMode(value: string | undefined): ColorMode {
   return value === "system" || value === "light" || value === "dark" ? value : "system";
+}
+
+function parseResolvedColorMode(value: string | undefined): ResolvedColorMode | undefined {
+  return value === "light" || value === "dark" ? value : undefined;
 }
 
 export async function generateMetadata(
@@ -92,6 +97,14 @@ export default async function RootLayout(
   const dictionary = await getDictionary(params.lang);
   const cookieStore = await cookies();
   const initialColorMode = parseColorMode(cookieStore.get("color-mode")?.value);
+  const initialResolvedColorMode = parseResolvedColorMode(
+    cookieStore.get("resolved-color-mode")?.value,
+  );
+  const initialHtmlClassName =
+    initialColorMode === "dark" ||
+    (initialColorMode === "system" && initialResolvedColorMode === "dark")
+      ? "dark"
+      : undefined;
 
   const printerShellProps = {
     labels: {
@@ -113,7 +126,12 @@ export default async function RootLayout(
   };
 
   return (
-    <html lang={params.lang} suppressHydrationWarning>
+    <html
+      lang={params.lang}
+      suppressHydrationWarning
+      className={initialHtmlClassName}
+      data-color-mode={initialColorMode}
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{

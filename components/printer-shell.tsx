@@ -5,7 +5,7 @@ import Image from "next/image";
 import avatar from "../public/static/avatar.webp";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import RotaryDial from "./rotary-dial";
 import {
   RiComputerLine as ComputerDesktopIcon,
@@ -116,6 +116,7 @@ function usePaperFeedAnimation() {
   return paperRef;
 }
 type ColorMode = "system" | "light" | "dark";
+type ResolvedColorMode = "light" | "dark";
 
 function parseColorMode(value: string | null): ColorMode {
   return value === "system" || value === "light" || value === "dark" ? value : "system";
@@ -136,34 +137,35 @@ function useColorMode(initialMode: ColorMode) {
     return initialMode;
   });
 
-  const apply = useCallback((m: ColorMode) => {
+  const apply = useCallback((m: ColorMode): ResolvedColorMode => {
     const root = document.documentElement;
-    if (m === "dark") {
-      root.classList.add("dark");
-    } else if (m === "light") {
-      root.classList.remove("dark");
-    } else {
-      // system
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        root.classList.add("dark");
-      } else {
-        root.classList.remove("dark");
-      }
-    }
+    const isDark =
+      m === "dark" || (m === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    root.classList.toggle("dark", isDark);
+    return isDark ? "dark" : "light";
   }, []);
 
-  useEffect(() => {
-    apply(mode);
+  const persistColorMode = useCallback((modeValue: ColorMode, resolved: ResolvedColorMode) => {
+    try {
+      document.cookie = `color-mode=${modeValue}; path=/; max-age=31536000; samesite=lax`;
+      document.cookie = `resolved-color-mode=${resolved}; path=/; max-age=31536000; samesite=lax`;
+    } catch {}
+  }, []);
+
+  useLayoutEffect(() => {
+    persistColorMode(mode, apply(mode));
 
     if (mode === "system") {
       const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      const handler = () => apply("system");
+      const handler = () => {
+        persistColorMode("system", apply("system"));
+      };
       mq.addEventListener("change", handler);
       return () => mq.removeEventListener("change", handler);
     }
-  }, [mode, apply]);
+  }, [mode, apply, persistColorMode]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     try {
       const rawStored = localStorage.getItem("color-mode");
       const stored = rawStored === null ? initialMode : parseColorMode(rawStored);
@@ -181,12 +183,9 @@ function useColorMode(initialMode: ColorMode) {
     try {
       localStorage.setItem("color-mode", next);
     } catch {}
-    try {
-      document.cookie = `color-mode=${next}; path=/; max-age=31536000; samesite=lax`;
-    } catch {}
     document.documentElement.dataset.colorMode = next;
-    apply(next);
-  }, [apply]);
+    persistColorMode(next, apply(next));
+  }, [apply, persistColorMode]);
 
   return { mode, setColorMode };
 }
@@ -265,10 +264,26 @@ export default function PrinterShell({
 
   const switchToLanguage = useCallback((newLang: string) => {
     if (newLang === lang) return;
-    const newPath = pathname.replace(`/${lang}`, `/${newLang}`);
+    const rest = pathname.split("/").slice(2);
+    const newPath = `/${newLang}${rest.length ? `/${rest.join("/")}` : ""}`;
     try { sessionStorage.setItem(LANG_SWITCH_KEY, '1'); } catch {}
     setPendingNavHref(null);
     setPendingFromPath(null);
+    const docWithTransition = document as Document & {
+      startViewTransition?: (callback: () => void) => { finished: Promise<void> };
+    };
+
+    if (typeof docWithTransition.startViewTransition === "function") {
+      try {
+        docWithTransition.startViewTransition(() => {
+          router.push(newPath);
+        });
+        return;
+      } catch {
+        // Fallback when browser implementation rejects the call.
+      }
+    }
+
     router.push(newPath);
   }, [lang, pathname, router]);
 
