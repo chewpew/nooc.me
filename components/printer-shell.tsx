@@ -7,10 +7,10 @@ import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { 
-  Monitor as ComputerDesktopIcon,
-  Moon as MoonIcon,
-  Sun as SunIcon,
-} from "lucide-react";
+  RiComputerLine as ComputerDesktopIcon,
+  RiMoonLine as MoonIcon,
+  RiSunLine as SunIcon,
+} from "@remixicon/react";
 
 /**
  * Generate random keyframes that simulate a subtle printer paper-jam stutter.

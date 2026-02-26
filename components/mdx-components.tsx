@@ -2,7 +2,7 @@ import * as runtime from "react/jsx-runtime";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import classNames from "classnames";
-import { Info as InformationCircleIcon } from "lucide-react";
+import { RiInformationLine as InformationCircleIcon } from "@remixicon/react";
 
 function Indicator({
   type = "info",

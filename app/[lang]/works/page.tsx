@@ -3,10 +3,10 @@ import { getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 import {
-  Archive as ArchiveBoxIcon,
-  Briefcase as BriefcaseIcon,
-  Star as StarIcon,
-} from "lucide-react";
+  RiArchiveLine as ArchiveBoxIcon,
+  RiApps2Line as BriefcaseIcon,
+  RiStarLine as StarIcon,
+} from "@remixicon/react";
 import {
   PrintedSection,
   PrintedDivider,

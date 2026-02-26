@@ -1,9 +1,9 @@
 import {
-  Camera as CameraIcon,
-  Gamepad2 as GamepadIcon,
-  Mail as EnvelopeIcon,
-  Send as PaperAirplaneIcon,
-} from "lucide-react";
+  RiCameraLine as CameraIcon,
+  RiGamepadLine as GamepadIcon,
+  RiMailLine as EnvelopeIcon,
+  RiSendPlaneLine as PaperAirplaneIcon,
+} from "@remixicon/react";
 import {
   SiBlender,
   SiGithub,

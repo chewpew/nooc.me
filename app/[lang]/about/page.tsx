@@ -1,7 +1,7 @@
 import { getDictionary, Language } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
-import { User as IdentificationIcon } from "lucide-react";
+import { RiUser4Line as IdentificationIcon } from "@remixicon/react";
 import {
   PrintedSection,
   PrintedDivider,

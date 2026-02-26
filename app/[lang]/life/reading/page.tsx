@@ -1,7 +1,7 @@
 import { getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen as BookOpenIcon } from "lucide-react";
+import { RiBookOpenLine as BookOpenIcon } from "@remixicon/react";
 import {
   PrintedSection,
   PrintedDivider,

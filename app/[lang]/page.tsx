@@ -4,10 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { displayDate } from "@/lib/date";
 import {
-  BookOpen as BookOpenIcon,
-  Briefcase as BriefcaseIcon,
-  Cpu as CpuChipIcon,
-} from "lucide-react";
+  RiDraftLine as LifeIcon,
+  RiApps2Line as BriefcaseIcon,
+  RiWindowLine as CpuChipIcon,
+} from "@remixicon/react";
 import {
   PrintedSection,
   PrintedLabel,
@@ -140,7 +140,7 @@ export default async function Home(
       <PrintedSection
         label={
           <span className="inline-flex items-center gap-1.5">
-            <BookOpenIcon className="w-2.5 h-2.5" />
+            <LifeIcon className="w-2.5 h-2.5" />
             <span className="label-text">{dictionary.labels.latestLife}</span>
           </span>
         }

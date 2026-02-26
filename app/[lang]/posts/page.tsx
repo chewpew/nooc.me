@@ -6,10 +6,10 @@ import { Language, getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 import {
-  Cpu as CpuChipIcon,
-  Tag as TagIcon,
-  Wrench as WrenchScrewdriverIcon,
-} from "lucide-react";
+  RiWindowLine as CpuChipIcon,
+  RiPriceTag3Line as TagIcon,
+  RiToolsLine as WrenchScrewdriverIcon,
+} from "@remixicon/react";
 import {
   PrintedSection,
   PrintedLabel,

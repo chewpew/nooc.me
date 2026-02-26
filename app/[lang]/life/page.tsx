@@ -5,12 +5,13 @@ import { getDictionary, Language } from "@/dictionaries";
 import { Metadata } from "next";
 import { getAlternateLanguages } from "@/lib/metadata";
 import {
-  Activity as ActivityIcon,
-  BookOpen as BookOpenIcon,
-  Film as FilmIcon,
-  Music as MusicalNoteIcon,
-  Tag as TagIcon,
-} from "lucide-react";
+  RiDraftLine as LifeIcon,
+  RiBookOpenLine as BookOpenIcon,
+  RiFilmLine as FilmIcon,
+  RiMusic2Line as MusicalNoteIcon,
+  RiPriceTag3Line as TagIcon,
+  RiPulseLine as ActivityIcon,
+} from "@remixicon/react";
 import {
   PrintedSection,
   PrintedLabel,
@@ -78,7 +79,7 @@ export default async function LifePage(
       {/* Header */}
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
-          <BookOpenIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
+          <LifeIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
           <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {dictionary.labels.life}
           </h1>

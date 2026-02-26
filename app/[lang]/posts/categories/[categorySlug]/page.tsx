@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { displayDate } from "@/lib/date";
 import { getAlternateLanguages } from "@/lib/metadata";
-import { Tag as TagIcon } from "lucide-react";
+import { RiPriceTag3Line as TagIcon } from "@remixicon/react";
 import {
   PrintedSection,
   PrintedLabel,

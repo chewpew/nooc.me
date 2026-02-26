@@ -1,7 +1,7 @@
 import { getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import Link from "next/link";
-import { Music as MusicalNoteIcon } from "lucide-react";
+import { RiMusic2Line as MusicalNoteIcon } from "@remixicon/react";
 import {
   PrintedSection,
   PrintedDivider,

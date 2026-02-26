@@ -1,7 +1,7 @@
 import { getDictionary } from "@/dictionaries";
 import { Metadata } from "next";
 import Link from "next/link";
-import { Film as FilmIcon } from "lucide-react";
+import { RiFilmLine as FilmIcon } from "@remixicon/react";
 import {
   PrintedSection,
   PrintedDivider,
