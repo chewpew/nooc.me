@@ -6,12 +6,12 @@ import avatar from "../public/static/avatar.webp";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { 
+import RotaryDial from "./rotary-dial";
+import {
   RiComputerLine as ComputerDesktopIcon,
   RiMoonLine as MoonIcon,
   RiSunLine as SunIcon,
 } from "@remixicon/react";
-
 /**
  * Generate random keyframes that simulate a subtle printer paper-jam stutter.
  * Only the top portion of the paper slides in (small fixed px offset),
@@ -118,14 +118,13 @@ function usePaperFeedAnimation() {
 type ColorMode = "system" | "light" | "dark";
 
 function useColorMode() {
-  const [mode, setMode] = useState<ColorMode>("system");
-
-  useEffect(() => {
+  // Read synchronously so that on remount (e.g. language switch) we never
+  // start with the wrong value, which would cause a flash + rotation glitch.
+  const [mode, setMode] = useState<ColorMode>(() => {
+    if (typeof window === "undefined") return "system";
     const stored = localStorage.getItem("color-mode") as ColorMode | null;
-    if (stored) {
-      setMode(stored);
-    }
-  }, []);
+    return stored ?? "system";
+  });
 
   const apply = useCallback((m: ColorMode) => {
     const root = document.documentElement;
@@ -154,37 +153,15 @@ function useColorMode() {
     }
   }, [mode, apply]);
 
-  const cycle = useCallback(() => {
-    setMode((prev) => {
-      const next: ColorMode =
-        prev === "system" ? "light" : prev === "light" ? "dark" : "system";
-      localStorage.setItem("color-mode", next);
-      const root = document.documentElement;
-      if (next === "dark") {
-        root.classList.add("dark");
-      } else if (next === "light") {
-        root.classList.remove("dark");
-      } else {
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          root.classList.add("dark");
-        } else {
-          root.classList.remove("dark");
-        }
-      }
-      return next;
-    });
-  }, []);
+  const setColorMode = useCallback((next: ColorMode) => {
+    setMode(next);
+    localStorage.setItem("color-mode", next);
+    apply(next);
+  }, [apply]);
 
-  return { mode, cycle };
+  return { mode, setColorMode };
 }
 
-const ColorModeIcon = ({ mode }: { mode: ColorMode }) => {
-  switch (mode) {
-    case "light": return <SunIcon className="w-3.5 h-3.5" />;
-    case "dark": return <MoonIcon className="w-3.5 h-3.5" />;
-    default: return <ComputerDesktopIcon className="w-3.5 h-3.5" />;
-  }
-};
 
 interface PrinterShellProps {
   dictionary: {
@@ -216,7 +193,7 @@ export default function PrinterShell({
 }: PrinterShellProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { mode, cycle } = useColorMode();
+  const { mode, setColorMode } = useColorMode();
   const paperRef = usePaperFeedAnimation();
   const indicatorDelay = useSyncedAnimationDelay(2000);
   const [pendingNavHref, setPendingNavHref] = useState<string | null>(null);
@@ -255,14 +232,26 @@ export default function PrinterShell({
     setPendingFromPath(pathname);
   }
 
-  function switchLanguage() {
-    const otherLang = lang === "en" ? "zh" : "en";
-    const newPath = pathname.replace(`/${lang}`, `/${otherLang}`);
+  const switchToLanguage = useCallback((newLang: string) => {
+    if (newLang === lang) return;
+    const newPath = pathname.replace(`/${lang}`, `/${newLang}`);
     try { sessionStorage.setItem(LANG_SWITCH_KEY, '1'); } catch {}
     setPendingNavHref(null);
     setPendingFromPath(null);
     router.push(newPath);
-  }
+  }, [lang, pathname, router]);
+
+  const langOptions = [
+    { value: "en", label: "EN" },
+    { value: "zh", label: "中" },
+  ];
+
+  const iconCls = "w-2 h-2";
+  const colorModeOptions: { value: ColorMode; label: React.ReactNode }[] = [
+    { value: "system", label: <ComputerDesktopIcon className={iconCls} /> },
+    { value: "light", label: <SunIcon className={iconCls} /> },
+    { value: "dark", label: <MoonIcon className={iconCls} /> },
+  ];
 
   return (
     <div className="min-h-screen page-grid flex flex-col items-center px-3 py-6 sm:py-10">
@@ -331,13 +320,20 @@ export default function PrinterShell({
                 })}
               </nav>
               <div className="sm:hidden h-[1px] bg-black/10 dark:bg-white/10" />
-              <div className="flex items-center justify-end gap-1 shrink-0 py-1">
-                <button onClick={switchLanguage} className="printer-btn printer-btn-circle" title={lang === "en" ? "切换到中文" : "Switch to English"}>
-                  <span className="leading-none font-semibold text-[9px] tracking-normal">{lang === "en" ? "中" : "EN"}</span>
-                </button>
-                <button onClick={cycle} className="printer-btn printer-btn-circle" title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
-                  <ColorModeIcon mode={mode} />
-                </button>
+              <div className="flex items-center justify-end gap-5 shrink-0 py-1">
+                <RotaryDial
+                  options={langOptions}
+                  value={lang}
+                  onChange={switchToLanguage}
+                  title={lang === "en" ? "切换到中文" : "Switch to English"}
+                />
+                <RotaryDial
+                  options={colorModeOptions}
+                  value={mode}
+                  onChange={setColorMode}
+                  labelLayout="inline"
+                  title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}
+                />
               </div>
             </div>
           </div>
