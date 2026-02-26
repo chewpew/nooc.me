@@ -117,13 +117,23 @@ function usePaperFeedAnimation() {
 }
 type ColorMode = "system" | "light" | "dark";
 
-function useColorMode() {
-  // Read synchronously so that on remount (e.g. language switch) we never
-  // start with the wrong value, which would cause a flash + rotation glitch.
+function parseColorMode(value: string | null): ColorMode {
+  return value === "system" || value === "light" || value === "dark" ? value : "system";
+}
+
+function useColorMode(initialMode: ColorMode) {
   const [mode, setMode] = useState<ColorMode>(() => {
-    if (typeof window === "undefined") return "system";
-    const stored = localStorage.getItem("color-mode") as ColorMode | null;
-    return stored ?? "system";
+    if (typeof window === "undefined") return initialMode;
+
+    const domMode = document.documentElement.dataset.colorMode;
+    if (domMode) return parseColorMode(domMode);
+
+    try {
+      const rawStored = localStorage.getItem("color-mode");
+      if (rawStored !== null) return parseColorMode(rawStored);
+    } catch {}
+
+    return initialMode;
   });
 
   const apply = useCallback((m: ColorMode) => {
@@ -153,9 +163,28 @@ function useColorMode() {
     }
   }, [mode, apply]);
 
+  useEffect(() => {
+    try {
+      const rawStored = localStorage.getItem("color-mode");
+      const stored = rawStored === null ? initialMode : parseColorMode(rawStored);
+      setMode((current) => (current === stored ? current : stored));
+      document.documentElement.dataset.colorMode = stored;
+      return;
+    } catch {}
+
+    document.documentElement.dataset.colorMode = initialMode;
+    setMode((current) => (current === initialMode ? current : initialMode));
+  }, [initialMode]);
+
   const setColorMode = useCallback((next: ColorMode) => {
     setMode(next);
-    localStorage.setItem("color-mode", next);
+    try {
+      localStorage.setItem("color-mode", next);
+    } catch {}
+    try {
+      document.cookie = `color-mode=${next}; path=/; max-age=31536000; samesite=lax`;
+    } catch {}
+    document.documentElement.dataset.colorMode = next;
     apply(next);
   }, [apply]);
 
@@ -184,16 +213,18 @@ interface PrinterShellProps {
   };
   children: React.ReactNode;
   lang: string;
+  initialColorMode: ColorMode;
 }
 
 export default function PrinterShell({
   dictionary,
   children,
   lang,
+  initialColorMode,
 }: PrinterShellProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { mode, setColorMode } = useColorMode();
+  const { mode, setColorMode } = useColorMode(initialColorMode);
   const paperRef = usePaperFeedAnimation();
   const indicatorDelay = useSyncedAnimationDelay(2000);
   const [pendingNavHref, setPendingNavHref] = useState<string | null>(null);

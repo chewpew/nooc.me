@@ -7,7 +7,14 @@ import { generateWebSiteJsonLd } from "@/lib/json-ld";
 import Script from "next/script";
 import PrinterShell from "../../components/printer-shell";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 export const runtime = "edge";
+
+type ColorMode = "system" | "light" | "dark";
+
+function parseColorMode(value: string | undefined): ColorMode {
+  return value === "system" || value === "light" || value === "dark" ? value : "system";
+}
 
 export async function generateMetadata(
   props: {
@@ -83,6 +90,8 @@ export default async function RootLayout(
 
   if (!dictionaryKeys.includes(params.lang as any)) notFound();
   const dictionary = await getDictionary(params.lang);
+  const cookieStore = await cookies();
+  const initialColorMode = parseColorMode(cookieStore.get("color-mode")?.value);
 
   const printerShellProps = {
     labels: {
@@ -111,9 +120,18 @@ export default async function RootLayout(
             __html: `
               (function() {
                 try {
-                  var mode = localStorage.getItem('color-mode');
-                  var dark = mode === 'dark' || (!mode || mode === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  if (dark) document.documentElement.classList.add('dark');
+                  var fallbackMode = '${initialColorMode}';
+                  var storedMode = localStorage.getItem('color-mode');
+                  var mode = storedMode === 'system' || storedMode === 'light' || storedMode === 'dark'
+                    ? storedMode
+                    : fallbackMode;
+                  document.documentElement.dataset.colorMode = mode;
+                  var dark = mode === 'dark' || mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  if (dark) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
                 } catch(e) {}
               })();
             `,
@@ -132,7 +150,7 @@ export default async function RootLayout(
         />
       </head>
       <body>
-        <PrinterShell dictionary={printerShellProps} lang={params.lang}>
+        <PrinterShell dictionary={printerShellProps} lang={params.lang} initialColorMode={initialColorMode}>
           {children}
         </PrinterShell>
       </body>
