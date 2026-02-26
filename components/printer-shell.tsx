@@ -72,6 +72,7 @@ function useSyncedAnimationDelay(durationMs: number) {
  * flag written just before navigation to detect this case.
  */
 const LANG_SWITCH_KEY = '__printer_lang_switch__';
+const LANGUAGE_DIAL_ANIMATION_MS = 220;
 
 function usePaperFeedAnimation() {
   const pathname = usePathname();
@@ -228,6 +229,8 @@ export default function PrinterShell({
   const indicatorDelay = useSyncedAnimationDelay(2000);
   const [pendingNavHref, setPendingNavHref] = useState<string | null>(null);
   const [pendingFromPath, setPendingFromPath] = useState<string | null>(null);
+  const [displayLang, setDisplayLang] = useState(lang);
+  const langSwitchTimerRef = useRef<number | null>(null);
 
   const navItems = [
     { label: dictionary.labels.home, href: dictionary.urls.home },
@@ -252,6 +255,18 @@ export default function PrinterShell({
     }
   }, [pathname, pendingNavHref, pendingFromPath]);
 
+  useEffect(() => {
+    setDisplayLang(lang);
+  }, [lang]);
+
+  useEffect(() => {
+    return () => {
+      if (langSwitchTimerRef.current !== null) {
+        window.clearTimeout(langSwitchTimerRef.current);
+      }
+    };
+  }, []);
+
   function onNavPress(href: string) {
     if (isActive(href)) {
       setPendingNavHref(null);
@@ -263,29 +278,38 @@ export default function PrinterShell({
   }
 
   const switchToLanguage = useCallback((newLang: string) => {
-    if (newLang === lang) return;
+    if (newLang === displayLang) return;
     const rest = pathname.split("/").slice(2);
     const newPath = `/${newLang}${rest.length ? `/${rest.join("/")}` : ""}`;
     try { sessionStorage.setItem(LANG_SWITCH_KEY, '1'); } catch {}
+    setDisplayLang(newLang);
     setPendingNavHref(null);
     setPendingFromPath(null);
-    const docWithTransition = document as Document & {
-      startViewTransition?: (callback: () => void) => { finished: Promise<void> };
-    };
-
-    if (typeof docWithTransition.startViewTransition === "function") {
-      try {
-        docWithTransition.startViewTransition(() => {
-          router.push(newPath);
-        });
-        return;
-      } catch {
-        // Fallback when browser implementation rejects the call.
-      }
+    if (langSwitchTimerRef.current !== null) {
+      window.clearTimeout(langSwitchTimerRef.current);
     }
 
-    router.push(newPath);
-  }, [lang, pathname, router]);
+    langSwitchTimerRef.current = window.setTimeout(() => {
+      langSwitchTimerRef.current = null;
+
+      const docWithTransition = document as Document & {
+        startViewTransition?: (callback: () => void) => { finished: Promise<void> };
+      };
+
+      if (typeof docWithTransition.startViewTransition === "function") {
+        try {
+          docWithTransition.startViewTransition(() => {
+            router.push(newPath);
+          });
+          return;
+        } catch {
+          // Fallback when browser implementation rejects the call.
+        }
+      }
+
+      router.push(newPath);
+    }, LANGUAGE_DIAL_ANIMATION_MS);
+  }, [displayLang, pathname, router]);
 
   const langOptions = [
     { value: "en", label: "EN" },
@@ -369,9 +393,9 @@ export default function PrinterShell({
               <div className="flex items-center justify-end gap-5 shrink-0 py-1">
                 <RotaryDial
                   options={langOptions}
-                  value={lang}
+                  value={displayLang}
                   onChange={switchToLanguage}
-                  title={lang === "en" ? "切换到中文" : "Switch to English"}
+                  title={displayLang === "en" ? "切换到中文" : "Switch to English"}
                 />
                 <RotaryDial
                   options={colorModeOptions}
