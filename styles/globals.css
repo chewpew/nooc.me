@@ -202,6 +202,11 @@
     scrollbar-width: none;
   }
 
+  /* Inline-code only: mono font + subtle background */
+  .post-content :not(pre) > code {
+    @apply font-mono font-normal text-inherit bg-printer-ink/8 dark:bg-printer-ink-dark/12 px-1 py-0.5 rounded;
+  }
+
   /* Dot matrix / thermal print texture */
   .thermal-texture {
     background-image: 
@@ -339,6 +344,19 @@
 }
 
 @layer utilities {
+  /* Keep hover behavior on the current link only, and override prose defaults */
+  .post-content a:hover,
+  .post-content a:focus-visible {
+    text-decoration-color: color-mix(in oklab, theme('colors.printer.ink') 85%, transparent) !important;
+    text-decoration-thickness: 2px !important;
+    text-underline-offset: 4px !important;
+  }
+
+  :is(.dark) .post-content a:hover,
+  :is(.dark) .post-content a:focus-visible {
+    text-decoration-color: color-mix(in oklab, theme('colors.printer.ink-dark') 85%, transparent) !important;
+  }
+
   .text-balance {
     text-wrap: balance;
   }
