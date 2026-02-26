@@ -5,7 +5,7 @@ import Image from "next/image";
 import avatar from "../public/static/avatar.webp";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { 
   Monitor as ComputerDesktopIcon,
   Moon as MoonIcon,
@@ -54,10 +54,14 @@ function generatePaperFeedKeyframes(): { offset: number; transform: string; easi
  * visually resetting every time the component re-renders).
  */
 function useSyncedAnimationDelay(durationMs: number) {
-  return useMemo(() => {
+  const [delay, setDelay] = useState("0ms");
+
+  useEffect(() => {
     const elapsed = Date.now() % durationMs;
-    return `-${elapsed}ms`;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    setDelay(`-${elapsed}ms`);
+  }, [durationMs]);
+
+  return delay;
 }
 
 /**
