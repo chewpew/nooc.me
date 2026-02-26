@@ -256,9 +256,9 @@ export default function PrinterShell({
             <div className="relative flex items-start justify-between mb-8">
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <div className="absolute -inset-[3px] rounded-full bg-black/5 dark:bg-white/[0.08] shadow-inner" />
+                  <div className="absolute -inset-2 rounded-full bg-black/5 dark:bg-white/[0.08] shadow-inner" />
                   <Image
-                    className="h-12 w-12 rounded-full ring-1 ring-black/10 dark:ring-white/[0.15] shadow-sm dark:shadow-[0_0_12px_rgba(100,120,255,0.1)] relative z-10"
+                    className="h-8 w-8 rounded-full ring-1 ring-black/10 dark:ring-white/[0.15] shadow-sm dark:shadow-[0_0_12px_rgba(100,120,255,0.1)] relative z-10"
                     src={avatar}
                     alt="Nooc"
                     priority
