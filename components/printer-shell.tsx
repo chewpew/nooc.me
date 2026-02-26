@@ -350,7 +350,7 @@ export default function PrinterShell({
                 ))}
               </div>
 
-              <div className="flex-1 px-6 sm:px-10 py-8 relative z-10">{children}</div>
+              <div className="printer-content-area flex-1 px-6 sm:px-10 py-8 relative z-10">{children}</div>
 
               <div className="px-6 sm:px-10 py-6 mt-4 border-t border-dashed border-printer-ink/10 dark:border-printer-ink-dark/10 relative z-10">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-printer-ink-light dark:text-printer-ink-dark/40">

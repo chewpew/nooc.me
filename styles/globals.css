@@ -110,6 +110,22 @@
     mix-blend-mode: normal;
   }
 
+  /* Flatten all corner radii inside the printed content area */
+  .printer-content-area,
+  .printer-content-area * {
+    border-radius: 0 !important;
+  }
+
+  /* Keep borders on visual assets, but make them very subtle */
+  .printer-content-area img,
+  .printer-content-area svg {
+    border-color: rgba(0, 0, 0, 0.06) !important;
+  }
+  :is(.dark) .printer-content-area img,
+  :is(.dark) .printer-content-area svg {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
   /* 404 tray mode — when paper area contains [data-not-found], swap paper for tray */
   .printer-paper-area:has([data-not-found]) {
     background-color: theme('colors.printer.body') !important;
