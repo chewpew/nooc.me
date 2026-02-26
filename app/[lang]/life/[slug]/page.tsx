@@ -5,7 +5,6 @@ import Link from "next/link";
 import { getDictionary, Language, languageLabels } from "@/dictionaries";
 import { SiX } from "@icons-pack/react-simple-icons";
 import { Metadata } from "next";
-import classNames from "classnames";
 import {
   PrintedSection,
   PrintedLabel,
@@ -13,6 +12,7 @@ import {
 } from "@/components/printed-elements";
 import { QRCodeSVG } from "qrcode.react";
 import { generateBlogPostingJsonLd, generateBreadcrumbJsonLd } from "@/lib/json-ld";
+import { PostContent } from "@/components/post-content";
 
 export const runtime = "edge";
 
@@ -176,23 +176,7 @@ export default async function LifePostPage({
       <PrintedDivider style="solid" />
 
       {/* Post content */}
-      <div
-        className={classNames(
-          "prose dark:prose-invert max-w-none",
-          "prose-headings:font-serif prose-headings:text-printer-ink dark:prose-headings:text-printer-ink-dark prose-headings:mt-8",
-          "prose-h1:text-2xl",
-          "prose-h2:text-xl",
-          "prose-h3:text-lg",
-          "prose-p:text-printer-ink/80 dark:prose-p:text-printer-ink-dark/80 prose-p:leading-relaxed",
-          "prose-a:text-printer-accent dark:prose-a:text-printer-accent-dark prose-a:no-underline hover:prose-a:underline",
-          "prose-blockquote:font-normal prose-blockquote:border-printer-ink/20 dark:prose-blockquote:border-printer-ink-dark/20",
-          "prose-pre:border prose-pre:border-printer-ink/10 dark:prose-pre:border-printer-ink-dark/10 prose-pre:rounded-lg prose-pre:bg-printer-ink/3 dark:prose-pre:bg-printer-ink-dark/5",
-          "prose-code:text-printer-accent dark:prose-code:text-printer-accent-dark",
-          "prose-img:rounded-lg prose-img:border prose-img:border-printer-ink/10",
-          "before:prose-p:content-none after:prose-p:content-none",
-        )}
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      ></div>
+      <PostContent html={post.content} />
 
       {/* WeChat QR Code */}
       {post.wechatLink && (

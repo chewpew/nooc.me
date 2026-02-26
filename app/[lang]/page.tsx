@@ -62,7 +62,7 @@ export default async function Home({
             <h1 className="font-mono text-2xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark">
               Nooc
             </h1>
-            <p className="font-mono text-sm text-printer-ink-light dark:text-printer-ink-dark/60 mt-1 leading-relaxed">
+            <p className="font-mono text-xs sm:text-[13px] text-printer-ink-light dark:text-printer-ink-dark/60 mt-1 leading-relaxed">
               {motto}
             </p>
           </div>
