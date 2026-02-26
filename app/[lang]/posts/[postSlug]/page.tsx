@@ -165,7 +165,7 @@ export default async function PostPage(
           )}
         </div>
         {post.description && (
-          <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/50 mt-2 leading-relaxed">
+          <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50 mt-2 leading-relaxed">
             {post.description}
           </p>
         )}

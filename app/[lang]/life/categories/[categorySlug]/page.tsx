@@ -85,14 +85,14 @@ export default async function LifeCategoryPage(
       <PrintedSection>
         <div className="flex items-center gap-2 mb-1">
           <TagIcon className="w-4 h-4 text-printer-ink-light dark:text-printer-ink-dark/50" />
-          <h1 className="font-mono text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
+          <h1 className="font-serif text-xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark uppercase">
             {category.name[params.lang]}
           </h1>
         </div>
-        <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
+        <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/50">
           {category.description?.[params.lang]}
         </p>
-        <p className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-1">
+        <p className="font-serif text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-1">
           {posts.length} entries
         </p>
       </PrintedSection>
@@ -122,7 +122,7 @@ export default async function LifeCategoryPage(
                   {post.title}
                 </h2>
                 {post.description && (
-                  <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-1 line-clamp-2">
+                  <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-1 line-clamp-2">
                     {post.description}
                   </p>
                 )}

@@ -168,7 +168,7 @@ export default async function NotFound() {
       </div>
 
       {/* Main heading */}
-      <h1 className="font-mono text-xl sm:text-2xl font-bold tracking-[0.2em] uppercase text-printer-ink dark:text-printer-ink-dark mb-3 text-center">
+      <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-[0.2em] uppercase text-printer-ink dark:text-printer-ink-dark mb-3 text-center">
         {dictionary.labels.notFoundTitle}
       </h1>
 

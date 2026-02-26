@@ -60,10 +60,10 @@ export default async function Home(
       <PrintedSection>
         <div className="flex items-start gap-4 mb-2">
           <div className="flex-1">
-            <h1 className="font-mono text-2xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark">
+            <h1 className="font-serif text-2xl font-bold tracking-tight text-printer-ink dark:text-printer-ink-dark">
               Nooc
             </h1>
-            <p className="font-mono text-xs sm:text-[13px] text-printer-ink-light dark:text-printer-ink-dark/60 mt-1 leading-relaxed">
+            <p className="font-serif text-xs sm:text-[13px] text-printer-ink-light dark:text-printer-ink-dark/60 mt-1 leading-relaxed">
               {motto}
             </p>
           </div>
@@ -160,7 +160,7 @@ export default async function Home(
                   {post.title}
                 </h3>
                 {post.description && (
-                  <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-0.5 line-clamp-1">
+                  <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-0.5 line-clamp-1">
                     {post.description}
                   </p>
                 )}
@@ -202,7 +202,7 @@ export default async function Home(
                   {post.title}
                 </h3>
                 {post.description && (
-                  <p className="font-mono text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-0.5 line-clamp-1">
+                  <p className="font-serif text-xs text-printer-ink-light dark:text-printer-ink-dark/40 mt-0.5 line-clamp-1">
                     {post.description}
                   </p>
                 )}
