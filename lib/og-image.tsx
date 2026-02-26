@@ -261,12 +261,12 @@ function ArticleLayout(options: OgImageOptions) {
           maxWidth: "900px",
         }}
       >
-        <div
-          style={{
-            fontSize: title.length > 30 ? "64px" : "72px",
-            fontWeight: 700,
-            color: COLORS.ink,
-            lineHeight: 1.1,
+          <div
+            style={{
+              fontSize: title.length > 30 ? "42px" : "48px",
+              fontWeight: 700,
+              color: COLORS.ink,
+              lineHeight: 1.1,
             letterSpacing: "-0.02em",
             display: "flex",
           }}
@@ -276,7 +276,7 @@ function ArticleLayout(options: OgImageOptions) {
         {description && (
           <div
             style={{
-              fontSize: "26px",
+              fontSize: "36px",
               color: COLORS.inkLight,
               lineHeight: 1.4,
               display: "flex",
@@ -362,11 +362,11 @@ function PageLayout(options: OgImageOptions) {
             style={{
               fontSize: showTitleAvatar
                 ? title.length > 20
-                  ? "52px"
-                  : "64px"
+                  ? "44px"
+                  : "48px"
                 : title.length > 20
-                  ? "64px"
-                  : "80px",
+                  ? "46px"
+                  : "50px",
               fontWeight: 700,
               color: COLORS.ink,
               lineHeight: 1.1,
@@ -381,7 +381,7 @@ function PageLayout(options: OgImageOptions) {
           {(subtitle || description) && (
             <div
               style={{
-                fontSize: "28px",
+                fontSize: "38px",
                 color: COLORS.inkLight,
                 lineHeight: 1.4,
                 display: "flex",
