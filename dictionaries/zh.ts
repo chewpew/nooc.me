@@ -20,6 +20,7 @@ import youminco from "../public/static/youminco.webp";
 import SparkMemosLogo from "../public/static/sparkmemos.webp";
 import CassetteOneLogo from "../public/static/cassette-one.webp";
 import echobellLogo from "../public/static/echobell.webp";
+import dippodLogo from "../public/static/dippod.webp";
 import raycast from "../public/images/tools/raycast.webp";
 import cleanshot from "../public/images/tools/cleanshot.webp";
 import orbstack from "../public/images/tools/orbstack.webp";
@@ -254,6 +255,14 @@ Serverless 爱好者。
     },
   ],
   works: [
+    {
+      name: "Dippod",
+      summary: "AI 闪卡学习，支持主题、PDF 和笔记转卡。",
+      image: dippodLogo,
+      link: "https://dippod.com",
+      color: "orange",
+      primary: true,
+    },
     {
       name: "回声铃",
       summary: "将 Webhook/邮件转为即时通知与电话警报",

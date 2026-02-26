@@ -20,6 +20,7 @@ import youminco from "../public/static/youminco.webp";
 import SparkMemosLogo from "../public/static/sparkmemos.webp";
 import CassetteOneLogo from "../public/static/cassette-one.webp";
 import echobellLogo from "../public/static/echobell.webp";
+import dippodLogo from "../public/static/dippod.webp";
 import raycast from "../public/images/tools/raycast.webp";
 import orbstack from "../public/images/tools/orbstack.webp";
 import cleanshot from "../public/images/tools/cleanshot.webp";
@@ -261,6 +262,14 @@ A fan of Serverless.
     },
   ],
   works: [
+    {
+      name: "Dippod",
+      summary: "AI flashcards from topics, PDFs, and notes.",
+      image: dippodLogo,
+      link: "https://dippod.com",
+      color: "orange",
+      primary: true,
+    },
     {
       name: "Echobell",
       summary: "Turn webhooks and emails into instant alerts and phone calls.",

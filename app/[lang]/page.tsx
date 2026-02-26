@@ -100,6 +100,7 @@ export default async function Home(
         <div className="grid grid-cols-2 gap-2">
           {dictionary.works
             .filter((work) => work.primary)
+            .slice(0, 4)
             .map((work) => (
               <a
                 key={work.name}
