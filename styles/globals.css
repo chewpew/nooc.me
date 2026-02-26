@@ -270,6 +270,23 @@
     @apply bg-printer-ink/5 dark:bg-printer-ink-dark/5;
     @apply border border-printer-ink/10 dark:border-printer-ink-dark/10;
   }
+
+  /* Button mount animation — staggered 3D flip on language switch / remount */
+  @keyframes btn-enter {
+    0% {
+      transform: rotateX(90deg);
+      opacity: 0;
+    }
+    100% {
+      transform: rotateX(0deg);
+      opacity: 1;
+    }
+  }
+  .btn-enter {
+    animation: btn-enter 0.35s ease-out both;
+    transform-style: preserve-3d;
+    perspective: 200px;
+  }
 }
 
 @layer utilities {

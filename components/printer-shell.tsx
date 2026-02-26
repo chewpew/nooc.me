@@ -5,7 +5,7 @@ import Image from "next/image";
 import avatar from "../public/static/avatar.webp";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { 
   SunIcon,
   MoonIcon,
@@ -48,19 +48,51 @@ function generatePaperFeedKeyframes(): { offset: number; transform: string; easi
   return keyframes;
 }
 
-/** Hook: animate the paper element on every pathname change. */
+/**
+ * Compute a negative animation-delay so a CSS animation stays in sync with
+ * wall-clock time across re-mounts (prevents the indicator light from
+ * visually resetting every time the component re-renders).
+ */
+function useSyncedAnimationDelay(durationMs: number) {
+  return useMemo(() => {
+    const elapsed = Date.now() % durationMs;
+    return `-${elapsed}ms`;
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+/**
+ * Hook: animate the paper element on every pathname change.
+ * On a language switch the entire component tree remounts (because <html lang>
+ * changes), so prevPathRef would be initialised to the CURRENT pathname and the
+ * "skip initial mount" guard would swallow the animation.  We use a sessionStorage
+ * flag written just before navigation to detect this case.
+ */
+const LANG_SWITCH_KEY = '__printer_lang_switch__';
+
 function usePaperFeedAnimation() {
   const pathname = usePathname();
   const paperRef = useRef<HTMLDivElement>(null);
   const prevPathRef = useRef(pathname);
+  const isLangSwitch = useRef(false);
+
+  // On mount, check if we arrived via a language switch
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(LANG_SWITCH_KEY)) {
+        isLangSwitch.current = true;
+        sessionStorage.removeItem(LANG_SWITCH_KEY);
+      }
+    } catch {}
+  }, []);
 
   useEffect(() => {
     const el = paperRef.current;
     if (!el) return;
 
-    // Skip animation on initial mount (first paint)
-    if (prevPathRef.current === pathname) return;
+    // Skip animation on true initial page load (not a language switch remount)
+    if (prevPathRef.current === pathname && !isLangSwitch.current) return;
     prevPathRef.current = pathname;
+    isLangSwitch.current = false;
 
     const kf = generatePaperFeedKeyframes();
     const duration = 350 + Math.random() * 200; // 350-550ms, snappy
@@ -182,6 +214,7 @@ export default function PrinterShell({
   const router = useRouter();
   const { mode, cycle } = useColorMode();
   const paperRef = usePaperFeedAnimation();
+  const indicatorDelay = useSyncedAnimationDelay(2000);
 
   const navItems = [
     { label: dictionary.labels.home, href: dictionary.urls.home },
@@ -201,6 +234,7 @@ export default function PrinterShell({
   function switchLanguage() {
     const otherLang = lang === "en" ? "zh" : "en";
     const newPath = pathname.replace(`/${lang}`, `/${otherLang}`);
+    try { sessionStorage.setItem(LANG_SWITCH_KEY, '1'); } catch {}
     router.push(newPath);
   }
 
@@ -227,6 +261,7 @@ export default function PrinterShell({
                     className="h-12 w-12 rounded-full ring-1 ring-black/10 dark:ring-white/[0.15] shadow-sm dark:shadow-[0_0_12px_rgba(100,120,255,0.1)] relative z-10"
                     src={avatar}
                     alt="Nooc"
+                    priority
                   />
                 </div>
                 <div>
@@ -242,7 +277,7 @@ export default function PrinterShell({
               <div className="flex items-start gap-6">
                 <div className="flex flex-col items-center gap-1.5">
                   <div className="relative w-3.5 h-3.5 rounded-full bg-black/10 dark:bg-black/40 flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/90 shadow-[0_0_8px_rgba(34,197,94,0.6),inset_0_-1px_2px_rgba(0,0,0,0.3)] animate-[pulse_2s_infinite]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/90 shadow-[0_0_8px_rgba(34,197,94,0.6),inset_0_-1px_2px_rgba(0,0,0,0.3)] animate-[pulse_2s_infinite]" style={{ animationDelay: indicatorDelay }} />
                     <div className="absolute inset-0 rounded-full border border-black/10 dark:border-white/5 shadow-inner pointer-events-none" />
                   </div>
                   <span className="font-mono text-[8px] text-printer-ink-light dark:text-printer-ink-dark/40 uppercase tracking-widest leading-none">
@@ -259,7 +294,10 @@ export default function PrinterShell({
                   const active = isActive(item.href);
                   return (
                     <Link key={index} href={item.href}>
-                      <button className={classNames("printer-btn whitespace-nowrap", { "active": active })}>
+                      <button
+                        className={classNames("printer-btn whitespace-nowrap btn-enter", { "active": active })}
+                        style={{ animationDelay: `${index * 40}ms` }}
+                      >
                         <span className="leading-none">{item.label}</span>
                       </button>
                     </Link>
@@ -269,10 +307,10 @@ export default function PrinterShell({
               <div className="sm:hidden mx-1 h-[1px] bg-black/10 dark:bg-white/10" />
               <div className="flex items-center justify-end gap-1 shrink-0 px-1 pb-0.5 sm:px-0 sm:pr-1 sm:py-0.5">
                 <div className="hidden sm:block w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
-                <button onClick={switchLanguage} className="printer-btn printer-btn-circle" title={lang === "en" ? "切换到中文" : "Switch to English"}>
+                <button onClick={switchLanguage} className="printer-btn printer-btn-circle btn-enter" style={{ animationDelay: `${(navItems.length + 1) * 40}ms` }} title={lang === "en" ? "切换到中文" : "Switch to English"}>
                   <span className="leading-none font-semibold text-[9px] tracking-normal">{lang === "en" ? "中" : "EN"}</span>
                 </button>
-                <button onClick={cycle} className="printer-btn printer-btn-circle" title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
+                <button onClick={cycle} className="printer-btn printer-btn-circle btn-enter" style={{ animationDelay: `${(navItems.length + 2) * 40}ms` }} title={mode === "system" ? "System" : mode === "light" ? "Light" : "Dark"}>
                   <ColorModeIcon mode={mode} />
                 </button>
               </div>
