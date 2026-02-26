@@ -109,7 +109,8 @@ Serverless 爱好者。
     brandTagline: "Nooc the Noob",
     notFoundStatus: "\u7eb8\u7a7a\u4e86",
     notFoundTitle: "\u6258\u76d8\u5df2\u7a7a",
-    notFoundSubtitle: "\u8bf7\u6b63\u786e\u653e\u5165\u7eb8\u5f20\u4ee5\u6253\u5370\u5185\u5bb9\u3002",
+    notFoundSubtitle:
+      "\u8bf7\u6b63\u786e\u653e\u5165\u7eb8\u5f20\u4ee5\u6253\u5370\u5185\u5bb9\u3002",
     notFoundButton: "\u2190 \u6253\u5370\u4e3b\u9875",
     notFoundError: "ERR 404 \u00b7 PAPER_NOT_FOUND",
     printedOn: "\u6253\u5370\u4e8e",
@@ -274,7 +275,7 @@ Serverless 爱好者。
     },
     {
       name: "游民CO",
-      summary: "数字游民资讯网站",
+      summary: "数字游民旅居社区网站",
       image: youminco,
       link: "https://youmin.co",
       color: "blue",
