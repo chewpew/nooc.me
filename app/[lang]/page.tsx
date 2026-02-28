@@ -88,7 +88,7 @@ export default async function Home(
 
       <PrintedDivider style="dotted" />
 
-      {/* Works section - compact */}
+      {/* Works section */}
       <PrintedSection
         label={
           <span className="inline-flex items-center gap-1.5">
@@ -107,23 +107,30 @@ export default async function Home(
                 href={work.link}
                 target="_blank"
                 rel="noopener"
-                className="group flex items-center gap-2.5 py-2 px-2.5 -mx-0.5 rounded-md hover:bg-printer-ink/3 dark:hover:bg-printer-ink-dark/3 transition-colors"
+                className="group flex items-center gap-3 py-3 -mx-2 px-2 rounded-md hover:bg-printer-ink/3 dark:hover:bg-printer-ink-dark/3 transition-colors"
               >
-                {work.image && (
+                {work.image ? (
                   <Image
-                    className="h-8 w-8 rounded-lg border border-printer-ink/10 dark:border-printer-ink-dark/10 shrink-0"
+                    className="h-10 w-10 rounded-lg border border-printer-ink/10 dark:border-printer-ink-dark/10 shrink-0"
                     src={work.image}
-                    alt={work.name}
+                    alt={dictionary.labels.icon(work.name)}
                   />
+                ) : (
+                  <div className="h-10 w-10 rounded-lg bg-printer-accent/10 dark:bg-printer-accent-dark/10 flex items-center justify-center font-mono text-lg font-bold text-printer-accent dark:text-printer-accent-dark shrink-0">
+                    {work.name[0]}
+                  </div>
                 )}
-                <div className="min-w-0">
-                  <div className="font-mono text-xs font-medium text-printer-ink dark:text-printer-ink-dark group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors truncate">
+                <div className="min-w-0 flex-1">
+                  <div className="font-mono text-sm font-medium text-printer-ink dark:text-printer-ink-dark group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors">
                     {work.name}
                   </div>
-                  <div className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 truncate">
+                  <div className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/40 mt-0.5 line-clamp-1">
                     {work.summary}
                   </div>
                 </div>
+                <span className="font-mono text-[10px] text-printer-ink-light dark:text-printer-ink-dark/30 group-hover:text-printer-accent dark:group-hover:text-printer-accent-dark transition-colors shrink-0">
+                  →
+                </span>
               </a>
             ))}
         </div>
