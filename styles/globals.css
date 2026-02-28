@@ -166,9 +166,16 @@
   .printer-content-area svg {
     border-color: rgba(0, 0, 0, 0.06) !important;
   }
+  .printer-content-area img {
+    /* Slightly desaturate and warm up to mimic thermal/printed output */
+    filter: saturate(0.78) contrast(1.06) brightness(0.98) sepia(0.16) hue-rotate(-4deg);
+  }
   :is(.dark) .printer-content-area img,
   :is(.dark) .printer-content-area svg {
     border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  :is(.dark) .printer-content-area img {
+    filter: saturate(0.64) contrast(1.08) brightness(0.9) sepia(0.12) hue-rotate(-6deg);
   }
 
   /* 404 tray mode — when paper area contains [data-not-found], swap paper for tray */
