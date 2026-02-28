@@ -850,8 +850,12 @@ export default function PrinterShell({
             <div className="absolute left-2 right-2 sm:left-8 sm:right-8 h-[6px] bg-black/60 dark:bg-black/90 rounded-[1px] shadow-[inset_0_1px_3px_rgba(0,0,0,0.8)] dark:shadow-[inset_0_1px_4px_rgba(0,0,0,0.9)]" />
           </div>
         </div>
+        {/* Cast shadow outside the printer shell bottom edge */}
+        <div className="relative h-0 pointer-events-none" aria-hidden="true">
+          <div className="printer-shell-bottom-shadow" />
+        </div>
         {/* Printed paper output area — clipped so paper slides in from the slit */}
-        <div className="printer-paper-wrap relative mx-3 sm:mx-10 -mt-[12px] z-20" style={{ clipPath: 'inset(0 -20px -10px -20px)' }}>
+        <div className="printer-paper-wrap relative mx-3 sm:mx-10 -mt-[12px] z-20" style={{ clipPath: 'inset(0 -20px -56px -20px)' }}>
           <div className="paper-top-occlusion" aria-hidden="true" />
           <div ref={paperRef}>
             <div className="printer-paper-area bg-printer-paper dark:bg-printer-paper-dark dark:border dark:border-white/[0.04] thermal-texture min-h-[60vh] shadow-[0_4px_12px_rgba(0,0,0,0.15),0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4),0_1px_3px_rgba(0,0,0,0.3)] relative z-0 flex flex-col overflow-hidden">
@@ -885,7 +889,6 @@ export default function PrinterShell({
             <div className="paper-edge-bottom h-0" />
           </div>
         </div>
-        <div className="printer-bottom-occlusion" aria-hidden="true" />
       </div>
     </div>
   );
