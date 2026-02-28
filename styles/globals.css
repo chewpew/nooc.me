@@ -118,6 +118,43 @@
     mix-blend-mode: normal;
   }
 
+  /* Bottom cast shadow for the full printer body */
+  .printer-bottom-occlusion {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -30px;
+    height: 64px;
+    pointer-events: none;
+    z-index: 5;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.14) 28%,
+      rgba(0, 0, 0, 0.08) 52%,
+      rgba(0, 0, 0, 0.03) 78%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mix-blend-mode: multiply;
+  }
+  :is(.dark) .printer-bottom-occlusion {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.62) 0%,
+      rgba(0, 0, 0, 0.44) 26%,
+      rgba(0, 0, 0, 0.26) 52%,
+      rgba(0, 0, 0, 0.1) 78%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mix-blend-mode: normal;
+  }
+  @media (min-width: 640px) {
+    .printer-bottom-occlusion {
+      left: 40px;
+      right: 40px;
+    }
+  }
+
   /* Flatten all corner radii inside the printed content area */
   .printer-content-area,
   .printer-content-area * {

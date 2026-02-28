@@ -732,7 +732,7 @@ export default function PrinterShell({
   return (
     <div className="min-h-screen page-grid flex flex-col items-center px-3 py-6 sm:py-10">
       {/* Printer Body */}
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-3xl relative">
         {/* Unified Header Housing - Wraps both brand and slit areas to share a single shadow */}
         <div
           ref={shellRef}
@@ -885,6 +885,7 @@ export default function PrinterShell({
             <div className="paper-edge-bottom h-0" />
           </div>
         </div>
+        <div className="printer-bottom-occlusion" aria-hidden="true" />
       </div>
     </div>
   );
