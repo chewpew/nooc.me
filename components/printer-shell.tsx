@@ -144,6 +144,10 @@ function useColorMode(initialMode: ColorMode) {
 
     return initialMode;
   });
+  const [resolvedMode, setResolvedMode] = useState<ResolvedColorMode>(() => {
+    if (typeof window === "undefined") return initialMode === "dark" ? "dark" : "light";
+    return document.documentElement.classList.contains("dark") ? "dark" : "light";
+  });
 
   const apply = useCallback((m: ColorMode): ResolvedColorMode => {
     const root = document.documentElement;
@@ -161,12 +165,16 @@ function useColorMode(initialMode: ColorMode) {
   }, []);
 
   useLayoutEffect(() => {
-    persistColorMode(mode, apply(mode));
+    const resolved = apply(mode);
+    setResolvedMode(resolved);
+    persistColorMode(mode, resolved);
 
     if (mode === "system") {
       const mq = window.matchMedia("(prefers-color-scheme: dark)");
       const handler = () => {
-        persistColorMode("system", apply("system"));
+        const nextResolved = apply("system");
+        setResolvedMode(nextResolved);
+        persistColorMode("system", nextResolved);
       };
       mq.addEventListener("change", handler);
       return () => mq.removeEventListener("change", handler);
@@ -192,10 +200,12 @@ function useColorMode(initialMode: ColorMode) {
       localStorage.setItem("color-mode", next);
     } catch {}
     document.documentElement.dataset.colorMode = next;
-    persistColorMode(next, apply(next));
+    const resolved = apply(next);
+    setResolvedMode(resolved);
+    persistColorMode(next, resolved);
   }, [apply, persistColorMode]);
 
-  return { mode, setColorMode };
+  return { mode, resolvedMode, setColorMode };
 }
 
 type StickerId = "github" | "docker" | "typescript" | "swift" | "cloudflare";
@@ -207,20 +217,28 @@ interface StickerDefinition {
   height: number;
   rotation: number;
   color: string;
+  darkColor?: string;
   shape: "circle" | "square";
+  iconSize: number;
+  iconOffsetX?: number;
+  iconOffsetY?: number;
   Icon: React.ComponentType<React.ComponentPropsWithoutRef<"svg">>;
 }
 
 type StickerLayout = Record<StickerId, { x: number; y: number }>;
 
 const STICKER_STORAGE_KEY = "__printer_sticker_layout_v4__";
+let stickerLayoutMemory: StickerLayout | null = null;
+const STICKER_NORMALIZE_EPSILON_PX = 4;
+const SHELL_BOTTOM_SECTION_HEIGHT_PX = 20;
+const SHELL_BOTTOM_SAFE_GAP_PX = 2;
 
 const STICKERS: StickerDefinition[] = [
-  { id: "github", label: "GitHub", width: 44, height: 44, rotation: -6, color: "#181717", shape: "circle", Icon: SiGithub },
-  { id: "docker", label: "Docker", width: 44, height: 44, rotation: 2, color: "#2496ED", shape: "square", Icon: SiDocker },
-  { id: "cloudflare", label: "Cloudflare", width: 46, height: 46, rotation: 8, color: "#F38020", shape: "circle", Icon: SiCloudflare },
-  { id: "typescript", label: "TypeScript", width: 40, height: 40, rotation: 4, color: "#3178C6", shape: "square", Icon: SiTypescript },
-  { id: "swift", label: "Swift", width: 46, height: 46, rotation: -5, color: "#F05138", shape: "square", Icon: SiSwift },
+  { id: "github", label: "GitHub", width: 44, height: 44, rotation: -6, color: "#181717", darkColor: "#f0f6fc", shape: "circle", iconSize: 30, Icon: SiGithub },
+  { id: "docker", label: "Docker", width: 40, height: 40, rotation: 2, color: "#2496ED", shape: "square", iconSize: 27, iconOffsetY: 1, Icon: SiDocker },
+  { id: "cloudflare", label: "Cloudflare", width: 46, height: 46, rotation: 8, color: "#F38020", shape: "circle", iconSize: 30, iconOffsetY: -1, Icon: SiCloudflare },
+  { id: "typescript", label: "TypeScript", width: 40, height: 40, rotation: 4, color: "#3178C6", shape: "square", iconSize: 27, Icon: SiTypescript },
+  { id: "swift", label: "Swift", width: 40, height: 40, rotation: -5, color: "#F05138", shape: "square", iconSize: 27, Icon: SiSwift },
 ];
 
 const STICKER_ANCHORS = [
@@ -287,19 +305,34 @@ function parseStickerLayout(raw: string | null): StickerLayout | null {
   }
 }
 
-function renderStickerFace(sticker: StickerDefinition) {
+function renderStickerFace(sticker: StickerDefinition, resolvedMode: ResolvedColorMode) {
   const Icon = sticker.Icon;
-  const isLargeIcon = sticker.id !== "cloudflare";
+  const iconOffsetX = sticker.iconOffsetX ?? 0;
+  const iconOffsetY = sticker.iconOffsetY ?? 0;
+  const iconColor = resolvedMode === "dark" ? (sticker.darkColor ?? sticker.color) : sticker.color;
 
   return (
     <div
       className={classNames(
-        "relative h-full w-full bg-white flex items-center justify-center border border-black/[0.08]",
-        isLargeIcon ? "p-[14%]" : "p-[20%]",
+        "relative h-full w-full flex items-center justify-center border",
+        "bg-white border-black/[0.08]",
+        "dark:bg-[#171a1f] dark:border-white/[0.16]",
         sticker.shape === "circle" ? "rounded-full" : (sticker.id === "swift" ? "rounded-[10px]" : "rounded-md")
       )}
     >
-      <Icon className="h-full w-full [transform:translateZ(0)]" color={sticker.color} />
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Icon
+            className="block"
+            color={iconColor}
+            style={{
+              width: `${sticker.iconSize}px`,
+              height: `${sticker.iconSize}px`,
+              transform: `translate(${iconOffsetX}px, ${iconOffsetY}px)`,
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -309,6 +342,7 @@ interface StickerButtonProps {
   x: number;
   y: number;
   dragging: boolean;
+  resolvedMode: ResolvedColorMode;
   onPointerDown: (event: React.PointerEvent<HTMLButtonElement>, id: StickerId) => void;
   onPointerMove: (event: React.PointerEvent<HTMLButtonElement>, id: StickerId) => void;
   onPointerUp: (event: React.PointerEvent<HTMLButtonElement>) => void;
@@ -320,6 +354,7 @@ const StickerButton = memo(function StickerButton({
   x,
   y,
   dragging,
+  resolvedMode,
   onPointerDown,
   onPointerMove,
   onPointerUp,
@@ -350,7 +385,7 @@ const StickerButton = memo(function StickerButton({
         willChange: dragging ? "transform, box-shadow" : "auto",
       }}
     >
-      {renderStickerFace(sticker)}
+      {renderStickerFace(sticker, resolvedMode)}
     </button>
   );
 });
@@ -388,16 +423,15 @@ export default function PrinterShell({
 }: PrinterShellProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { mode, setColorMode } = useColorMode(initialColorMode);
+  const { mode, resolvedMode, setColorMode } = useColorMode(initialColorMode);
   const paperRef = usePaperFeedAnimation();
   const indicatorDelay = useSyncedAnimationDelay(2000);
   const [pendingNavHref, setPendingNavHref] = useState<string | null>(null);
   const [pendingFromPath, setPendingFromPath] = useState<string | null>(null);
   const [displayLang, setDisplayLang] = useState(lang);
   const shellRef = useRef<HTMLDivElement>(null);
-  const topShellContentRef = useRef<HTMLDivElement>(null);
-  const [stickerLayout, setStickerLayout] = useState<StickerLayout | null>(null);
-  const stickerLayoutRef = useRef<StickerLayout | null>(null);
+  const [stickerLayout, setStickerLayout] = useState<StickerLayout | null>(() => stickerLayoutMemory);
+  const stickerLayoutRef = useRef<StickerLayout | null>(stickerLayoutMemory);
   const [draggingStickerId, setDraggingStickerId] = useState<StickerId | null>(null);
   const dragStateRef = useRef<{
     id: StickerId;
@@ -434,26 +468,17 @@ export default function PrinterShell({
     setDisplayLang(lang);
   }, [lang]);
 
-  const getTopSectionHeight = useCallback((shellRect: DOMRect) => {
-    const topSectionRect = topShellContentRef.current?.getBoundingClientRect();
-    if (!topSectionRect) return shellRect.height;
-
-    return clamp(topSectionRect.bottom - shellRect.top, 0, shellRect.height);
-  }, []);
-
   const getStickerBounds = useCallback((sticker: StickerDefinition, shellRect: DOMRect) => {
     const minCenterX = sticker.width / 2;
     const maxCenterX = Math.max(minCenterX, shellRect.width - sticker.width / 2);
     const minCenterY = sticker.height / 2;
-
-    const topSectionHeight = getTopSectionHeight(shellRect);
     const maxCenterY = Math.max(
       minCenterY,
-      Math.min(topSectionHeight - sticker.height / 2, shellRect.height - sticker.height / 2),
+      shellRect.height - SHELL_BOTTOM_SECTION_HEIGHT_PX - SHELL_BOTTOM_SAFE_GAP_PX - sticker.height / 2,
     );
 
     return { minCenterX, maxCenterX, minCenterY, maxCenterY };
-  }, [getTopSectionHeight]);
+  }, []);
 
   const normalizeStickerLayoutToTopSection = useCallback((layout: StickerLayout): StickerLayout => {
     const shell = shellRef.current;
@@ -468,8 +493,14 @@ export default function PrinterShell({
     for (const sticker of STICKERS) {
       const position = layout[sticker.id];
       const bounds = getStickerBounds(sticker, shellRect);
-      const centerX = clamp(position.x * shellRect.width, bounds.minCenterX, bounds.maxCenterX);
-      const centerY = clamp(position.y * shellRect.height, bounds.minCenterY, bounds.maxCenterY);
+      const rawCenterX = position.x * shellRect.width;
+      const rawCenterY = position.y * shellRect.height;
+      const clampedCenterX = clamp(rawCenterX, bounds.minCenterX, bounds.maxCenterX);
+      const clampedCenterY = clamp(rawCenterY, bounds.minCenterY, bounds.maxCenterY);
+      const centerX =
+        Math.abs(clampedCenterX - rawCenterX) <= STICKER_NORMALIZE_EPSILON_PX ? rawCenterX : clampedCenterX;
+      const centerY =
+        Math.abs(clampedCenterY - rawCenterY) <= STICKER_NORMALIZE_EPSILON_PX ? rawCenterY : clampedCenterY;
 
       normalized[sticker.id] = {
         x: centerX / shellRect.width,
@@ -487,21 +518,28 @@ export default function PrinterShell({
   }, [getStickerBounds]);
 
   const persistStickerLayout = useCallback((layout: StickerLayout) => {
+    stickerLayoutMemory = layout;
     try {
       localStorage.setItem(STICKER_STORAGE_KEY, JSON.stringify(layout));
     } catch {}
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const current = stickerLayoutRef.current;
+    if (current) {
+      // Keep current in-memory layout as-is across remounts (e.g. language switch)
+      // to avoid tiny re-normalization shifts.
+      setStickerLayout((prev) => (prev ?? current));
+      return;
+    }
+
     try {
       const stored = parseStickerLayout(localStorage.getItem(STICKER_STORAGE_KEY));
       if (stored) {
         const normalizedStored = normalizeStickerLayoutToTopSection(stored);
         setStickerLayout(normalizedStored);
         stickerLayoutRef.current = normalizedStored;
-        if (normalizedStored !== stored) {
-          persistStickerLayout(normalizedStored);
-        }
+        persistStickerLayout(normalizedStored);
         return;
       }
     } catch {}
@@ -514,6 +552,9 @@ export default function PrinterShell({
 
   useEffect(() => {
     stickerLayoutRef.current = stickerLayout;
+    if (stickerLayout) {
+      stickerLayoutMemory = stickerLayout;
+    }
   }, [stickerLayout]);
 
   useEffect(() => {
@@ -612,6 +653,7 @@ export default function PrinterShell({
       },
     };
 
+    stickerLayoutMemory = nextLayout;
     stickerLayoutRef.current = nextLayout;
     setStickerLayout(nextLayout);
   }, [getStickerBounds]);
@@ -715,6 +757,7 @@ export default function PrinterShell({
                   x={position.x}
                   y={position.y}
                   dragging={dragging}
+                  resolvedMode={resolvedMode}
                   onPointerDown={onStickerPointerDown}
                   onPointerMove={onStickerPointerMove}
                   onPointerUp={onStickerPointerUp}
@@ -725,10 +768,7 @@ export default function PrinterShell({
           </div>
 
           {/* Top part - Brand & Nav */}
-          <div
-            ref={topShellContentRef}
-            className="bg-printer-body dark:bg-printer-body-dark px-6 pt-6 pb-5 sm:px-10 sm:pt-10 relative"
-          >
+          <div className="bg-printer-body dark:bg-printer-body-dark px-6 pt-6 pb-5 sm:px-10 sm:pt-10 relative">
             {/* Brand plate */}
             <div className="relative flex items-start justify-between mb-8">
               <div className="flex items-center gap-4">
