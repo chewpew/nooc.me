@@ -5,13 +5,20 @@ import Image from "next/image";
 import avatar from "../public/static/avatar.webp";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import RotaryDial from "./rotary-dial";
 import {
   RiComputerLine as ComputerDesktopIcon,
   RiMoonLine as MoonIcon,
   RiSunLine as SunIcon,
 } from "@remixicon/react";
+import {
+  SiCloudflare,
+  SiDocker,
+  SiGithub,
+  SiSwift,
+  SiTypescript,
+} from "@icons-pack/react-simple-icons";
 /**
  * Generate random keyframes that simulate a subtle printer paper-jam stutter.
  * Only the top portion of the paper slides in (small fixed px offset),
@@ -191,6 +198,163 @@ function useColorMode(initialMode: ColorMode) {
   return { mode, setColorMode };
 }
 
+type StickerId = "github" | "docker" | "typescript" | "swift" | "cloudflare";
+
+interface StickerDefinition {
+  id: StickerId;
+  label: string;
+  width: number;
+  height: number;
+  rotation: number;
+  color: string;
+  shape: "circle" | "square";
+  Icon: React.ComponentType<React.ComponentPropsWithoutRef<"svg">>;
+}
+
+type StickerLayout = Record<StickerId, { x: number; y: number }>;
+
+const STICKER_STORAGE_KEY = "__printer_sticker_layout_v4__";
+
+const STICKERS: StickerDefinition[] = [
+  { id: "github", label: "GitHub", width: 44, height: 44, rotation: -6, color: "#181717", shape: "circle", Icon: SiGithub },
+  { id: "docker", label: "Docker", width: 44, height: 44, rotation: 2, color: "#2496ED", shape: "square", Icon: SiDocker },
+  { id: "cloudflare", label: "Cloudflare", width: 46, height: 46, rotation: 8, color: "#F38020", shape: "circle", Icon: SiCloudflare },
+  { id: "typescript", label: "TypeScript", width: 40, height: 40, rotation: 4, color: "#3178C6", shape: "square", Icon: SiTypescript },
+  { id: "swift", label: "Swift", width: 46, height: 46, rotation: -5, color: "#F05138", shape: "square", Icon: SiSwift },
+];
+
+const STICKER_ANCHORS = [
+  { x: 0.08, y: 0.14 },
+  { x: 0.5, y: 0.1 },
+  { x: 0.92, y: 0.14 },
+  { x: 0.1, y: 0.56 },
+  { x: 0.9, y: 0.56 },
+];
+
+const STICKER_BY_ID = STICKERS.reduce<Record<StickerId, StickerDefinition>>((acc, sticker) => {
+  acc[sticker.id] = sticker;
+  return acc;
+}, {} as Record<StickerId, StickerDefinition>);
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function createRandomStickerLayout(): StickerLayout {
+  const anchors = [...STICKER_ANCHORS];
+
+  for (let i = anchors.length - 1; i > 0; i -= 1) {
+    const swapIndex = Math.floor(Math.random() * (i + 1));
+    [anchors[i], anchors[swapIndex]] = [anchors[swapIndex], anchors[i]];
+  }
+
+  const layout = {} as StickerLayout;
+
+  for (let index = 0; index < STICKERS.length; index += 1) {
+    const sticker = STICKERS[index];
+    const anchor = anchors[index] ?? { x: 0.5, y: 0.5 };
+    layout[sticker.id] = {
+      x: clamp(anchor.x + (Math.random() - 0.5) * 0.05, 0.08, 0.92),
+      y: clamp(anchor.y + (Math.random() - 0.5) * 0.04, 0.1, 0.94),
+    };
+  }
+
+  return layout;
+}
+
+function parseStickerLayout(raw: string | null): StickerLayout | null {
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw) as Partial<Record<StickerId, { x: unknown; y: unknown }>>;
+    const layout = {} as StickerLayout;
+
+    for (const sticker of STICKERS) {
+      const position = parsed[sticker.id];
+      if (!position || typeof position.x !== "number" || typeof position.y !== "number") {
+        return null;
+      }
+
+      layout[sticker.id] = {
+        x: clamp(position.x, 0, 1),
+        y: clamp(position.y, 0, 1),
+      };
+    }
+
+    return layout;
+  } catch {
+    return null;
+  }
+}
+
+function renderStickerFace(sticker: StickerDefinition) {
+  const Icon = sticker.Icon;
+  const isLargeIcon = sticker.id !== "cloudflare";
+
+  return (
+    <div
+      className={classNames(
+        "relative h-full w-full bg-white flex items-center justify-center border border-black/[0.08]",
+        isLargeIcon ? "p-[14%]" : "p-[20%]",
+        sticker.shape === "circle" ? "rounded-full" : (sticker.id === "swift" ? "rounded-[10px]" : "rounded-md")
+      )}
+    >
+      <Icon className="h-full w-full [transform:translateZ(0)]" color={sticker.color} />
+    </div>
+  );
+}
+
+interface StickerButtonProps {
+  sticker: StickerDefinition;
+  x: number;
+  y: number;
+  dragging: boolean;
+  onPointerDown: (event: React.PointerEvent<HTMLButtonElement>, id: StickerId) => void;
+  onPointerMove: (event: React.PointerEvent<HTMLButtonElement>, id: StickerId) => void;
+  onPointerUp: (event: React.PointerEvent<HTMLButtonElement>) => void;
+  onLostPointerCapture: (event: React.PointerEvent<HTMLButtonElement>) => void;
+}
+
+const StickerButton = memo(function StickerButton({
+  sticker,
+  x,
+  y,
+  dragging,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onLostPointerCapture,
+}: StickerButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-label={`${sticker.label} sticker`}
+      onPointerDown={(event) => onPointerDown(event, sticker.id)}
+      onPointerMove={(event) => onPointerMove(event, sticker.id)}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onLostPointerCapture={onLostPointerCapture}
+      className={classNames(
+        "absolute pointer-events-auto touch-none select-none",
+        dragging ? "z-50 cursor-grabbing" : "z-20 cursor-grab",
+      )}
+      style={{
+        width: `${sticker.width}px`,
+        height: `${sticker.height}px`,
+        left: `${x * 100}%`,
+        top: `${y * 100}%`,
+        transform: `translate3d(-50%, -50%, 0) rotate(${sticker.rotation}deg)`,
+        boxShadow: dragging ? "0 8px 24px rgba(0,0,0,0.18), 0 3px 8px rgba(0,0,0,0.12)" : "none",
+        transition: dragging ? "none" : "box-shadow 140ms ease-out",
+        borderRadius: sticker.shape === "circle" ? "9999px" : (sticker.id === "swift" ? "10px" : "6px"),
+        willChange: dragging ? "transform, box-shadow" : "auto",
+      }}
+    >
+      {renderStickerFace(sticker)}
+    </button>
+  );
+});
+
 
 interface PrinterShellProps {
   dictionary: {
@@ -230,6 +394,17 @@ export default function PrinterShell({
   const [pendingNavHref, setPendingNavHref] = useState<string | null>(null);
   const [pendingFromPath, setPendingFromPath] = useState<string | null>(null);
   const [displayLang, setDisplayLang] = useState(lang);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const topShellContentRef = useRef<HTMLDivElement>(null);
+  const [stickerLayout, setStickerLayout] = useState<StickerLayout | null>(null);
+  const stickerLayoutRef = useRef<StickerLayout | null>(null);
+  const [draggingStickerId, setDraggingStickerId] = useState<StickerId | null>(null);
+  const dragStateRef = useRef<{
+    id: StickerId;
+    pointerId: number;
+    offsetX: number;
+    offsetY: number;
+  } | null>(null);
   const langSwitchTimerRef = useRef<number | null>(null);
 
   const navItems = [
@@ -258,6 +433,105 @@ export default function PrinterShell({
   useEffect(() => {
     setDisplayLang(lang);
   }, [lang]);
+
+  const getTopSectionHeight = useCallback((shellRect: DOMRect) => {
+    const topSectionRect = topShellContentRef.current?.getBoundingClientRect();
+    if (!topSectionRect) return shellRect.height;
+
+    return clamp(topSectionRect.bottom - shellRect.top, 0, shellRect.height);
+  }, []);
+
+  const getStickerBounds = useCallback((sticker: StickerDefinition, shellRect: DOMRect) => {
+    const minCenterX = sticker.width / 2;
+    const maxCenterX = Math.max(minCenterX, shellRect.width - sticker.width / 2);
+    const minCenterY = sticker.height / 2;
+
+    const topSectionHeight = getTopSectionHeight(shellRect);
+    const maxCenterY = Math.max(
+      minCenterY,
+      Math.min(topSectionHeight - sticker.height / 2, shellRect.height - sticker.height / 2),
+    );
+
+    return { minCenterX, maxCenterX, minCenterY, maxCenterY };
+  }, [getTopSectionHeight]);
+
+  const normalizeStickerLayoutToTopSection = useCallback((layout: StickerLayout): StickerLayout => {
+    const shell = shellRef.current;
+    if (!shell) return layout;
+
+    const shellRect = shell.getBoundingClientRect();
+    if (shellRect.width <= 0 || shellRect.height <= 0) return layout;
+
+    const normalized = {} as StickerLayout;
+    let changed = false;
+
+    for (const sticker of STICKERS) {
+      const position = layout[sticker.id];
+      const bounds = getStickerBounds(sticker, shellRect);
+      const centerX = clamp(position.x * shellRect.width, bounds.minCenterX, bounds.maxCenterX);
+      const centerY = clamp(position.y * shellRect.height, bounds.minCenterY, bounds.maxCenterY);
+
+      normalized[sticker.id] = {
+        x: centerX / shellRect.width,
+        y: centerY / shellRect.height,
+      };
+
+      if (!changed) {
+        changed =
+          Math.abs(normalized[sticker.id].x - position.x) > 0.0005 ||
+          Math.abs(normalized[sticker.id].y - position.y) > 0.0005;
+      }
+    }
+
+    return changed ? normalized : layout;
+  }, [getStickerBounds]);
+
+  const persistStickerLayout = useCallback((layout: StickerLayout) => {
+    try {
+      localStorage.setItem(STICKER_STORAGE_KEY, JSON.stringify(layout));
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      const stored = parseStickerLayout(localStorage.getItem(STICKER_STORAGE_KEY));
+      if (stored) {
+        const normalizedStored = normalizeStickerLayoutToTopSection(stored);
+        setStickerLayout(normalizedStored);
+        stickerLayoutRef.current = normalizedStored;
+        if (normalizedStored !== stored) {
+          persistStickerLayout(normalizedStored);
+        }
+        return;
+      }
+    } catch {}
+
+    const randomLayout = normalizeStickerLayoutToTopSection(createRandomStickerLayout());
+    setStickerLayout(randomLayout);
+    stickerLayoutRef.current = randomLayout;
+    persistStickerLayout(randomLayout);
+  }, [normalizeStickerLayoutToTopSection, persistStickerLayout]);
+
+  useEffect(() => {
+    stickerLayoutRef.current = stickerLayout;
+  }, [stickerLayout]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const current = stickerLayoutRef.current;
+      if (!current) return;
+
+      const normalized = normalizeStickerLayoutToTopSection(current);
+      if (normalized !== current) {
+        stickerLayoutRef.current = normalized;
+        setStickerLayout(normalized);
+        persistStickerLayout(normalized);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [normalizeStickerLayoutToTopSection, persistStickerLayout]);
 
   useEffect(() => {
     return () => {
@@ -311,6 +585,96 @@ export default function PrinterShell({
     }, LANGUAGE_DIAL_ANIMATION_MS);
   }, [displayLang, pathname, router]);
 
+  const updateStickerPositionFromPointer = useCallback((
+    id: StickerId,
+    clientX: number,
+    clientY: number,
+    offsetX: number,
+    offsetY: number,
+  ) => {
+    const shell = shellRef.current;
+    const currentLayout = stickerLayoutRef.current;
+    if (!shell || !currentLayout) return;
+
+    const rect = shell.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const sticker = STICKER_BY_ID[id];
+    const bounds = getStickerBounds(sticker, rect);
+    const centerX = clamp(clientX - rect.left - offsetX, bounds.minCenterX, bounds.maxCenterX);
+    const centerY = clamp(clientY - rect.top - offsetY, bounds.minCenterY, bounds.maxCenterY);
+
+    const nextLayout: StickerLayout = {
+      ...currentLayout,
+      [id]: {
+        x: centerX / rect.width,
+        y: centerY / rect.height,
+      },
+    };
+
+    stickerLayoutRef.current = nextLayout;
+    setStickerLayout(nextLayout);
+  }, [getStickerBounds]);
+
+  const finishStickerDrag = useCallback((pointerId: number) => {
+    const dragState = dragStateRef.current;
+    if (!dragState || dragState.pointerId !== pointerId) return;
+    dragStateRef.current = null;
+    setDraggingStickerId(null);
+
+    if (stickerLayoutRef.current) {
+      persistStickerLayout(stickerLayoutRef.current);
+    }
+  }, [persistStickerLayout]);
+
+  const onStickerPointerDown = useCallback((event: React.PointerEvent<HTMLButtonElement>, id: StickerId) => {
+    const shell = shellRef.current;
+    const currentLayout = stickerLayoutRef.current;
+    if (!shell || !currentLayout) return;
+
+    const rect = shell.getBoundingClientRect();
+    const currentPosition = currentLayout[id];
+
+    const centerX = currentPosition.x * rect.width;
+    const centerY = currentPosition.y * rect.height;
+
+    dragStateRef.current = {
+      id,
+      pointerId: event.pointerId,
+      offsetX: event.clientX - rect.left - centerX,
+      offsetY: event.clientY - rect.top - centerY,
+    };
+
+    setDraggingStickerId(id);
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }, []);
+
+  const onStickerPointerMove = useCallback((event: React.PointerEvent<HTMLButtonElement>, id: StickerId) => {
+    const dragState = dragStateRef.current;
+    if (!dragState || dragState.id !== id || dragState.pointerId !== event.pointerId) return;
+
+    event.preventDefault();
+    updateStickerPositionFromPointer(
+      id,
+      event.clientX,
+      event.clientY,
+      dragState.offsetX,
+      dragState.offsetY,
+    );
+  }, [updateStickerPositionFromPointer]);
+
+  const onStickerPointerUp = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    finishStickerDrag(event.pointerId);
+  }, [finishStickerDrag]);
+
+  const onStickerLostPointerCapture = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    finishStickerDrag(event.pointerId);
+  }, [finishStickerDrag]);
+
   const langOptions = [
     { value: "en", label: "EN" },
     { value: "zh", label: "中" },
@@ -328,15 +692,43 @@ export default function PrinterShell({
       {/* Printer Body */}
       <div className="w-full max-w-3xl">
         {/* Unified Header Housing - Wraps both brand and slit areas to share a single shadow */}
-        <div className="printer-header-border dark:border dark:border-white/[0.06] rounded-t-[2.5rem] rounded-b-sm overflow-hidden relative z-10">
+        <div
+          ref={shellRef}
+          className="printer-header-border dark:border dark:border-white/[0.06] rounded-t-[2.5rem] rounded-b-sm overflow-hidden relative z-10"
+        >
           
           {/* Dark mode ambient glow — soft top light spill */}
           <div className="hidden dark:block absolute inset-0 pointer-events-none" aria-hidden="true">
             <div className="absolute -top-[40%] left-1/2 -translate-x-1/2 w-[120%] h-[80%] bg-[radial-gradient(ellipse_at_center,rgba(100,120,255,0.07)_0%,rgba(80,100,220,0.03)_40%,transparent_70%)]" />
           </div>
 
+          {/* Draggable shell stickers */}
+          <div className="absolute inset-0 z-30 pointer-events-none" aria-label="shell stickers">
+            {stickerLayout && STICKERS.map((sticker) => {
+              const position = stickerLayout[sticker.id];
+              const dragging = draggingStickerId === sticker.id;
+
+              return (
+                <StickerButton
+                  key={sticker.id}
+                  sticker={sticker}
+                  x={position.x}
+                  y={position.y}
+                  dragging={dragging}
+                  onPointerDown={onStickerPointerDown}
+                  onPointerMove={onStickerPointerMove}
+                  onPointerUp={onStickerPointerUp}
+                  onLostPointerCapture={onStickerLostPointerCapture}
+                />
+              );
+            })}
+          </div>
+
           {/* Top part - Brand & Nav */}
-          <div className="bg-printer-body dark:bg-printer-body-dark px-6 pt-6 pb-5 sm:px-10 sm:pt-10 relative">
+          <div
+            ref={topShellContentRef}
+            className="bg-printer-body dark:bg-printer-body-dark px-6 pt-6 pb-5 sm:px-10 sm:pt-10 relative"
+          >
             {/* Brand plate */}
             <div className="relative flex items-start justify-between mb-8">
               <div className="flex items-center gap-4">
